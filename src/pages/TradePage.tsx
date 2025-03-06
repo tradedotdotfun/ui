@@ -8,7 +8,9 @@ export default function TradePage() {
     <div className="min-h-screen bg-black text-white font-retro flex flex-col items-center">
       <Header />
       <Ticker />
-      <div className="w-full px-10 py-20 flex flex-col justify-center items-center gap-5">
+      <div 
+      className="w-full p-5 sm:px-10 sm:py-20 
+      flex flex-col justify-center items-center gap-5">
         <Chart />
       </div>
       <Footer />

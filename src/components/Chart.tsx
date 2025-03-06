@@ -1,11 +1,18 @@
 import { useEffect, useRef, useState } from "react";
-import { CandlestickSeries, createChart } from "lightweight-charts";
+import { CandlestickSeries, createChart, IChartApi } from "lightweight-charts";
 import RetroBox from "./RetroBox";
 import ArrowButtonIcon from "./ArrowButton";
+import { MarketType } from "../types/markets";
+import MarketSelectionModal from "./MarketSelectionModal";
+import { useIsMobile } from "../hooks/useIsMobile";
 
 export default function Chart() {
   const chartContainerRef = useRef<HTMLDivElement>(null);
-  const [coin, setCoin] = useState('SOL');
+  const chartRef = useRef<IChartApi | null>(null);
+  const isMobile = useIsMobile();
+
+  const [market, setMarket] = useState<MarketType>('SOL');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     if (!chartContainerRef.current) return;
@@ -15,25 +22,18 @@ export default function Chart() {
         background: { color: "#000000" },
         textColor: "#FFFFFF",
       },
-      // grid: {
-      //   vertLines: { color: "rgba(255, 255, 255, 0.1)" },
-      //   horzLines: { color: "rgba(255, 255, 255, 0.1)" },
-      // },
-      // crosshair: {
-      //   mode: 1, // Normal mode
-      // },
-      // rightPriceScale: {
-      //   borderColor: "rgba(255, 255, 255, 0.5)",
-      // },
-      // timeScale: {
-      //   borderColor: "rgba(255, 255, 255, 0.5)",
-      // },
     });
 
+    chartRef.current = chart;
+
     const candlestickSeries = chart.addSeries(CandlestickSeries, {
-      upColor: '#26a69a', downColor: '#ef5350', borderVisible: false,
-      wickUpColor: '#26a69a', wickDownColor: '#ef5350',
+      upColor: '#26a69a',
+      downColor: '#ef5350',
+      borderVisible: false,
+      wickUpColor: '#26a69a',
+      wickDownColor: '#ef5350',
     });
+
     candlestickSeries.setData([
       { time: '2018-12-22', open: 75.16, high: 82.84, low: 36.16, close: 45.72 },
       { time: '2018-12-23', open: 45.12, high: 53.90, low: 45.12, close: 48.09 },
@@ -48,33 +48,63 @@ export default function Chart() {
     ]);
 
     chart.timeScale().fitContent();
-    
+
+    // 리사이즈 옵저버 설정
+    const resizeObserver = new ResizeObserver((entries) => {
+      const { width, height } = entries[0].contentRect;
+      chart.applyOptions({ width, height });
+      chart.timeScale().fitContent();
+    });
+
+    resizeObserver.observe(chartContainerRef.current);
+
     return () => {
+      resizeObserver.disconnect(); // 옵저버 정리
       chart.remove();
     };
   }, []);
 
   return (
-    <div className="w-full border-[4px] border-white p-3">
-      <RetroBox className="w-full border-[4px] border-white px-14 py-8 flex flex-col gap-6">
-        <div className="w-full flex">
-          <div className="flex-1 flex flex-col text-left">
-            <p className="text-[24px] text-white">CURRENT PRICE</p>
-            <p className="text-[24px] text-white">$145.2</p>
-          </div>
-          <div className="flex flex gap-5 items-center arrow-container">
-            <div className="flex flex-col text-right">
-              <p className="text-[24px] text-white">SOL</p>
-              <p className="text-[24px] text-white">TRADE</p>
+    <div className="w-full border-[4px] border-white p-1 sm:p-3">
+      <RetroBox
+        className="w-full">
+        <div
+          className="border-[4px] border-white p-5 sm:px-14 sm:py-8 
+          flex flex-col gap-6">
+          <div className="w-full flex">
+            <div className="flex-1 flex flex-col text-left">
+              <p className="text-[12px] sm:text-[24px] text-white">CURRENT PRICE</p>
+              <p className="text-[12px] sm:text-[24px] text-white">$145.2</p>
             </div>
-            <img src={`${coin}.png`} alt="coin" className="w-16 h-16" />
-            <div className="arrow-button">
-            <ArrowButtonIcon />
+            <div
+              className="flex flex gap-2 sm:gap-5 items-center arrow-container"
+              onClick={() => setIsModalOpen(true)}>
+              <div className="flex flex-col text-right">
+                <p className="text-[12px] sm:text-[24px] text-white">{`${market}`}</p>
+                <p className="text-[12px] sm:text-[24px] text-white">TRADE</p>
+              </div>
+              <img src={`${market}.png`} alt="coin" className="w-8 h-8 sm:w-16 sm:h-16" />
+              {
+                isMobile ?
+                  <img src="/selected_market_arrow.svg" alt="selected_market_arrow" /> :
+                  <div className="arrow-button">
+                    <ArrowButtonIcon />
+                  </div>
+              }
             </div>
           </div>
+          <div ref={chartContainerRef} className="w-full h-[320px] sm:h-[400px]"></div>
         </div>
-        <div ref={chartContainerRef} className="w-full h-[400px]"></div>
       </RetroBox>
+      <MarketSelectionModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={(market) => {
+          setMarket(market);
+          setIsModalOpen(false);
+        }}
+        currentMarket={market}
+      />
     </div>
   );
 }
