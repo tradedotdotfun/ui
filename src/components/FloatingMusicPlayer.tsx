@@ -42,9 +42,13 @@ export default function FloatingMusicPlayer({ musicMap }: FloatingMusicPlayerPro
       fixed bottom-4 right-4 z-50 flex gap-2 p-2
       bg-gradient-to-r from-blue-500 to-purple-500
       rounded-full
-      hover:scale-110 transition-transform duration-150 ease-out
+      group
       ${playing ? 'animate-bounce' : ''}
       `}>
+        <div className="absolute 
+        text-white text-[16px] opacity-0 group-hover:opacity-100
+        bottom-[20px] right-[80px] w-[400px]
+        ">MAX LEVEL TRADING VIBES!</div>
         <img
           src="/popcat.gif"
           alt="music player"
