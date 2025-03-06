@@ -8,3 +8,13 @@
 .animate-marquee {
   animation: marquee 20s linear infinite;
 }
+
+.arrow-container:hover .arrow-button {
+  transform: translateY(4px);
+  color: #DCDCDC;
+}
+
+.arrow-container:active .arrow-button {
+  transform: translateY(0px);
+  color: #DCDCDC;
+}
