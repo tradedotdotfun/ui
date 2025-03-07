@@ -65,7 +65,7 @@ export default function Chart() {
   }, []);
 
   return (
-    <div className="w-full border-[4px] border-white p-1 sm:p-3">
+    <div className="w-full border-[4px] border-white p-1 sm:p-[6px]">
       <RetroBox
         className="w-full">
         <div
@@ -77,7 +77,7 @@ export default function Chart() {
               <p className="text-[12px] sm:text-[24px] text-white">$145.2</p>
             </div>
             <div
-              className="flex flex gap-2 sm:gap-5 items-center arrow-container"
+              className="flex gap-2 sm:gap-5 items-center cursor-pointer arrow-container"
               onClick={() => setIsModalOpen(true)}>
               <div className="flex flex-col text-right">
                 <p className="text-[12px] sm:text-[24px] text-white">{`${market}`}</p>

@@ -18,3 +18,37 @@
   transform: translateY(0px);
   color: #DCDCDC;
 }
+
+.left-arrow-button {
+  transform: rotate(90deg);
+}
+
+.arrow-container:hover .left-arrow-button {
+  transform: rotate(90deg) translateX(-4px);
+  color: #DCDCDC;
+}
+
+.arrow-container:active .left-arrow-button {
+  transform: rotate(90deg) translateX(0px);
+  color: #DCDCDC;
+}
+
+
+.right-arrow-button {
+  transform: rotate(-90deg);
+}
+
+.arrow-container:hover .right-arrow-button {
+  transform: rotate(-90deg) translateX(4px);
+  color: #DCDCDC;
+}
+
+.arrow-container:active .right-arrow-button {
+  transform: rotate(-90deg) translateX(0px);
+  color: #DCDCDC;
+}
+
+.no-drag {
+  -webkit-user-drag: none;
+  user-select: none;
+}
