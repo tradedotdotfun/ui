@@ -1,6 +1,7 @@
 import Chart from "../components/Chart";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
+import MyPosition from "../components/MyPosition";
 import Ticker from "../components/Ticker";
 import TradeExecutionPanel from "../components/TradeExecutionPanel";
 
@@ -14,6 +15,7 @@ export default function TradePage() {
       flex flex-col justify-center items-center gap-5">
         <Chart />
         <TradeExecutionPanel />
+        <MyPosition />
       </div>
       <Footer />
     </div>

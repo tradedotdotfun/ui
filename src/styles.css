@@ -1,8 +1,13 @@
 @import "tailwindcss";
 
 @keyframes marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 .animate-marquee {
@@ -51,4 +56,8 @@
 .no-drag {
   -webkit-user-drag: none;
   user-select: none;
+}
+
+.capitalize-first::first-letter {
+  text-transform: uppercase;
 }

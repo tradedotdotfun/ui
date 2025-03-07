@@ -123,10 +123,10 @@ export default function TradeExecutionPanel() {
       <LeveragePanel />
       <AmountPanel />
       <div className="flex-1/2 flex flex-col text-left sm:pr-7">
-        <NESButton variant="green">BUY</NESButton>
+        <NESButton variant="green">Buy</NESButton>
       </div>
       <div className="flex-1/2 flex flex-col text-left sm:pl-7">
-        <NESButton variant="red">SELL</NESButton>
+        <NESButton variant="red">Sell</NESButton>
       </div>
     </div>
   )

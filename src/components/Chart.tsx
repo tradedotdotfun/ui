@@ -69,7 +69,7 @@ export default function Chart() {
       <RetroBox
         className="w-full">
         <div
-          className="border-[4px] border-white p-5 sm:px-14 sm:py-8 
+          className="border-[4px] border-white p-5 sm:px-13 sm:py-7
           flex flex-col gap-6">
           <div className="w-full flex">
             <div className="flex-1 flex flex-col text-left">

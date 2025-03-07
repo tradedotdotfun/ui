@@ -2,11 +2,11 @@ import { ButtonHTMLAttributes } from 'react';
 
 type NESButtonProps = {
   variant?: 'default' | 'primary' | 'green' | 'red';
+  fontSize?: 'default' | 'small';
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 const baseStyles = `
   font-retro
-  text-[16px] sm:text-[22px]
   py-2 px-4
   border-r-4 border-b-4
   active:border-r-0
@@ -56,13 +56,17 @@ const variantStyles = {
 
 export default function NESButton({
   variant = 'default',
+  fontSize = 'default',
   className = '',
   children,
   ...props
 }: NESButtonProps) {
+  const fontStyle = fontSize === 'default' ? 
+  "text-[16px] sm:text-[22px]" : 
+  "text-[10px] sm:text-[14px]";
   return (
     <button
-      className={`${baseStyles} ${variantStyles[variant]} ${className}`}
+      className={`${baseStyles} ${variantStyles[variant]} ${fontStyle} ${className}`}
       {...props}
     >
       {children}
