@@ -13,9 +13,9 @@ export default function MainLogo() {
           : (<img src="/tradedotfun_logo.png" alt="Main Logo" className="w-[894px] mt-[120px]" />)
       }
 
-      <div className="mt-[44px] text-[28px] text-[#FFF828]">
+      <div className="mt-[44px] text-[28px] text-[#FFFF00]">
         Are You the Next{" "}
-        <span className="font-bold animate-pulse text-[#FFF828]">
+        <span className="font-bold animate-pulse text-[#FFFF00]">
           100x
         </span>{" "}
         Trader?
@@ -36,7 +36,7 @@ export default function MainLogo() {
         </TextButton>
       </Link>
 
-      <small className="text-[#FFF828] text-[10px] mt-2 mb-[60px]">Entry Fee: 0.1 SOL</small>
+      <small className="text-[#FFFF00] text-[10px] mt-2 mb-[60px]">Entry Fee: 0.1 SOL</small>
 
       {
         !isMobile && (

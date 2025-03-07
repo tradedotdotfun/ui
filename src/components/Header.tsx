@@ -10,7 +10,7 @@ export default function Header() {
       <div className="flex items-center gap-2">
         <Link to="/" className="text-white text-[16px]">TRADE DOT. FUN</Link>
       </div>
-      {!isMobile && <NESButton variant="primary">Connect Wallet</NESButton>}
+      {!isMobile && <NESButton variant="primary" fontSize="small">Connect Wallet</NESButton>}
     </header>
   );
 }
