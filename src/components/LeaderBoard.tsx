@@ -1,5 +1,4 @@
 import { useIsMobile } from "../hooks/useIsMobile";
-import NESButton from "./Button";
 import RetroBox from "./RetroBox";
 
 export default function LeaderBoard() {
