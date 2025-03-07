@@ -23,7 +23,7 @@ function StoryImage({ index, line }: StoryImageProps) {
   };
 
   return (
-    <div key={`fwog-story-${index + 1}`} className="inline-block">
+    <div className="inline-block">
       <img
         ref={imgRef}
         onLoad={handleLoad}
@@ -56,7 +56,10 @@ function FwogStoryBoard() {
       <div className="w-fit flex flex-col lg:flex-row gap-6 justify-center">
         {
           story.map((line, index) => (
-            <StoryImage index={index} line={line} />
+            <StoryImage
+              key={`fwog-story-${index + 1}`}
+              index={index}
+              line={line} />
           ))
         }
       </div>
