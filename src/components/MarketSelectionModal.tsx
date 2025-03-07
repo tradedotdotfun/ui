@@ -34,10 +34,16 @@ export default function MarketSelectionModal({ isOpen, onClose, onConfirm, curre
         ))}
       </div>
       <div className="flex justify-center gap-3 sm:gap-6">
-        <NESButton fontSize="small" onClick={onClose}>
+        <NESButton
+          fontSize="small"
+          audio="cancel"
+          onClick={onClose}>
           Cancel
         </NESButton>
-        <NESButton variant="primary" fontSize="small" onClick={() => onConfirm(selectedMarket)}>
+        <NESButton
+          variant="primary"
+          fontSize="small"
+          onClick={() => onConfirm(selectedMarket)}>
           Confirm
         </NESButton>
       </div>

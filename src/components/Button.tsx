@@ -1,8 +1,9 @@
-import { ButtonHTMLAttributes } from 'react';
+import { ButtonHTMLAttributes, useRef } from 'react';
 
 type NESButtonProps = {
   variant?: 'default' | 'primary' | 'green' | 'red';
   fontSize?: 'default' | 'small';
+  audio?: 'default' | 'cancel';
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 const baseStyles = `
@@ -57,10 +58,24 @@ const variantStyles = {
 export default function NESButton({
   variant = 'default',
   fontSize = 'default',
+  audio = 'default',
   className = '',
   children,
+  onClick,
   ...props
 }: NESButtonProps) {
+  const audioFileName = audio === "default" ? "/click.mp3" : "/cancel.mp3";
+  const audioRef = useRef(new Audio(audioFileName));
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    audioRef.current.currentTime = 0; // 클릭할 때마다 처음부터 재생
+    audioRef.current.play();
+
+    if (onClick) {
+      onClick(e);
+    }
+  }; 
+
   const fontStyle = fontSize === 'default' ? 
   "text-[16px] sm:text-[22px]" : 
   "text-[10px] sm:text-[14px]";
@@ -68,6 +83,7 @@ export default function NESButton({
     <button
       className={`${baseStyles} ${variantStyles[variant]} ${fontStyle} ${className}`}
       {...props}
+      onClick={handleClick}
     >
       {children}
     </button>

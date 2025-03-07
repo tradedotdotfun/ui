@@ -1,21 +1,26 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import NESButton from "./Button"
 import ArrowButtonIcon from "./ArrowButton";
 import ProgressBar from "./ProgressBar";
 import AmountPanel from "./AmountPanel";
 
-function LeveragePanel() {
-  const MAX_LEVERAGE = 50;
-  const [leverage, setLeverage] = useState(1);
+const MAX_LEVERAGE = 50;
+
+function LeveragePanel({ leverage, setLeverage }: { leverage: number, setLeverage: (value: number) => void }) {
+  const audioRef = useRef(new Audio('/click.mp3'));
 
   const increaseLeverage = () => {
     if (leverage < MAX_LEVERAGE) {
+      audioRef.current.currentTime = 0; // 클릭할 때마다 처음부터 재생
+      audioRef.current.play();
       setLeverage(leverage + 1);
     }
   }
 
   const decreaseLeverage = () => {
     if (leverage > 1) {
+      audioRef.current.currentTime = 0; // 클릭할 때마다 처음부터 재생
+      audioRef.current.play();
       setLeverage(leverage - 1);
     }
   }
@@ -55,17 +60,24 @@ function LeveragePanel() {
 }
 
 export default function TradeExecutionPanel() {
-  const [totalBalance, setTotalBalance] = useState<number | undefined>(undefined);
+  const balance = 38123.12;
+  const [leverage, setLeverage] = useState(1);
+  const [amount, setAmount] = useState<number | undefined>(undefined);
+  const [maxBalance, setMaxBalance] = useState<number | undefined>(undefined);
+
+  useEffect(() => {
+    setMaxBalance(balance * leverage);
+  }, [balance, leverage]);
 
   return (
     <div className="w-full border-[4px] border-white p-5 sm:p-8
     flex flex-col sm:flex-row flex-wrap">
-      <LeveragePanel />
+      <LeveragePanel leverage={leverage} setLeverage={setLeverage} />
       <div className="flex-1/2 flex flex-col text-left sm:pl-7 gap-7 overflow-x-hidden">
         <AmountPanel
-          totalAmount={38123.12}
-          amount={totalBalance}
-          setAmount={setTotalBalance} />
+          totalAmount={maxBalance || 0}
+          amount={amount}
+          setAmount={setAmount} />
       </div>
       <div className="flex-1/2 flex flex-col text-left sm:pr-7">
         <NESButton variant="green">Buy</NESButton>

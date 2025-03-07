@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 type TextButtonProps = {
   onClick?: () => void;
@@ -6,10 +6,17 @@ type TextButtonProps = {
 };
 
 export default function TextButton({ onClick, children }: TextButtonProps) {
+  const audioRef = useRef(new Audio('/start.mp3'));
   const [clicked, setClicked] = useState(false);
 
   const handleMouseDown = () => setClicked(true);
   const handleMouseUp = () => setClicked(false);
+
+  const handleClick = () => {
+    audioRef.current.currentTime = 0; // 클릭할 때마다 처음부터 재생
+    audioRef.current.play();
+    onClick && onClick();
+  }
 
   return (
     <button
@@ -22,7 +29,7 @@ export default function TextButton({ onClick, children }: TextButtonProps) {
         hover:border-4 hover:border-white hover:animate-none
         hover:h-[46px]
       `}
-      onClick={onClick}
+      onClick={handleClick}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       onMouseLeave={() => setClicked(false)}

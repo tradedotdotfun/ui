@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import RetroBox from "./RetroBox";
 import ProgressBar from "./ProgressBar";
 
@@ -35,6 +35,10 @@ export default function AmountPanel({ totalAmount, amount, setAmount }: AmountPa
     setPercentage(percentage);
     setAmount(amount);
   }
+
+  useEffect(() => {
+    setPercentageWithAmount(amount || 0);
+  }, [totalAmount])
 
   return (
     <>

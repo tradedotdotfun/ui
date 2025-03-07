@@ -16,10 +16,16 @@ export default function InsertCoinModal({ isOpen, onClose, onConfirm }: InsertCo
       <p className="text-white text-[16px] text-center">0.1 SOL TO JOIN</p>
 
       <div className="flex justify-center gap-3 sm:gap-6">
-        <NESButton fontSize="small" onClick={onClose}>
+        <NESButton
+          fontSize="small"
+          audio="cancel"
+          onClick={onClose}>
           Cancel
         </NESButton>
-        <NESButton variant="primary" fontSize="small" onClick={() => onConfirm()}>
+        <NESButton
+          variant="primary"
+          fontSize="small"
+          onClick={() => onConfirm()}>
           Confirm
         </NESButton>
       </div>

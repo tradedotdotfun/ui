@@ -97,6 +97,7 @@ function ClosePositionBox({ position, market, onClickCancel, onClickConfirm }: C
       <div className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-5 items-start">
         <NESButton
           className="self-start w-full sm:flex-1/3"
+          audio="cancel"
           onClick={onClickCancel}>Cancel</NESButton>
         <NESButton
           variant="green"
@@ -133,7 +134,7 @@ export default function ClosePosition() {
 
   return (
     <div
-      className="w-full p-5 sm:px-10 sm:py-20">
+      className="w-full max-w-[1280px] p-5 sm:px-10 sm:py-20">
       <div className="w-full border-[4px] border-white p-1 sm:p-[6px]">
         <RetroBox
           className="w-full">
