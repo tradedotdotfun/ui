@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { Market } from "../types/markets";
 import { Position } from "../types/positions";
 import NESButton from "./Button";
@@ -38,9 +39,10 @@ function TotalPnLSection({ pnl }: TotalPnLProps) {
 type PositionBoxProps = {
   position: Position;
   market?: Market;
+  onClickClosePosition: () => void;
 };
 
-function PositionBox({ position, market }: PositionBoxProps) {
+function PositionBox({ position, market, onClickClosePosition }: PositionBoxProps) {
   const formattedPnL = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(position.pnl * position.size);
   const pnlPercentage = position.pnl * 100;
   const formattedSize = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(position.size);
@@ -105,13 +107,17 @@ function PositionBox({ position, market }: PositionBoxProps) {
         <p>{formattedLiqPrice}</p>
       </div>
 
-      <NESButton className="self-end" fontSize="small">Close Position</NESButton>
+      <NESButton
+        className="self-end"
+        fontSize="small"
+        onClick={onClickClosePosition}>Close Position</NESButton>
     </div>
   )
-
 }
 
 export default function MyPosition() {
+  const navigate = useNavigate();
+
   const myPostionList: Position[] = [
     {
       id: "1",
@@ -172,7 +178,11 @@ export default function MyPosition() {
       price: 2100.00,
       change: 0,
     }
-  ]
+  ];
+
+  const handleClickClosePosition = (position: Position, market?: Market) => {
+    navigate("/close", { state: { position, market } });
+  };
 
   return (
     <div className="w-full border-[4px] border-white p-1 sm:p-[6px]">
@@ -196,7 +206,10 @@ export default function MyPosition() {
                   <div className="mb-6 sm:mb-11">
                     <Divider char="^" color="text-white" width="100%" />
                   </div>
-                  <PositionBox position={position} market={marketList.find(m => m.type === position.market)} />
+                  <PositionBox
+                    position={position}
+                    market={marketList.find(m => m.type === position.market)}
+                    onClickClosePosition={() => handleClickClosePosition(position, marketList.find(m => m.type === position.market))} />
                 </div>
               ))}
             </div>
