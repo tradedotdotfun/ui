@@ -36,7 +36,7 @@ export default function MainLogo() {
         </TextButton>
       </Link>
 
-      <small className="text-[#FFFF00] text-[10px] mt-2 mb-[60px]">Entry Fee: 0.1 SOL</small>
+      <small className="text-[#FFF828] text-[10px] mt-2 mb-[60px]">Entry Fee: 0.1 SOL</small>
 
       {
         !isMobile && (

@@ -28,7 +28,7 @@ export default function LeaderBoard() {
   return (
     <div className="w-full relative flex flex-col items-center pt-[40px] pb-[80px] px-4 overflow-x-hidden">
       <RetroBox className="w-full max-w-[600px]">
-        <div className="border-[4px] border-[#777176] flex flex-col items-center justify-center text-left px-6 sm:px-14 py-8">
+        <div className="border-[4px] border-[#777176] flex flex-col items-center justify-center text-left px-6 sm:px-14 pt-8 pb-14">
           <img src="/trophy.gif" alt="trophy" className="w-10 h-10 mb-3" />
           <p className="text-[#59D6BF] text-[10px] sm:text-[16px]">High Scores</p>
           <div className="mt-9 flex justify-between w-full">
@@ -63,8 +63,13 @@ export default function LeaderBoard() {
               )
             })}
           </div>
-          <p className="text-white text-[10px] sm:text-[16px]">Top traders take home massive rewards!</p>
-          <NESButton className="mt-11 text-[14px] sm:text-[16px]">View all</NESButton>
+          <div className="w-full text-white text-[10px] sm:text-[16px] text-left">
+            <span>Only the strongest survive.</span>
+            <br />
+            <span>Will it be you?</span>
+            <img src="/sword.gif" alt="sword" className="w-6 h-6 inline-block ml-1" />
+          </div>
+          {/* <NESButton className="mt-11 text-[14px] sm:text-[16px]">View all</NESButton> */}
         </div>
       </RetroBox>
       {

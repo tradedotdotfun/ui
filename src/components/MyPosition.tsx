@@ -4,6 +4,7 @@ import { Position } from "../types/positions";
 import NESButton from "./Button";
 import Divider from "./Divider";
 import RetroBox from "./RetroBox";
+import CoinIcon from "./CoinIcon";
 
 type TotalPnLProps = {
   pnl: number;
@@ -55,7 +56,7 @@ function PositionBox({ position, market, onClickClosePosition }: PositionBoxProp
   return (
     <div className="w-full flex flex-col gap-3 sm:gap-9">
       <div className="flex items-center">
-        <img src={`${position.market}.png`} alt={position.market} className="w-5 h-5 sm:w-10 sm:h-10" />
+        <CoinIcon symbol={position.market} className="w-5 h-5 sm:w-10 sm:h-10" />
         <p className="text-white text-[12px] sm:text-[32px] ml-2 sm:ml-5">{position.market}</p>
         {
           position.side === "long" ?

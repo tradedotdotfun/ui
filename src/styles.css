@@ -14,6 +14,60 @@
   animation: marquee 20s linear infinite;
 }
 
+@keyframes retro-blink-half {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes retro-blink {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+
+@keyframes retro-blink-coin {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  25%,
+  75% {
+    opacity: 0.5;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+.retro-blink-half {
+  animation: retro-blink-half 1.4s step-start infinite;
+}
+
+.retro-blink {
+  animation: retro-blink 1s step-start infinite;
+}
+
+.retro-blink-coin {
+  animation: retro-blink-coin 1.8s step-start infinite;
+}
+
 .arrow-container:hover .arrow-button {
   transform: translateY(4px);
   color: #DCDCDC;

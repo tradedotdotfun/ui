@@ -18,7 +18,7 @@ export default function TextButton({ onClick, children }: TextButtonProps) {
         flex items-center gap-2
         transition-all duration-100 ease-in-out
         ${clicked ? 'scale-95' : 'scale-100'}
-        animate-pulse
+        retro-blink-half
         hover:border-4 hover:border-white hover:animate-none
         hover:h-[46px]
       `}

@@ -6,6 +6,7 @@ import NESButton from "./Button";
 import Divider from "./Divider";
 import AmountPanel from "./AmountPanel";
 import { useEffect, useState } from "react";
+import CoinIcon from "./CoinIcon";
 
 
 type ClosePositionBoxProps = {
@@ -40,7 +41,7 @@ function ClosePositionBox({ position, market, onClickCancel, onClickConfirm }: C
   return (
     <div className="w-full flex flex-col gap-3 sm:gap-9">
       <div className="flex items-center">
-        <img src={`${position.market}.png`} alt={position.market} className="w-5 h-5 sm:w-10 sm:h-10" />
+        <CoinIcon symbol={position.market} className="w-5 h-5 sm:w-10 sm:h-10" />
         <p className="text-white text-[12px] sm:text-[32px] ml-2 sm:ml-5">{position.market}</p>
         {
           position.side === "long" ?
@@ -104,7 +105,7 @@ function ClosePositionBox({ position, market, onClickCancel, onClickConfirm }: C
             if (closingAmount === undefined) {
               return;
             }
-            onClickConfirm?.(Math.round(closingAmount / position.size * 10000)/100);
+            onClickConfirm?.(Math.round(closingAmount / position.size * 10000) / 100);
           }}>Confirm</NESButton>
       </div>
     </div>
@@ -146,8 +147,8 @@ export default function ClosePosition() {
                 </p>
               </div>
             </div>
-            <ClosePositionBox 
-              position={position} 
+            <ClosePositionBox
+              position={position}
               market={market}
               onClickCancel={handleClickCancel}
               onClickConfirm={handleClickConfirm}

@@ -15,15 +15,21 @@ export default function LeagueInfo() {
     const endAt = new Date(league.endAt);
     const diff = endAt.getTime() - now.getTime();
 
-    if (diff <= 0) return "00 : 00 : 00";
+    if (diff <= 0) return {
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+    };
 
     const hours = Math.floor(diff / (1000 * 60 * 60));
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-    return `${hours.toString().padStart(2, "0")} : ${minutes
-      .toString()
-      .padStart(2, "0")} : ${seconds.toString().padStart(2, "0")}`;
+    return {
+      hours,
+      minutes,
+      seconds,
+    }
   };
 
   const [remainingTime, setRemainingTime] = useState(calculateRemainingTime());
@@ -40,7 +46,13 @@ export default function LeagueInfo() {
     <RetroBox className="w-fit self-start">
       <div className="flex flex-col p-4 border-4 border-white gap-5">
         <p className="text-white text-[14px] sm:text-[24px]">LEAGUE TIME</p>
-        <p className="text-white text-[16px] sm:text-[32px]">{remainingTime}</p>
+        <p className="text-white text-[16px] sm:text-[32px]">
+          <span>{remainingTime.hours.toString().padStart(2, "0")}</span>
+          <span className="retro-blink">{" : "}</span>
+          <span>{remainingTime.minutes.toString().padStart(2, "0")}</span>
+          <span className="retro-blink">{" : "}</span>
+          <span>{remainingTime.seconds.toString().padStart(2, "0")}</span>
+        </p>
       </div>
     </RetroBox>
   );

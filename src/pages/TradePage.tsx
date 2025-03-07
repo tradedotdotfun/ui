@@ -12,7 +12,7 @@ export default function TradePage() {
       <Header />
       <Ticker />
       <div 
-      className="w-full p-5 sm:px-10 sm:py-20 
+      className="w-full max-w-[1280px] p-5 sm:px-10 sm:py-20 
       flex flex-col justify-center items-center gap-5">
         <LeagueInfo />
         <Chart />

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { MarketType } from "../types/markets";
 import NESButton from "./Button";
+import CoinIcon from "./CoinIcon";
 
 type MarketSelectionModalProps = {
   isOpen: boolean;
@@ -30,11 +31,7 @@ export default function MarketSelectionModal({ isOpen, onClose, onConfirm, curre
               {
                 selectedMarket === market && (<img src="/selected_market_arrow.svg" alt="selected_market_arrow" />)
               }
-              <img
-                src={`${market}.png`}
-                alt={market}
-                className={`w-16 h-16`}
-              />
+              <CoinIcon symbol={market} className="w-16 h-16" />
               <p className="text-white text-[12px]">{market}</p>
             </div>
           ))}

@@ -5,6 +5,7 @@ import ArrowButtonIcon from "./ArrowButton";
 import { MarketType } from "../types/markets";
 import MarketSelectionModal from "./MarketSelectionModal";
 import { useIsMobile } from "../hooks/useIsMobile";
+import CoinIcon from "./CoinIcon";
 
 export default function Chart() {
   const chartContainerRef = useRef<HTMLDivElement>(null);
@@ -83,7 +84,7 @@ export default function Chart() {
                 <p className="text-[12px] sm:text-[24px] text-white">{`${market}`}</p>
                 <p className="text-[12px] sm:text-[24px] text-white">TRADE</p>
               </div>
-              <img src={`${market}.png`} alt="coin" className="w-8 h-8 sm:w-16 sm:h-16" />
+              <CoinIcon symbol={market} className="w-8 h-8 sm:w-16 sm:h-16" />
               {
                 isMobile ?
                   <img src="/selected_market_arrow.svg" alt="selected_market_arrow" /> :
