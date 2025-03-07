@@ -6,8 +6,9 @@ export default function Header() {
   const isMobile = useIsMobile();
 
   return (
-    <header className="w-full flex justify-between items-center p-4">
-      <div className="flex items-center gap-2">
+    <header className="w-full h-[60px] flex justify-between items-center px-7">
+      <div className="flex items-center gap-1">
+        <img src="/fire.gif" alt="fire" className="w-6" />
         <Link to="/" className="text-white text-[16px]">TRADE DOT. FUN</Link>
       </div>
       {!isMobile && <NESButton variant="primary" fontSize="small">Connect Wallet</NESButton>}
