@@ -1,9 +1,56 @@
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 import { useIsMobile } from "../hooks/useIsMobile";
 import TextButton from "./TextButton";
+import InsertCoinModal from "./InsertCoinModal";
+import LoadingModal from "./LoadingModal";
+import Profile from "./Profile";
 
 export default function MainLogo() {
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
+  const { connected, publicKey } = useWallet();
+  const { setVisible: setWalletModalVisible } = useWalletModal();
+  const [userEntered, setUserEntered] = useState<boolean>(false);
+  const [msg, setMsg] = useState<string>("INSERT COIN");
+  const [isInsertCoinModalOpen, setIsInsertCoinModalOpen] = useState<boolean>(false);
+  const [isLoadingModalOpen, setIsLoadingModalOpen] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const handleClickTextButton = () => {
+    if (isLoading) {
+      return setIsLoadingModalOpen(true);
+    }
+    if (!connected) {
+      return setWalletModalVisible(true);
+    }
+    if (!userEntered) {
+      return setIsInsertCoinModalOpen(true);
+    }
+    navigate("/trade");
+  }
+
+  const handleInsertCoin = () => {
+    setIsLoading(true);
+    setIsInsertCoinModalOpen(false);
+    setIsLoadingModalOpen(true);
+
+    setTimeout(() => {
+      setIsLoading(false);
+      setIsLoadingModalOpen(false);
+      setUserEntered(true);
+    }, 3000);
+  }
+
+  useEffect(() => {
+    console.log(connected);
+    if (connected && userEntered) {
+      return setMsg("TRADE NOW!");
+    }
+    return setMsg("INSERT COIN");
+  }, [connected, userEntered]);
 
   return (
     <div className="relative w-full flex flex-col items-center p-4 text-center overflow-x-hidden">
@@ -29,14 +76,19 @@ export default function MainLogo() {
         and prove your trading skills.
       </p>
 
-      <Link to="/trade">
-        <TextButton>
-          <img src="/triangle_pixel.svg" alt="Insert Coin" className="mr-[16px]" />
-          <p className="text-white font-bold sm:text-[22px]">INSERT COIN</p>
-        </TextButton>
-      </Link>
+      <TextButton
+        onClick={handleClickTextButton}>
+        <img src="/triangle_pixel.svg" alt="Insert Coin" className="mr-[16px]" />
+        <p className="text-white font-bold sm:text-[22px]">{msg}</p>
+      </TextButton>
 
-      <small className="text-[#FFF828] text-[10px] mt-2 mb-[60px]">Entry Fee: 0.1 SOL</small>
+      <small className="text-[#FFF828] text-[10px] mt-2 mb-[60px]">
+        { 
+          userEntered ?
+          "Your league awaits - keep trading!" :
+          "Entry Fee: 0.1 SOL"
+        }
+      </small>
 
       {
         !isMobile && (
@@ -48,6 +100,16 @@ export default function MainLogo() {
           </>
         )
       }
+      {
+        userEntered && <Profile address={publicKey?.toString() ?? ""} />
+      }
+      <InsertCoinModal
+        isOpen={isInsertCoinModalOpen}
+        onClose={() => setIsInsertCoinModalOpen(false)}
+        onConfirm={handleInsertCoin} />
+      <LoadingModal
+        isOpen={isLoadingModalOpen}
+        onClose={() => setIsLoadingModalOpen(false)} />
     </div>
   );
 }

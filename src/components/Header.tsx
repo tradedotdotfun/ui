@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useIsMobile } from "../hooks/useIsMobile";
-import NESButton from "./Button";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 
 export default function Header() {
   const isMobile = useIsMobile();
@@ -11,7 +11,7 @@ export default function Header() {
         <img src="/fire.gif" alt="fire" className="w-6" />
         <Link to="/" className="text-white text-[16px]">TRADE DOT. FUN</Link>
       </div>
-      {!isMobile && <NESButton variant="primary" fontSize="small">Connect Wallet</NESButton>}
+      {!isMobile && (<WalletMultiButton />)}
     </header>
   );
 }
