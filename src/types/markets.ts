@@ -1,9 +1,9 @@
 export type MarketType = "SOL" | "BTC" | "ETH";
 
 export const marketToCoinId = {
-  SOL: "solana",
-  BTC: "bitcoin",
-  ETH: "ethereum",
+  SOL: "solusdt",
+  BTC: "btcusdt",
+  ETH: "ethusdt",
 };
 
 export type Market = {
