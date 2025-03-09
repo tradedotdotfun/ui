@@ -1,12 +1,21 @@
+import { UserResponse } from "../api/user";
 import Divider from "./Divider";
 import RetroBox from "./RetroBox";
 
-export default function Profile({ address }: { address: string }) {
-  const balance = 42123.45;
+type ProfileProps = {
+  user: UserResponse;
+}
+
+export default function Profile({ user }: ProfileProps) {
+  const INITIAL_BALANCE = 1000;
+
+  const address = user.address;
+  const balance = user["estimated_total_amount"];
   const formattedBalance = balance.toLocaleString();
+  const pnl = user["estimated_total_amount"] - INITIAL_BALANCE;
+  const pnlPercentage = pnl / INITIAL_BALANCE * 100;
+
   const rank = 11;
-  const pnl = balance - 10000;
-  const pnlPercentage = pnl / 10000 * 100;
 
   const formatRank = (rank: number) => {
     if (rank >= 11 && rank <= 13) {
@@ -37,11 +46,14 @@ export default function Profile({ address }: { address: string }) {
             <img src="/coin.gif" alt="coin" className="h-[30px]" />
             <p>{`${formattedBalance} funUSD`}</p>
           </div>
-          <div className="flex gap-5 justify-center">
-            <img src="/trophy.gif" alt="coin" className="h-[30px]" />
-            <p>{`RANK: ${formatRank(rank)}`}</p>
-          </div>
+          
           <Divider char="^" color="text-[#FFFF00]" />
+
+          <img src="/trophy.gif" alt="coin" className="self-center h-[30px]" />
+          <div className="flex px-4 sm:px-8 justify-between">
+            <p>{`RANK: `}</p>
+            <p>{formatRank(rank)}</p>
+          </div>
           <div className="flex px-4 sm:px-8 justify-between">
             <p>PNL: </p>
             {

@@ -55,7 +55,7 @@ export default function AmountPanel({ totalAmount, amount, setAmount }: AmountPa
             placeholder="0.0"
             onChange={(e) => { setPercentageWithAmount(Number(e.target.value)) }}
           />
-          <p className="text-[12px] sm:text-[20px] text-white">runUSD</p>
+          <p className="text-[12px] sm:text-[20px] text-white">funUSD</p>
         </div>
       </RetroBox>
       <div className="w-full mb-7">

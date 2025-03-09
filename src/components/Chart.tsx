@@ -6,11 +6,14 @@ import { MarketType } from "../types/markets";
 import MarketSelectionModal from "./MarketSelectionModal";
 import { useIsMobile } from "../hooks/useIsMobile";
 import CoinIcon from "./CoinIcon";
+import { usePrices } from "../hooks/usePrices";
+import { priceOfMarket } from "../utils/prices";
 
 export default function Chart() {
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<IChartApi | null>(null);
   const isMobile = useIsMobile();
+  const { data: prices, } = usePrices();
 
   const [market, setMarket] = useState<MarketType>('SOL');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -75,7 +78,7 @@ export default function Chart() {
           <div className="w-full flex">
             <div className="flex-1 flex flex-col text-left">
               <p className="text-[12px] sm:text-[24px] text-white">CURRENT PRICE</p>
-              <p className="text-[12px] sm:text-[24px] text-white">$145.2</p>
+              <p className="text-[12px] sm:text-[24px] text-white">{prices ? `$${priceOfMarket(market, prices).toLocaleString()}` : "-"}</p>
             </div>
             <div
               className="flex gap-2 sm:gap-5 items-center cursor-pointer arrow-container"

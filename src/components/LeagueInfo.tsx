@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
-import { League } from "../types/arena";
+import { Round } from "../types/rounds";
 import RetroBox from "./RetroBox";
 
-export default function LeagueInfo() {
-  const league: League = {
-    startAt: "2025-03-07T00:00:00Z",
-    endAt: "2025-03-07T23:59:59Z",
+export default function RoundInfo() {
+  const league: Round = {
+    startsAt: "2025-03-07T00:00:00Z",
+    endsAt: "2025-03-12T23:59:59Z",
     numOfParticipants: 100,
     totalPrize: 1000,
   };
 
   const calculateRemainingTime = () => {
     const now = new Date();
-    const endAt = new Date(league.endAt);
+    const endAt = new Date(league.endsAt);
     const diff = endAt.getTime() - now.getTime();
 
     if (diff <= 0) return {

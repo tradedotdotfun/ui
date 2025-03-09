@@ -2,7 +2,10 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
+
 import { useIsMobile } from "../hooks/useIsMobile";
+import { useUser } from "../hooks/useUser";
+
 import TextButton from "./TextButton";
 import InsertCoinModal from "./InsertCoinModal";
 import LoadingModal from "./LoadingModal";
@@ -11,9 +14,10 @@ import Profile from "./Profile";
 export default function MainLogo() {
   const isMobile = useIsMobile();
   const navigate = useNavigate();
-  const { connected, publicKey } = useWallet();
+  const { connected } = useWallet();
+  const { data: userInfo, } = useUser();
   const { setVisible: setWalletModalVisible } = useWalletModal();
-  const [userEntered, setUserEntered] = useState<boolean>(false);
+
   const [msg, setMsg] = useState<string>("INSERT COIN");
   const [isInsertCoinModalOpen, setIsInsertCoinModalOpen] = useState<boolean>(false);
   const [isLoadingModalOpen, setIsLoadingModalOpen] = useState<boolean>(false);
@@ -26,7 +30,7 @@ export default function MainLogo() {
     if (!connected) {
       return setWalletModalVisible(true);
     }
-    if (!userEntered) {
+    if (!userInfo) {
       return setIsInsertCoinModalOpen(true);
     }
     navigate("/trade");
@@ -40,17 +44,15 @@ export default function MainLogo() {
     setTimeout(() => {
       setIsLoading(false);
       setIsLoadingModalOpen(false);
-      setUserEntered(true);
     }, 3000);
   }
 
   useEffect(() => {
-    console.log(connected);
-    if (connected && userEntered) {
+    if (userInfo) {
       return setMsg("TRADE NOW!");
     }
     return setMsg("INSERT COIN");
-  }, [connected, userEntered]);
+  }, [userInfo]);
 
   return (
     <div className="relative w-full flex flex-col items-center p-4 text-center overflow-x-hidden">
@@ -84,7 +86,7 @@ export default function MainLogo() {
 
       <small className="text-[#FFF828] text-[10px] mt-2 mb-[60px]">
         { 
-          userEntered ?
+          userInfo ?
           "Your league awaits - keep trading!" :
           "Entry Fee: 0.1 SOL"
         }
@@ -101,7 +103,7 @@ export default function MainLogo() {
         )
       }
       {
-        userEntered && <Profile address={publicKey?.toString() ?? ""} />
+        userInfo && <Profile user={userInfo} />
       }
       <InsertCoinModal
         isOpen={isInsertCoinModalOpen}
