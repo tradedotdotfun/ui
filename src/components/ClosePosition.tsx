@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { usePrices } from "../hooks/usePrices";
+import { useClosePosition } from "../hooks/useClosePosition";
 import { priceOfMarket } from "../utils/prices";
 import { Position } from "../types/positions";
 
@@ -106,10 +107,10 @@ function ClosePositionBox({ position, price, onClickCancel, onClickConfirm }: Cl
           variant="green"
           className="self-end w-full sm:flex-2/3"
           onClick={() => {
-            if (closingAmount === undefined) {
+            if (closingAmount === undefined || price === undefined) {
               return;
             }
-            onClickConfirm?.(Math.round(closingAmount / position.size * 10000) / 100);
+            onClickConfirm?.(Math.round(closingAmount / (position.size * price) * 10000) / 100);
           }}>Confirm</NESButton>
       </div>
     </div>
@@ -120,15 +121,19 @@ export default function ClosePosition() {
   const location = useLocation();
   const navigate = useNavigate();
   const { data: marketPrices } = usePrices();
+  const { closePosition } = useClosePosition();
   const { position } = (location.state as { position?: Position }) || {};
 
   const handleClickCancel = () => {
     navigate(-1);
   }
-  const handleClickConfirm = (percentage: number) => {
-    console.log(position?.id);
-    console.log(percentage);
-  }
+
+  const handleClickConfirm = useCallback(async (percentage: number) => {
+    console.log("percentage", percentage);
+    if (position === undefined) return;
+    await closePosition(position.id, Math.max(Math.min(percentage, 100), 0));
+    navigate(-1);
+  }, [position, closePosition]);
 
   if (!position) {
     window.location.href = '/';

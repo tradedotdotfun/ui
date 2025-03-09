@@ -6,7 +6,6 @@ import NESButton from "./Button";
 import ArrowButtonIcon from "./ArrowButton";
 import ProgressBar from "./ProgressBar";
 import AmountPanel from "./AmountPanel";
-import { coinIdToMarket } from "../utils/prices";
 
 const MAX_LEVERAGE = 100;
 
@@ -76,7 +75,6 @@ export default function TradeExecutionPanel({ market }: { market: MarketType }) 
   }, [balance, leverage]);
 
   const handleClickBuyOrSell = async (type: "long" | "short") => {
-    console.log(amount);
     if (!amount) return;
 
     try {

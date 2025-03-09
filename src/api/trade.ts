@@ -53,11 +53,33 @@ export const createPosition = async (
   apiClient.defaults.headers.common["X-Auth-Message"] = msg;
   apiClient.defaults.headers.common["X-Auth-Signature"] = signature;
 
+  console.log("createPosition", type, leverage, amountInUsd, coinId, pubkey, msg, signature);
+
   const response = await apiClient.post("/position", {
     type,
     leverage,
     amount: amountInUsd,
     token: coinId,
+  });
+
+  console.log("createPosition response", response.data);
+
+  return response.data;
+}
+
+export const closePosition = async (
+  positionId: string,
+  percentage: number,
+  pubkey: string,
+  msg: string,
+  signature: string,
+) => {
+  apiClient.defaults.headers.common["X-Auth-Pubkey"] = pubkey;
+  apiClient.defaults.headers.common["X-Auth-Message"] = msg;
+  apiClient.defaults.headers.common["X-Auth-Signature"] = signature;
+
+  const response = await apiClient.post(`/position/${positionId}/close`, {
+    percentage,
   });
 
   return response.data;

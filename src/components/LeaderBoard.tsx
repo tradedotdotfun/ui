@@ -5,16 +5,16 @@ export default function LeaderBoard() {
   const isMobile = useIsMobile();
 
   const ranks = [
-    { rank: 1, name: "@elonmusk", profit: "+10,000%" },
-    { rank: 2, name: "@satoshi", profit: "+9,500%" },
-    { rank: 3, name: "@vitalik", profit: "+8,000%" },
-    { rank: 4, name: "@solana", profit: "+7,500%" },
-    { rank: 5, name: "@dogecoin", profit: "+7,000%" },
-    { rank: 6, name: "@pepecoin", profit: "+6,600%" },
-    { rank: 7, name: "@do_kwon", profit: "+6,000%" },
-    { rank: 8, name: "@crypto_chan", profit: "+5,500%" },
-    { rank: 9, name: "@nakamoto", profit: "+5,200%" },
-    { rank: 10, name: "@pumpmaster", profit: "+5,000%" },
+    { rank: 1, name: "@solana", profit: "+10,000%" },
+    { rank: 2, name: "@seoulana_kr", profit: "+9,500%" },
+    { rank: 3, name: "@toly", profit: "+8,000%" },
+    { rank: 4, name: "@jito", profit: "+7,500%" },
+    { rank: 5, name: "@bonk", profit: "+7,000%" },
+    { rank: 6, name: "@happycat", profit: "+6,600%" },
+    { rank: 7, name: "@chillguy", profit: "+6,000%" },
+    { rank: 8, name: "@ai16z", profit: "+5,500%" },
+    { rank: 9, name: "@pumpdotfun", profit: "+5,200%" },
+    { rank: 10, name: "@ironman", profit: "+5,000%" },
   ];
 
   const formatRank = (rank: number) => {

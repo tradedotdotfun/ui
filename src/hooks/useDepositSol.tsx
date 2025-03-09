@@ -1,5 +1,5 @@
 import { PublicKey } from '@solana/web3.js';
-import { useAnchorWallet, useConnection, useWallet } from '@solana/wallet-adapter-react';
+import { useAnchorWallet, useConnection } from '@solana/wallet-adapter-react';
 import * as anchor from "@coral-xyz/anchor";
 import { useCallback } from 'react';
 

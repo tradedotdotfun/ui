@@ -11,6 +11,7 @@ export const useSignData = () => {
   const signingMsg = "sign in tradedot.fun:1841263854";
 
   const signData = useCallback(async () => {
+    console.log(wallet, publicKey, signMessage);
     if (wallet === null) {
       return;
     }
