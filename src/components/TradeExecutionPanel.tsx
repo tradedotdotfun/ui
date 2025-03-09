@@ -1,9 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import NESButton from "./Button"
+import { useUserInfo } from "../hooks/useUser";
+import { useCreatePosition } from "../hooks/useCreatePosition";
+import { marketToCoinId, MarketType } from "../types/markets";
+import NESButton from "./Button";
 import ArrowButtonIcon from "./ArrowButton";
 import ProgressBar from "./ProgressBar";
 import AmountPanel from "./AmountPanel";
-import { useUserInfo } from "../hooks/useUser";
+import { coinIdToMarket } from "../utils/prices";
 
 const MAX_LEVERAGE = 100;
 
@@ -60,8 +63,9 @@ function LeveragePanel({ leverage, setLeverage }: { leverage: number, setLeverag
   )
 }
 
-export default function TradeExecutionPanel() {
+export default function TradeExecutionPanel({ market }: { market: MarketType }) {
   const { data: userInfo } = useUserInfo();
+  const { createPosition } = useCreatePosition();
   const [leverage, setLeverage] = useState(1);
   const [amount, setAmount] = useState<number | undefined>(undefined);
   const [maxBalance, setMaxBalance] = useState<number | undefined>(undefined);
@@ -71,6 +75,16 @@ export default function TradeExecutionPanel() {
     setMaxBalance(balance * leverage);
   }, [balance, leverage]);
 
+  const handleClickBuyOrSell = async (type: "long" | "short") => {
+    console.log(amount);
+    if (!amount) return;
+
+    try {
+      await createPosition(type, leverage, amount / leverage, marketToCoinId[market]);
+    } catch (e) {
+      console.error(e);
+    }
+  }
 
   if (!userInfo) return null;
 
@@ -85,10 +99,10 @@ export default function TradeExecutionPanel() {
           setAmount={setAmount} />
       </div>
       <div className="flex-1/2 flex flex-col text-left sm:pr-7">
-        <NESButton variant="green">Buy</NESButton>
+        <NESButton variant="green" onClick={() => handleClickBuyOrSell("long")}>Buy</NESButton>
       </div>
       <div className="flex-1/2 flex flex-col text-left sm:pl-7">
-        <NESButton variant="red">Sell</NESButton>
+        <NESButton variant="red" onClick={() => handleClickBuyOrSell("short")}>Sell</NESButton>
       </div>
     </div>
   )

@@ -10,13 +10,17 @@ import { usePrices } from "../hooks/usePrices";
 import { priceOfMarket } from "../utils/prices";
 import { useChartData } from "../hooks/useChartData";
 
-export default function Chart() {
+type ChartProps = {
+  market: MarketType;
+  setMarket: (market: MarketType) => void;
+}
+
+export default function Chart({ market, setMarket }: ChartProps) {
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<IChartApi | null>(null);
   const isMobile = useIsMobile();
   const { data: prices } = usePrices();
 
-  const [market, setMarket] = useState<MarketType>('SOL');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { data: chartData, refetch: refetchChartData } = useChartData(market);
 

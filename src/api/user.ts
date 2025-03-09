@@ -3,6 +3,18 @@ import { UserInfo, UserRequest } from "../types/users.ts";
 import { Position } from "../types/positions.ts";
 import { coinIdToMarket } from "../utils/prices.ts";
 
+
+export const updateName = async (name: string, pubkey: string, msg: string, signature: string) => {
+  // X-Auth-Pubkey: {pubkey}
+  // X-Auth-Message: {msg}
+  // X-Auth-Signature: {signature}
+  apiClient.defaults.headers.common["X-Auth-Pubkey"] = pubkey;
+  apiClient.defaults.headers.common["X-Auth-Message"] = msg;
+  apiClient.defaults.headers.common["X-Auth-Signature"] = signature;
+
+  await apiClient.post("/account/name", { name });
+}
+
 export const fetchUser: (request: UserRequest) => Promise<UserInfo | null> = async ({
   round = 0,
   address,

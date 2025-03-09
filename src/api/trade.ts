@@ -39,3 +39,26 @@ export const fetchChartData: (market: string) => Promise<CandlestickData[]> = as
 
   return chartData;
 }
+
+export const createPosition = async (
+  type: "long" | "short",
+  leverage: number,
+  amountInUsd: number,
+  coinId: string,
+  pubkey: string,
+  msg: string,
+  signature: string,
+) => {
+  apiClient.defaults.headers.common["X-Auth-Pubkey"] = pubkey;
+  apiClient.defaults.headers.common["X-Auth-Message"] = msg;
+  apiClient.defaults.headers.common["X-Auth-Signature"] = signature;
+
+  const response = await apiClient.post("/position", {
+    type,
+    leverage,
+    amount: amountInUsd,
+    token: coinId,
+  });
+
+  return response.data;
+}
