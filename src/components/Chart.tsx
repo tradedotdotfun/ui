@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { CandlestickSeries, createChart, IChartApi, Time } from "lightweight-charts";
+import { CandlestickSeries, createChart, IChartApi } from "lightweight-charts";
 import RetroBox from "./RetroBox";
 import ArrowButtonIcon from "./ArrowButton";
 import { MarketType } from "../types/markets";

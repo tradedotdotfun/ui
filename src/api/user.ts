@@ -3,15 +3,15 @@ import { UserInfo, UserRequest } from "../types/users.ts";
 import { Position } from "../types/positions.ts";
 import { coinIdToMarket } from "../utils/prices.ts";
 
-export const fetchUser: (request: UserRequest) => Promise<UserInfo | undefined> = async ({
+export const fetchUser: (request: UserRequest) => Promise<UserInfo | null> = async ({
   round = 0,
   address,
 }) => {
-  const response = await apiClient.get(`/account?round=${round}&address=${"7ENEt33c362bZVcxdgR4A1wNnffwSWHawan935Qw9Vya"}`);
-  // const response = await apiClient.get(`/account?round=${round}&address=${address}`);
+  // const response = await apiClient.get(`/account?round=${round}&address=${"7ENEt33c362bZVcxdgR4A1wNnffwSWHawan935Qw9Vya"}`);
+  const response = await apiClient.get(`/account?round=${round}&address=${address}`);
 
   if (response.data.length === 0) {
-    return undefined;
+    return null;
   }
 
   return {
@@ -36,8 +36,8 @@ export const fetchPositions: (request: UserRequest) => Promise<Position[]> = asy
   round = 0,
   address,
 }) => {
-  const response = await apiClient.get(`/position?round=${round}&address=${"7ENEt33c362bZVcxdgR4A1wNnffwSWHawan935Qw9Vya"}`);
-  // const response = await apiClient.get(`/position?round=${round}&address=${address}`);
+  // const response = await apiClient.get(`/position?round=${round}&address=${"7ENEt33c362bZVcxdgR4A1wNnffwSWHawan935Qw9Vya"}`);
+  const response = await apiClient.get(`/position?round=${round}&address=${address}`);
 
   if (response.data.length === 0) {
     return [];
