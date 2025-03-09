@@ -4,7 +4,7 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 
 import { useIsMobile } from "../hooks/useIsMobile";
-import { useUser } from "../hooks/useUser";
+import { useUserInfo } from "../hooks/useUser";
 
 import TextButton from "./TextButton";
 import InsertCoinModal from "./InsertCoinModal";
@@ -15,7 +15,7 @@ export default function MainLogo() {
   const isMobile = useIsMobile();
   const navigate = useNavigate();
   const { connected } = useWallet();
-  const { data: userInfo, } = useUser();
+  const { data: userInfo, refetch: refetchUser } = useUserInfo();
   const { setVisible: setWalletModalVisible } = useWalletModal();
 
   const [msg, setMsg] = useState<string>("INSERT COIN");
@@ -46,6 +46,12 @@ export default function MainLogo() {
       setIsLoadingModalOpen(false);
     }, 3000);
   }
+
+  useEffect(() => {
+    if (connected) {
+      refetchUser();
+    }
+  }, [connected]);
 
   useEffect(() => {
     if (userInfo) {

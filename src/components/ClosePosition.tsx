@@ -1,41 +1,39 @@
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { usePrices } from "../hooks/usePrices";
+import { priceOfMarket } from "../utils/prices";
 import { Position } from "../types/positions";
+
 import RetroBox from "./RetroBox";
-import { Market } from "../types/markets";
 import NESButton from "./Button";
 import Divider from "./Divider";
 import AmountPanel from "./AmountPanel";
-import { useEffect, useState } from "react";
 import CoinIcon from "./CoinIcon";
-
 
 type ClosePositionBoxProps = {
   position: Position;
-  market?: Market;
+  price?: number;
   onClickCancel?: () => void;
   onClickConfirm?: (percentage: number) => void;
 };
 
-function ClosePositionBox({ position, market, onClickCancel, onClickConfirm }: ClosePositionBoxProps) {
+function ClosePositionBox({ position, price, onClickCancel, onClickConfirm }: ClosePositionBoxProps) {
   const [closingAmount, setClosingAmount] = useState<number | undefined>(undefined);
   const [formattedEstimatedPnL, setFormattedEstimatedPnL] = useState<string>("");
-  const pnlPercentage = position.pnl * 100;
+  const roiPercentage = position.roi * 100;
+
   const formattedEntryPrice = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(position.entryPrice);
-  const formattedMarkPrice = market ?
-    new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(market.price) :
-    "N/A";
+  const formattedMarkPrice = price ? new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price) : "-";
 
   useEffect(() => {
-    scroll(0, 0);
-  }, []);
-
-  useEffect(() => {
-    if (closingAmount === undefined) {
+    if (closingAmount === undefined || price === undefined) {
       return;
     }
 
     const amount = closingAmount || 0;
-    setFormattedEstimatedPnL(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(position.pnl * amount));
+    const totalAmount = position.size * price;
+    const estimatedPnL = amount / totalAmount * position.pnl;
+    setFormattedEstimatedPnL(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(estimatedPnL));
   }, [closingAmount]);
 
   return (
@@ -63,11 +61,16 @@ function ClosePositionBox({ position, market, onClickCancel, onClickConfirm }: C
 
       <Divider char="-" />
 
-      <AmountPanel
-        totalAmount={position.size}
-        amount={closingAmount}
-        setAmount={setClosingAmount}
-      />
+      {
+        price ?
+          <AmountPanel
+            totalAmount={position.size * price}
+            amount={closingAmount}
+            setAmount={setClosingAmount}
+          /> :
+          // TODO: Amount panel only with percentage
+          null
+      }
 
       <Divider char="-" />
 
@@ -79,12 +82,12 @@ function ClosePositionBox({ position, market, onClickCancel, onClickConfirm }: C
             position.pnl > 0 ?
               <>
                 <p className="text-[#2DBD85] text-[10px] sm:text-[24px]">{`${formattedEstimatedPnL === "" ? "-" : "+"}${formattedEstimatedPnL}`}</p>
-                <p className="text-[#2DBD85] text-[8px] sm:text-[16px]">{`+${pnlPercentage.toFixed(2)}%`}</p>
+                <p className="text-[#2DBD85] text-[8px] sm:text-[16px]">{`+${roiPercentage.toFixed(2)}%`}</p>
               </> :
               position.pnl < 0 ?
                 <>
                   <p className="text-[#F6455D] text-[10px] sm:text-[24px]">{`${formattedEstimatedPnL === "" ? "-" : ""}${formattedEstimatedPnL}`}</p>
-                  <p className="text-[#F6455D] text-[8px] sm:text-[16px]">{`${pnlPercentage.toFixed(2)}%`}</p>
+                  <p className="text-[#F6455D] text-[8px] sm:text-[16px]">{`${roiPercentage.toFixed(2)}%`}</p>
                 </> :
                 <>
                   <p className="text-white text-[10px] sm:text-[24px]">{`+$0.00`}</p>
@@ -116,8 +119,8 @@ function ClosePositionBox({ position, market, onClickCancel, onClickConfirm }: C
 export default function ClosePosition() {
   const location = useLocation();
   const navigate = useNavigate();
-
-  const { position, market } = (location.state as { position?: Position, market?: Market }) || {};
+  const { data: marketPrices } = usePrices();
+  const { position } = (location.state as { position?: Position }) || {};
 
   const handleClickCancel = () => {
     navigate(-1);
@@ -150,7 +153,7 @@ export default function ClosePosition() {
             </div>
             <ClosePositionBox
               position={position}
-              market={market}
+              price={marketPrices ? priceOfMarket(position.market, marketPrices) : undefined}
               onClickCancel={handleClickCancel}
               onClickConfirm={handleClickConfirm}
             />

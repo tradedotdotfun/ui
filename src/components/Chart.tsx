@@ -13,7 +13,7 @@ export default function Chart() {
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<IChartApi | null>(null);
   const isMobile = useIsMobile();
-  const { data: prices, } = usePrices();
+  const { data: prices } = usePrices();
 
   const [market, setMarket] = useState<MarketType>('SOL');
   const [isModalOpen, setIsModalOpen] = useState(false);

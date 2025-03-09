@@ -3,8 +3,9 @@ import NESButton from "./Button"
 import ArrowButtonIcon from "./ArrowButton";
 import ProgressBar from "./ProgressBar";
 import AmountPanel from "./AmountPanel";
+import { useUserInfo } from "../hooks/useUser";
 
-const MAX_LEVERAGE = 50;
+const MAX_LEVERAGE = 100;
 
 function LeveragePanel({ leverage, setLeverage }: { leverage: number, setLeverage: (value: number) => void }) {
   const audioRef = useRef(new Audio('/click.mp3'));
@@ -50,7 +51,7 @@ function LeveragePanel({ leverage, setLeverage }: { leverage: number, setLeverag
           min={1}
           max={MAX_LEVERAGE}
           value={leverage}
-          steps={[1, 10, 20, 30, 40, 50]}
+          steps={[1, 25, 50, 75, 100]}
           suffix="x"
           onChange={setLeverage}
         />
@@ -60,14 +61,18 @@ function LeveragePanel({ leverage, setLeverage }: { leverage: number, setLeverag
 }
 
 export default function TradeExecutionPanel() {
-  const balance = 38123.12;
+  const { data: userInfo } = useUserInfo();
   const [leverage, setLeverage] = useState(1);
   const [amount, setAmount] = useState<number | undefined>(undefined);
   const [maxBalance, setMaxBalance] = useState<number | undefined>(undefined);
 
+  const balance = userInfo?.availableUSD || 0;
   useEffect(() => {
     setMaxBalance(balance * leverage);
   }, [balance, leverage]);
+
+
+  if (!userInfo) return null;
 
   return (
     <div className="w-full border-[4px] border-white p-5 sm:p-8

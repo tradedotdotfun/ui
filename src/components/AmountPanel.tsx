@@ -9,11 +9,14 @@ type AmountPanelProps = {
 };
 
 export default function AmountPanel({ totalAmount, amount, setAmount }: AmountPanelProps) {
+  const [isPercentageClicked, setIsPercentageClicked] = useState(false);
   const [percentage, setPercentage] = useState(0);
 
   const formattedBalance = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(totalAmount);
 
   const setPercentageWithAmount = (amount: number) => {
+    setIsPercentageClicked(false);
+
     if (amount === 0) {
       setPercentage(0);
       setAmount(undefined);
@@ -33,11 +36,15 @@ export default function AmountPanel({ totalAmount, amount, setAmount }: AmountPa
   const setAmountWithPercentage = (percentage: number) => {
     const amount = Number(((percentage / 100) * totalAmount).toFixed(2));
     setPercentage(percentage);
+    setIsPercentageClicked(true);
     setAmount(amount);
   }
 
   useEffect(() => {
-    setPercentageWithAmount(amount || 0);
+    if (isPercentageClicked) {
+      return setAmountWithPercentage(percentage);
+    }
+    return setPercentageWithAmount(amount || 0);
   }, [totalAmount])
 
   return (

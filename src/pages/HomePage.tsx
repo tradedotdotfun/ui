@@ -1,4 +1,3 @@
-import React from 'react';
 import Header from '../components/Header';
 import Ticker from '../components/Ticker';
 import MainLogo from '../components/MainLogo';
@@ -7,7 +6,7 @@ import LeaderBoard from '../components/LeaderBoard';
 import Footer from '../components/Footer';
 
 
-const HomePage: React.FC = () => {
+function HomePage() {
   return (
     <div className="min-h-screen bg-black text-white font-retro flex flex-col items-center">
       <Header />

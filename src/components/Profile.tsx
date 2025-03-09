@@ -1,18 +1,19 @@
-import { UserResponse } from "../api/user";
+import { UserInfo } from "../types/users";
+
 import Divider from "./Divider";
 import RetroBox from "./RetroBox";
 
 type ProfileProps = {
-  user: UserResponse;
+  user: UserInfo;
 }
 
 export default function Profile({ user }: ProfileProps) {
-  const INITIAL_BALANCE = 1000;
+  const INITIAL_BALANCE = 10000;
 
   const address = user.address;
-  const balance = user["estimated_total_amount"];
+  const balance = user.totalEstimatedUSD;
   const formattedBalance = balance.toLocaleString();
-  const pnl = user["estimated_total_amount"] - INITIAL_BALANCE;
+  const pnl = user.totalEstimatedUSD - INITIAL_BALANCE;
   const pnlPercentage = pnl / INITIAL_BALANCE * 100;
 
   const rank = 11;

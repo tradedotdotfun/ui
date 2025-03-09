@@ -1,10 +1,14 @@
 import { useNavigate } from "react-router-dom";
-import { Market } from "../types/markets";
+import { usePositions } from "../hooks/usePositions";
+import { usePrices } from "../hooks/usePrices";
+
 import { Position } from "../types/positions";
+
 import NESButton from "./Button";
 import Divider from "./Divider";
 import RetroBox from "./RetroBox";
 import CoinIcon from "./CoinIcon";
+import { priceOfMarket } from "../utils/prices";
 
 type TotalPnLProps = {
   pnl: number;
@@ -39,19 +43,17 @@ function TotalPnLSection({ pnl }: TotalPnLProps) {
 
 type PositionBoxProps = {
   position: Position;
-  market?: Market;
+  price: number;
   onClickClosePosition: () => void;
 };
 
-function PositionBox({ position, market, onClickClosePosition }: PositionBoxProps) {
-  const formattedPnL = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(position.pnl * position.size);
-  const pnlPercentage = position.pnl * 100;
-  const formattedSize = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(position.size);
+function PositionBox({ position, price, onClickClosePosition }: PositionBoxProps) {
+  const formattedPnL = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(position.pnl);
+  const formattedSize = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(position.size * price);
   const formattedEntryPrice = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(position.entryPrice);
-  const formattedMarkPrice = market ?
-    new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(market.price) :
-    "N/A";
+  const formattedMarkPrice = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price);
   const formattedLiqPrice = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(position.liquidationPrice);
+  const roiPercentage = position.roi * 100;
 
   return (
     <div className="w-full flex flex-col gap-3 sm:gap-9">
@@ -72,12 +74,12 @@ function PositionBox({ position, market, onClickClosePosition }: PositionBoxProp
             position.pnl > 0 ?
               <>
                 <p className="text-[#2DBD85] text-[10px] sm:text-[24px]">{`+${formattedPnL}`}</p>
-                <p className="text-[#2DBD85] text-[8px] sm:text-[16px]">{`+${pnlPercentage.toFixed(2)}%`}</p>
+                <p className="text-[#2DBD85] text-[8px] sm:text-[16px]">{`+${roiPercentage.toFixed(2)}%`}</p>
               </> :
               position.pnl < 0 ?
                 <>
                   <p className="text-[#F6455D] text-[10px] sm:text-[24px]">{`${formattedPnL}`}</p>
-                  <p className="text-[#F6455D] text-[8px] sm:text-[16px]">{`${pnlPercentage.toFixed(2)}%`}</p>
+                  <p className="text-[#F6455D] text-[8px] sm:text-[16px]">{`${roiPercentage.toFixed(2)}%`}</p>
                 </> :
                 <>
                   <p className="text-white text-[10px] sm:text-[24px]">{`+$0.00`}</p>
@@ -118,71 +120,15 @@ function PositionBox({ position, market, onClickClosePosition }: PositionBoxProp
 
 export default function MyPosition() {
   const navigate = useNavigate();
+  const { data: myPositionList } = usePositions();
+  const { data: prices } = usePrices();
 
-  const myPostionList: Position[] = [
-    {
-      id: "1",
-      market: "SOL",
-      side: "long",
-      leverage: 10,
-      size: 10930.37,
-      entryPrice: 140.00,
-      pnl: 0.0197,
-      liquidationPrice: 130.00,
-      openAt: "2025-01-01T12:00:00Z",
-      status: "open",
-    },
-    {
-      id: "2",
-      market: "BTC",
-      side: "short",
-      leverage: 8,
-      size: 10930.37,
-      entryPrice: 87230.00,
-      pnl: -0.08,
-      liquidationPrice: 95023.00,
-      openAt: "2025-01-02T12:00:00Z",
-      status: "open",
-    },
-    {
-      id: "3",
-      market: "ETH",
-      side: "long",
-      leverage: 50,
-      size: 10930.37,
-      entryPrice: 2100.00,
-      pnl: 0,
-      liquidationPrice: 2000.00,
-      openAt: "2025-01-04T12:00:00Z",
-      status: "open",
-    },
-  ];
-  const marketList: Market[] = [
-    {
-      id: "1",
-      type: "SOL",
-      name: "SOL",
-      price: 142.00,
-      change: 0.0197,
-    },
-    {
-      id: "2",
-      type: "BTC",
-      name: "BTC",
-      price: 92230.00,
-      change: 0.08,
-    },
-    {
-      id: "3",
-      type: "ETH",
-      name: "ETH",
-      price: 2100.00,
-      change: 0,
-    }
-  ];
+  if (!myPositionList || !prices) {
+    return null;
+  }
 
-  const handleClickClosePosition = (position: Position, market?: Market) => {
-    navigate("/close", { state: { position, market } });
+  const handleClickClosePosition = (position: Position) => {
+    navigate("/close", { state: { position } });
   };
 
   return (
@@ -195,22 +141,22 @@ export default function MyPosition() {
           <div className="flex-1/2 flex flex-col text-left sm:pl-7 overflow-x-hidden">
             <div className="flex items-center justify-center">
               <p className="text-[10px] sm:text-[18px] lg:text-[24px] text-white">
-                {`==== MY POSTION${myPostionList.length > 1 ? "S" : ""} (${myPostionList.length}) ====`}
+                {`==== MY POSITION${myPositionList.length > 1 ? "S" : ""} (${myPositionList.length}) ====`}
               </p>
             </div>
             <div className="w-full">
               <div className="w-full mt-6 sm:mt-11">
-                <TotalPnLSection pnl={myPostionList.reduce((acc, cur) => acc + cur.pnl * cur.size, 0)} />
+                <TotalPnLSection pnl={myPositionList.reduce((acc, cur) => acc + cur.pnl, 0)} />
               </div>
-              {myPostionList.map((position) => (
+              {myPositionList.map((position) => (
                 <div key={position.id} className="w-full mt-6 sm:mt-11">
                   <div className="mb-6 sm:mb-11">
                     <Divider char="^" color="text-white" width="100%" />
                   </div>
                   <PositionBox
                     position={position}
-                    market={marketList.find(m => m.type === position.market)}
-                    onClickClosePosition={() => handleClickClosePosition(position, marketList.find(m => m.type === position.market))} />
+                    price={priceOfMarket(position.market, prices)}
+                    onClickClosePosition={() => handleClickClosePosition(position)} />
                 </div>
               ))}
             </div>

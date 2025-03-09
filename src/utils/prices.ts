@@ -1,15 +1,28 @@
-import { PriceResponse } from "../api/trade";
+import { MarketPrices } from "../api/trade";
 import { MarketType } from "../types/markets";
 
-export const priceOfMarket = (market: MarketType, prices: PriceResponse) => {
+export const priceOfMarket = (market: MarketType, prices: MarketPrices) => {
   if (market === "SOL") {
-    return prices.solana;
+    return prices.SOLUSDT;
   }
   if (market === "BTC") {
-    return prices.bitcoin;
+    return prices.BTCUSDT;
   }
   if (market === "ETH") {
-    return prices.ethereum;
+    return prices.ETHUSDT;
   }
   return 0;
 };
+
+export const coinIdToMarket = (coinId: string): MarketType => {
+  if (coinId === "SOLUSDT") {
+    return "SOL";
+  }
+  if (coinId === "BTCUSDT") {
+    return "BTC";
+  }
+  if (coinId === "ETHUSDT") {
+    return "ETH";
+  }
+  return "SOL";
+}
