@@ -1,9 +1,7 @@
+import { useCallback, useEffect, useState } from 'react';
 import { PublicKey } from '@solana/web3.js';
 import { useAnchorWallet, useConnection } from '@solana/wallet-adapter-react';
 import * as anchor from "@coral-xyz/anchor";
-import { useCallback } from 'react';
-
-import idl from '../idl/trade_fun.json';
 
 
 const PROGRAM_ID = new PublicKey("CoFf4ZpbTJRoPxdJ64JvMn4pVR1wjhvARc8ed91i9i37");
@@ -11,9 +9,17 @@ const PROGRAM_ID = new PublicKey("CoFf4ZpbTJRoPxdJ64JvMn4pVR1wjhvARc8ed91i9i37")
 export const useDepositSol = () => {
   const wallet = useAnchorWallet();
   const { connection } = useConnection();
+  const [idl, setIdl] = useState(null);
+
+  useEffect(() => {
+    fetch('/idl/trade_fun.json')
+      .then((res) => res.json())
+      .then((data) => setIdl(data))
+      .catch((error) => console.error('Failed to load IDL', error));
+  }, []);
 
   const depositSol = useCallback(async () => {
-    if (!wallet || !wallet.publicKey) {
+    if (!wallet || !wallet.publicKey || !idl) {
       return;
     }
     const provider = new anchor.AnchorProvider(connection, wallet, {});
@@ -43,7 +49,7 @@ export const useDepositSol = () => {
 
     return result;
     
-  }, [wallet]);
+  }, [idl, wallet]);
 
   return { depositSol };
 }
