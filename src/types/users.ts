@@ -5,6 +5,7 @@ export type UserRequest = {
 
 export type UserInfo = {
   address: string;
+  rank: number;
   availableUSD: number;
   totalEstimatedUSD: number;
 }

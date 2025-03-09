@@ -12,13 +12,13 @@ export default function Profile({ user }: ProfileProps) {
 
   const address = user.address;
   const balance = user.totalEstimatedUSD;
+  const rank = user.rank;
   const formattedBalance = balance.toLocaleString();
   const pnl = user.totalEstimatedUSD - INITIAL_BALANCE;
   const pnlPercentage = pnl / INITIAL_BALANCE * 100;
 
-  const rank = 11;
-
   const formatRank = (rank: number) => {
+    if (rank === 0) return "-";
     if (rank >= 11 && rank <= 13) {
       return `${rank}th`;
     } else if (rank % 10 === 1) {

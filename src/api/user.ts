@@ -28,6 +28,7 @@ export const fetchUser: (request: UserRequest) => Promise<UserInfo | null> = asy
 
   return {
     address,
+    rank: response.data["rank"],
     availableUSD: response.data["usd_amount"],
     totalEstimatedUSD: response.data["estimated_total_amount"],
   };

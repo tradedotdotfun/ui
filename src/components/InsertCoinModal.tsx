@@ -14,6 +14,7 @@ export default function InsertCoinModal({ isOpen, onClose, onConfirm }: InsertCo
     <ModalBase isOpen={isOpen} onClose={onClose} title="INSERT COIN TO JOIN!">
       <img src="/coin.gif" alt="coin" className="w-auto h-24 mx-auto" />
       <p className="text-white text-[16px] text-center">0.1 SOL TO JOIN</p>
+      <p className="text-[#FF0000] text-[16px] text-center">USE DEV NET ONLY</p>
 
       <div className="flex justify-center gap-3 sm:gap-6">
         <NESButton
