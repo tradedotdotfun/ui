@@ -76,7 +76,7 @@ function ClosePositionBox({ position, price, onClickCancel, onClickConfirm }: Cl
       <Divider char="-" />
 
       <div className="flex flex-row justify-between items-start">
-        <p className="text-[#FFF828] text-[10px] sm:text-[24px]">{"Estimated PNL"}</p>
+        <p className="text-[#FBB042] text-[10px] sm:text-[24px]">{"Estimated PNL"}</p>
 
         <div className="self-end flex flex-col text-right gap-1 sm:gap-5">
           {

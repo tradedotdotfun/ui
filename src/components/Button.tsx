@@ -64,7 +64,7 @@ export default function NESButton({
   onClick,
   ...props
 }: NESButtonProps) {
-  const audioFileName = audio === "default" ? "/click.mp3" : "/cancel.mp3";
+  const audioFileName = audio === "default" ? "/sonic-ring-sound-1.mp3" : "/sonic-ring-sound-2.mp3";
   const audioRef = useRef(new Audio(audioFileName));
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {

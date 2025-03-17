@@ -108,12 +108,14 @@ export default function MainLogo() {
       {
         isMobile
           ? (<img src='/pepe-punch.gif' alt="pepe-punch" className="w-[128px]" />)
-          : (<img src="/tradedotfun_logo.png" alt="Main Logo" className="w-[894px] mt-[120px]" />)
+          : (<div className="w-[1040px] font-['Press_Start_2P'] font-[400] text-[80px] text-[#0000FE] mt-[120px]">
+            TRADE DOT FUN
+          </div>)
       }
 
-      <div className="mt-[44px] text-[28px] text-[#FFFF00]">
+      <div className="mt-[44px] text-[28px] text-[#FBB042]">
         Are You the Next{" "}
-        <span className="font-bold animate-pulse text-[#FFFF00]">
+        <span className="font-bold animate-pulse text-[#FBB042]">
           100x
         </span>{" "}
         Trader?
@@ -140,7 +142,7 @@ export default function MainLogo() {
         <p className="text-white font-bold sm:text-[22px]">{msg}</p>
       </TextButton>
 
-      <small className="text-[#FFF828] text-[10px] mt-2 mb-[60px]">
+      <small className="text-[#FBB042] text-[10px] mt-2 mb-[60px]">
         {
           userInfo ?
             "Your league awaits - keep trading!" :
@@ -154,7 +156,7 @@ export default function MainLogo() {
             <img src="/pepe-box.gif" alt="pepe-box" className="w-[180px] absolute top-[196px] left-[calc(50%-606px)]" />
             <img src="/pepe-punch.gif" alt="pepe-punch" className="w-[180px] absolute top-[240px] right-[calc(50%-606px)] transform -scale-x-100" />
             <img src="/pepe-dance.gif" alt="pepe-dance" className="w-[215px] absolute top-[410px] left-[calc(50%-380px)]" />
-            <img src="/happycat.gif" alt="happycat" className="w-[113px] absolute top-[480px] right-[calc(50%-280px)]" />
+            <img src="/sonic-dancing.gif" alt="sonic-dancing" className="w-[113px] absolute top-[480px] right-[calc(50%-280px)]" />
           </>
         )
       }
