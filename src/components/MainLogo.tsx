@@ -16,7 +16,7 @@ export default function MainLogo() {
   const { wallets, createWallet } = useSolanaWallets();
   // Disable login when Privy is not ready or the user is already authenticated
   const disableLogin = !ready;
-  const { confirmTx, isLoading, isSuccess, isError, error } = useConfirmTx();
+  const { confirmTx, isLoading: isTxLoading, isSuccess, isError, error } = useConfirmTx();
 
   const isMobile = useIsMobile();
   const navigate = useNavigate();
@@ -24,6 +24,7 @@ export default function MainLogo() {
 
   const { depositSol } = useDepositSol();
 
+  const [isLoadingEnterGame, setIsLoadingEnterGame] = useState(false);
   const [msg, setMsg] = useState<string>("INSERT COIN");
   const [welcomeMsg, setWelcomeMsg] = useState<string>("Welcome");
   const [isInsertCoinModalOpen, setIsInsertCoinModalOpen] = useState<boolean>(false);
@@ -31,12 +32,12 @@ export default function MainLogo() {
 
   // 트랜잭션 상태에 따라 로딩 모달 표시
   useEffect(() => {
-    if (isLoading) {
+    if (isTxLoading) {
       setIsLoadingModalOpen(true);
     } else {
       setIsLoadingModalOpen(false);
     }
-  }, [isLoading]);
+  }, [isTxLoading]);
 
   // 트랜잭션 성공시 처리
   useEffect(() => {
@@ -53,7 +54,7 @@ export default function MainLogo() {
   }, [isError, error]);
 
   const handleClickTextButton = () => {
-    if (isLoading) {
+    if (isTxLoading || isLoadingEnterGame) {
       return setIsLoadingModalOpen(true);
     }
     if (!authenticated) {
@@ -67,16 +68,28 @@ export default function MainLogo() {
 
   const handleInsertCoin = async () => {
     setIsInsertCoinModalOpen(false);
-
+    setIsLoadingEnterGame(true);
     try {
       const signature = await depositSol();
       if (!signature) {
         throw new Error("Transaction creation failed");
       }
 
-      // 새로운 방식으로 트랜잭션 확인 - hook 내부에서 상태 관리와 재시도 처리
+      // hook 내부에서 상태 관리와 재시도 처리
       confirmTx(signature);
+
+      // Check backend if user info is created, max 5 times
+      let count = 0;
+      const interval = setInterval(() => {
+        refetchUser();
+        count++;
+        if (count >= 30) {
+          clearInterval(interval);
+          setIsLoadingEnterGame(false);
+        }
+      }, 1000);
     } catch (error) {
+      setIsLoadingEnterGame(false);
       console.error("❌ Error:", error);
     }
   }
@@ -107,6 +120,7 @@ export default function MainLogo() {
 
   useEffect(() => {
     if (userInfo && authenticated) {
+      setIsLoadingEnterGame(false);
       return setMsg("TRADE NOW!");
     }
     return setMsg("INSERT COIN");
@@ -147,10 +161,10 @@ export default function MainLogo() {
 
       <TextButton
         onClick={handleClickTextButton}
-        disabled={disableLogin || isLoading}
+        disabled={disableLogin || isTxLoading}
       >
         <img src="/triangle_pixel.svg" alt="Insert Coin" className="mr-[16px]" />
-        <p className="text-white font-bold sm:text-[22px]">{isLoading ? "PROCESSING..." : msg}</p>
+        <p className="text-white font-bold sm:text-[22px]">{isTxLoading ? "PROCESSING..." : msg}</p>
       </TextButton>
 
       <small className="text-[#FBB042] text-[10px] mt-2 mb-[60px]">
@@ -181,7 +195,7 @@ export default function MainLogo() {
       <LoadingModal
         isOpen={isLoadingModalOpen}
         onClose={() => {
-          if (!isLoading) setIsLoadingModalOpen(false);
+          if (!isTxLoading) setIsLoadingModalOpen(false);
         }} />
     </div>
   );

@@ -1,5 +1,6 @@
 import { useLogout, useSolanaWallets } from "@privy-io/react-auth";
 import { UserInfo } from "../types/users";
+import { formatRank } from "../utils/rank";
 import NESButton from "./Button";
 import Divider from "./Divider";
 import RetroBox from "./RetroBox";
@@ -11,9 +12,6 @@ type ProfileProps = {
 export default function Profile({ user }: ProfileProps) {
   const { logout } = useLogout();
   const { wallets } = useSolanaWallets();
-  if (wallets.length > 0) {
-    console.log(wallets[0]);
-  }
 
   const INITIAL_BALANCE = 10000;
 
@@ -23,21 +21,6 @@ export default function Profile({ user }: ProfileProps) {
   const formattedBalance = balance.toLocaleString();
   const pnl = user.totalEstimatedUSD - INITIAL_BALANCE;
   const pnlPercentage = pnl / INITIAL_BALANCE * 100;
-
-  const formatRank = (rank: number) => {
-    if (rank === 0) return "-";
-    if (rank >= 11 && rank <= 13) {
-      return `${rank}th`;
-    } else if (rank % 10 === 1) {
-      return `${rank}st`;
-    } else if (rank % 10 === 2) {
-      return `${rank}nd`;
-    } else if (rank % 10 === 3) {
-      return `${rank}rd`;
-    } else {
-      return `${rank}th`;
-    }
-  };
 
   return (
     <div className="border-4 border-white p-[6px]">

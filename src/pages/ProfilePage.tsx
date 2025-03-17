@@ -1,15 +1,9 @@
 import { useParams } from 'react-router-dom';
+import { useUserInfo } from '../hooks/useUser';
+import { formatRank } from '../utils/rank';
 import NESButton from "../components/Button";
 import Header from "../components/Header";
 import RetroBox from "../components/RetroBox";
-import { useUserInfo } from '../hooks/useUser';
-
-const formatRank = (rank: number): string => {
-  if (rank === 1) return "1st";
-  if (rank === 2) return "2nd";
-  if (rank === 3) return "3rd";
-  return `${rank}th`;
-};
 
 const formatNumber = (n: number): string => {
   const fixed = n.toFixed(2);
@@ -87,7 +81,7 @@ const ProfileBox = ({
                   <span
                     className={isProfit ? "text-[#00C950]" : "text-[#F6455D]"}
                   >
-                    {isProfit ? "+" : "-"}
+                    {isProfit ? "+" : ""}
                     {formatNumber(pnl)}%
                   </span>
                 </p>

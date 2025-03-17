@@ -2,19 +2,13 @@ import { useNavigate } from "react-router-dom";
 import { useIsMobile } from "../hooks/useIsMobile";
 import { useLeaderBoard } from "../hooks/useLeaderBoard";
 import { formatAddress } from "../utils/address";
+import { formatRank } from "../utils/rank";
 import RetroBox from "./RetroBox";
 
 export default function LeaderBoard() {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const { data: leaderboard } = useLeaderBoard();
-
-  const formatRank = (rank: number) => {
-    if (rank === 1) return "1st";
-    if (rank === 2) return "2nd";
-    if (rank === 3) return "3rd";
-    return `${rank}th`;
-  };
 
   return (
     <div className="w-full relative flex flex-col items-center pt-[40px] pb-[80px] px-4 overflow-x-hidden">
