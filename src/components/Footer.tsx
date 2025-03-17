@@ -70,7 +70,7 @@ function FwogStoryBoard() {
 export default function Footer() {
   return (
     <footer className="w-full flex flex-col justify-center items-center pt-10">
-      <Divider char="^" color="text-[#FFFF00]" width="100%" />
+      <Divider char="^" color="text-[#FBB042]" width="100%" />
       <FwogStoryBoard />
       <p className="text-white text-xs my-9">
         © 2025 TradeDotFun

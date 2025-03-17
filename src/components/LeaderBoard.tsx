@@ -32,10 +32,10 @@ export default function LeaderBoard() {
           <p className="text-[#59D6BF] text-[10px] sm:text-[16px]">High Scores</p>
           <div className="mt-9 flex justify-between w-full">
             <div className="flex items-center gap-5">
-              <p className="text-[#E9FA0E] text-[10px] sm:text-[16px]">RANK</p>
-              <p className="text-[#E9FA0E] text-[10px] sm:text-[16px]">NAME</p>
+              <p className="text-[#FBB042] text-[10px] sm:text-[16px]">RANK</p>
+              <p className="text-[#FBB042] text-[10px] sm:text-[16px]">NAME</p>
             </div>
-            <p className="text-[#E9FA0E]  text-[10px] sm:text-[16px]">PNL</p>
+            <p className="text-[#FBB042]  text-[10px] sm:text-[16px]">PNL</p>
           </div>
           <div className="w-full flex flex-col gap-7 mt-7 mb-9">
             {ranks.map(({ rank, name, profit }) => {
@@ -48,7 +48,7 @@ export default function LeaderBoard() {
                       ? 'text-[#3112D8]'
                       : 'text-white';
               return (
-                <div key={rank} className={`flex items-center justify-between w-full ${rank === 1 ? 'bg-[#FFFF00]' : ''}`}>
+                <div key={rank} className={`flex items-center justify-between w-full ${rank === 1 ? 'bg-[#FBB042]' : ''}`}>
                   <div className="flex items-center gap-5">
                     <p
                       className={`w-10 sm:w-20 ${rankStyle} text-[10px] sm:text-[16px]`}
@@ -74,8 +74,8 @@ export default function LeaderBoard() {
       {
         !isMobile ?
           <>
-            <img src="/fighter_game.gif" alt="fighter_game" className="absolute left-[calc(50%-720px)] top-[104px] w-[400px]" />
-            <img src="/racing_game.gif" alt="racing_game" className="absolute right-[calc(50%-720px)] top-[77px] w-[400px]" />
+            <img src="/sonic-boring.gif" alt="sonic-boring" className="absolute left-[calc(50%-702px)] top-[104px] w-[382px]" />
+            <img src="/sonic-struggling.gif" alt="sonic-struggling" className="absolute right-[calc(50%-534px)] top-[157px] w-[214px]" />
           </> :
           undefined
       }

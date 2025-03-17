@@ -19,7 +19,7 @@ function TotalPnLSection({ pnl }: TotalPnLProps) {
 
   return (
     <div className="flex justify-between items-start">
-      <p className="text-[#FFF828] text-[10px] sm:text-[24px]">{"Total PNL(funUSD)"}</p>
+      <p className="text-[#FBB042] text-[10px] sm:text-[24px]">{"Total PNL(funUSD)"}</p>
       <div className="self-end flex flex-col text-right gap-1 sm:gap-5">
         {
           pnl > 0 ?
@@ -67,7 +67,7 @@ function PositionBox({ position, price, onClickClosePosition }: PositionBoxProps
         }
       </div>
       <div className="flex flex-row justify-between items-start">
-        <p className="text-[#FFF828] text-[10px] sm:text-[24px]">{"PNL(funUSD)"}</p>
+        <p className="text-[#FBB042] text-[10px] sm:text-[24px]">{"PNL(funUSD)"}</p>
 
         <div className="self-end flex flex-col text-right gap-1 sm:gap-5">
           {

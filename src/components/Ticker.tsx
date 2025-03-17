@@ -21,7 +21,7 @@ export default function Ticker() {
   ));
 
   return (
-    <div className="flex justify-start py-[6px] overflow-hidden whitespace-nowrap bg-gradient-to-r from-[#C932F7] to-[#2AD5B4] w-full">
+    <div className="flex justify-start py-[6px] overflow-hidden whitespace-nowrap bg-gradient-to-r from-[#0000FF] to-[#26A3ED] w-full">
       <div className="animate-marquee inline-flex">
         {renderedItems}
         {renderedItems} {/* 중복 렌더링하여 무한스크롤 효과 */}

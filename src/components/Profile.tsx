@@ -44,11 +44,11 @@ export default function Profile({ user }: ProfileProps) {
             <p>{address.slice(0, 4) + "..." + address.slice(-4)}</p>
           </div>
           <div className="flex gap-5 items-center justify-center">
-            <img src="/coin.gif" alt="coin" className="h-[30px]" />
+            <img src="/sonic-ring.gif" alt="sonic-ring" className="h-[30px]" />
             <p>{`${formattedBalance} funUSD`}</p>
           </div>
           
-          <Divider char="^" color="text-[#FFFF00]" />
+          <Divider char="^" color="text-[#FBB042]" />
 
           <img src="/trophy.gif" alt="coin" className="self-center h-[30px]" />
           <div className="flex px-4 sm:px-8 justify-between">
