@@ -1,21 +1,11 @@
 import { useIsMobile } from "../hooks/useIsMobile";
+import { useLeaderBoard } from "../hooks/useLeaderBoard";
+import { formatAddress } from "../utils/address";
 import RetroBox from "./RetroBox";
 
 export default function LeaderBoard() {
   const isMobile = useIsMobile();
-
-  const ranks = [
-    { rank: 1, name: "@solana", profit: "+10,000%" },
-    { rank: 2, name: "@seoulana_kr", profit: "+9,500%" },
-    { rank: 3, name: "@toly", profit: "+8,000%" },
-    { rank: 4, name: "@jito", profit: "+7,500%" },
-    { rank: 5, name: "@bonk", profit: "+7,000%" },
-    { rank: 6, name: "@happycat", profit: "+6,600%" },
-    { rank: 7, name: "@chillguy", profit: "+6,000%" },
-    { rank: 8, name: "@ai16z", profit: "+5,500%" },
-    { rank: 9, name: "@pumpdotfun", profit: "+5,200%" },
-    { rank: 10, name: "@ironman", profit: "+5,000%" },
-  ];
+  const { data: leaderboard } = useLeaderBoard();
 
   const formatRank = (rank: number) => {
     if (rank === 1) return "1st";
@@ -38,7 +28,7 @@ export default function LeaderBoard() {
             <p className="text-[#E9FA0E]  text-[10px] sm:text-[16px]">PNL</p>
           </div>
           <div className="w-full flex flex-col gap-7 mt-7 mb-9">
-            {ranks.map(({ rank, name, profit }) => {
+            {leaderboard && leaderboard.map(({ rank, address, name, roi }) => {
               const rankStyle =
                 rank === 1
                   ? 'text-[#D2180B]'
@@ -55,9 +45,9 @@ export default function LeaderBoard() {
                     >
                       {formatRank(rank)}
                     </p>
-                    <p className={`text-[10px] sm:text-[16px] ${rankStyle}`}>{name}</p>
+                    <p className={`text-[10px] sm:text-[16px] ${rankStyle}`}>{name === "" ? formatAddress(address) : "@" + name}</p>
                   </div>
-                  <p className={`${rankStyle} text-[10px] sm:text-[16px]`}>{profit}</p>
+                  <p className={`${rankStyle} text-[10px] sm:text-[16px]`}>{`${(roi*100).toFixed(2)}%`}</p>
                 </div>
               )
             })}

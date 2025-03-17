@@ -11,7 +11,7 @@ import { clusterApiUrl } from "@solana/web3.js";
 import '@solana/wallet-adapter-react-ui/styles.css';
 import "./App.css";
 import AppRoutes from "./routes";
-import { ToastProvider } from "./components/ToastProvider";
+import { ToastProvider } from "./providers/ToastProvider";
 
 function App() {
   const network = WalletAdapterNetwork.Devnet;
