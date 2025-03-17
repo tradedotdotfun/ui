@@ -6,6 +6,7 @@ import TradePage from '../pages/TradePage';
 import Layout from '../components/Layout';
 import ClosePositionPage from '../pages/ClosePositionPage';
 import TermsOfServicePage from '../pages/TermsOfServicePage';
+import PrivacyPolicyPage from '../pages/PrivacyPolicyPage';
 
 export default function AppRoutes() {
   return (
@@ -16,6 +17,7 @@ export default function AppRoutes() {
           <Route path="/trade" element={<TradePage />} />
           <Route path="/close" element={<ClosePositionPage />} />
           <Route path="/terms" element={<TermsOfServicePage />} />
+          <Route path="/privacy" element={<PrivacyPolicyPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>

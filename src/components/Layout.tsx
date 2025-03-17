@@ -8,6 +8,7 @@ export default function Layout() {
     "/trade": "/trading_music.mp3",
     "/close": "/close_music.mp3",
     "/terms": "/home_music.mp3",
+    "/privacy": "/home_music.mp3",
     "*": "/default_music.mp3",
   }
 

@@ -81,6 +81,10 @@ export default function Footer() {
           <Link to="/terms" className="text-white text-xs hover:underline">
             Terms of Service
           </Link>
+          <span className="text-white text-xs">|</span>
+          <Link to="/privacy" className="text-white text-xs hover:underline">
+            Privacy Policy
+          </Link>
         </div>
       </div>
     </footer>
