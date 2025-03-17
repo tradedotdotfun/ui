@@ -58,7 +58,7 @@ export default function ProgressBar({
       <div className="flex justify-between text-[10px] sm:text-[12px] text-white mt-3 select-none">
         {steps.map((step) => (
           <span
-            key={step}
+            key={`Progressbar-${step}`}
             className={`cursor-pointer ${step === value ? 'font-bold' : ''}`}
             onClick={() => {
               handleClickSound();

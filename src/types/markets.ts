@@ -4,6 +4,7 @@ export const marketToCoinId = {
   SOL: "solusdt",
   BTC: "btcusdt",
   ETH: "ethusdt",
+  SONIC: "sonicusdt",
 };
 
 export type Market = {

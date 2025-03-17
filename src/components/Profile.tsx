@@ -1,4 +1,6 @@
+import { usePrivy } from "@privy-io/react-auth";
 import { UserInfo } from "../types/users";
+import NESButton from "./Button";
 
 import Divider from "./Divider";
 import RetroBox from "./RetroBox";
@@ -8,6 +10,8 @@ type ProfileProps = {
 }
 
 export default function Profile({ user }: ProfileProps) {
+  const { logout } = usePrivy();
+
   const INITIAL_BALANCE = 10000;
 
   const address = user.address;
@@ -38,7 +42,17 @@ export default function Profile({ user }: ProfileProps) {
         <div
           className="border-4 p-5 sm:px-10 sm:py-8 w-80 sm:w-120
           flex flex-col gap-3">
-          <p className="text-lg text-left mb-6">My Profile</p>
+          <div className="flex flex-row justify-between items-center mb-6">
+            <p className="text-lg text-left">My Profile</p>
+            <NESButton
+              onClick={() => {
+                logout();
+              }}
+              className="relative w-[38px] h-[38px] px-0 py-0 text-[14px]"
+            >
+              <p className="absolute top-[8px] left-[10px] text-[14px]">{"X"}</p>
+            </NESButton>
+          </div>
           <div className="flex gap-5 items-center justify-center">
             <img src="/popcat.gif" alt="profile" className="w-[30px] h-[30px] rounded-[15px]" />
             <p>{address.slice(0, 4) + "..." + address.slice(-4)}</p>

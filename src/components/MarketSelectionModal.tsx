@@ -15,7 +15,7 @@ export default function MarketSelectionModal({ isOpen, onClose, onConfirm, curre
   if (!isOpen) return null;
   const [selectedMarket, setSelectedMarket] = useState<MarketType>(currentMarket);
 
-  const markets = ["SOL", "BTC", "ETH"];
+  const markets = ["SONIC", "SOL", "BTC", "ETH"];
 
   return (
     <ModalBase isOpen={isOpen} onClose={onClose} title="Choose a market to compete in!">

@@ -84,9 +84,7 @@ export default function MainLogo() {
 
   useEffect(() => {
     if (authenticated && user) {
-      console.log("🔄 Refetching user info");
       refetchUser();
-      console.log(userInfo);
       if (wallets.length === 0) {
         createWallet();
       } else {
