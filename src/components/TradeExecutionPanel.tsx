@@ -57,6 +57,7 @@ function LeveragePanel({ leverage, setLeverage }: { leverage: number, setLeverag
           steps={[1, 25, 50, 75, 100]}
           suffix="x"
           onChange={setLeverage}
+          precision={0}
         />
       </div>
     </div>

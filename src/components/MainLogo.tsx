@@ -82,7 +82,7 @@ export default function MainLogo() {
       const interval = setInterval(() => {
         refetchUser();
         count++;
-        if (count >= 5) {
+        if (count >= 20) {
           clearInterval(interval);
           setIsLoadingEnterGame(false);
         }
