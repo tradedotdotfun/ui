@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import NESButton from "../components/Button";
 import Header from "../components/Header";
@@ -200,8 +199,7 @@ export default function ProfilePage() {
   const rank = user.rank;
   const pnl = user.totalEstimatedUSD - INITIAL_BALANCE;
   const pnlPercentage = pnl / INITIAL_BALANCE * 100;
-  console.log(pnlPercentage);
-  
+
   return (
     <div>
       <Header />
