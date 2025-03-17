@@ -27,19 +27,19 @@ export default function LeaderBoard() {
             {leaderboard && leaderboard.map(({ rank, address, name, roi }, idx) => {
               const rankStyle =
                 rank === 1
-                  ? 'text-[#D2180B]'
+                  ? 'text-[#D2180B] group-hover:text-black'
                   : rank === 2
-                    ? 'text-[#F76B3E]'
+                    ? 'text-[#F76B3E] group-hover:text-black'
                     : rank === 3
-                      ? 'text-[#3112D8]'
-                      : 'text-white';
+                      ? 'text-[#3112D8] group-hover:text-black'
+                      : 'text-white group-hover:text-black';
               return (
                 <div
                   key={`rank-${idx}`}
                   className={`
                   flex items-center justify-between w-full 
                   ${rank === 1 ? 'bg-[#FBB042]' : ''} 
-                  hover:bg-white hover:text-black`}
+                  group hover:bg-white `}
                   onClick={() => navigate(`/profile/${address}`)}>
                   <div className="flex items-center gap-5">
                     <p

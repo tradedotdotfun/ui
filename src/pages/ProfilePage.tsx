@@ -4,6 +4,7 @@ import { formatRank } from '../utils/rank';
 import NESButton from "../components/Button";
 import Header from "../components/Header";
 import RetroBox from "../components/RetroBox";
+import AddressCopy from '../components/AddressCopy';
 
 const formatNumber = (n: number): string => {
   const fixed = n.toFixed(2);
@@ -34,6 +35,7 @@ const ProfileBox = ({
   referralLink,
   profileImage,
   description,
+  address,
 }: {
   name: string;
   rank: number;
@@ -46,6 +48,7 @@ const ProfileBox = ({
   referralLink: string;
   profileImage: string;
   description: string;
+  address: string;
 }) => {
   const isProfit = pnl > 0;
 
@@ -87,9 +90,19 @@ const ProfileBox = ({
                 </p>
               </div>
             </div>
-            <p className="text-white text-[16px] md:text-[20px]   mt-[20px] md:mt-[28px] font-bold">
+            <p className="text-white text-[16px] md:text-[20px] mt-[20px] md:mt-[28px] font-bold">
               @{name}
             </p>
+            
+            <div className="mt-2 mb-4">
+              <AddressCopy 
+                address={address}
+                label=""
+                shortenAddress={true}
+                className="text-sm"
+              />
+            </div>
+            
             <div className="flex md:gap-y-[12px] md:gap-x-[20px] md:flex-row flex-col justify-start mt-[12px]">
               {sns.map((s) => (
                 <div
@@ -212,6 +225,7 @@ export default function ProfilePage() {
         referralLink="https://www.google.com"
         profileImage="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrUfiySJr8Org5W-oE2v3_i7VqufglYtSdqw&s"
         description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos."
+        address={address ?? ""}
       />
     </div>
   );

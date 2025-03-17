@@ -74,7 +74,6 @@ export default function AmountPanel({ totalAmount, amount, setAmount }: AmountPa
           steps={[0, 25, 50, 75, 100]}
           suffix="%"
           onChange={setAmountWithPercentage}
-          precision={2}
         />
       </div>
     </>

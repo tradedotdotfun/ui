@@ -8,8 +8,8 @@ import TextButton from "./TextButton";
 import InsertCoinModal from "./InsertCoinModal";
 import LoadingModal from "./LoadingModal";
 import Profile from "./Profile";
-import { formatAddress } from "../utils/address";
 import { useConfirmTx } from "../hooks/useConfirmTx";
+import AddressCopy from "./AddressCopy";
 
 export default function MainLogo() {
   const { ready, authenticated, login, user } = usePrivy();
@@ -26,7 +26,6 @@ export default function MainLogo() {
 
   const [isLoadingEnterGame, setIsLoadingEnterGame] = useState(false);
   const [msg, setMsg] = useState<string>("INSERT COIN");
-  const [welcomeMsg, setWelcomeMsg] = useState<string>("Welcome");
   const [isInsertCoinModalOpen, setIsInsertCoinModalOpen] = useState<boolean>(false);
   const [isLoadingModalOpen, setIsLoadingModalOpen] = useState<boolean>(false);
 
@@ -83,7 +82,7 @@ export default function MainLogo() {
       const interval = setInterval(() => {
         refetchUser();
         count++;
-        if (count >= 30) {
+        if (count >= 5) {
           clearInterval(interval);
           setIsLoadingEnterGame(false);
         }
@@ -111,9 +110,6 @@ export default function MainLogo() {
       refetchUser();
       if (wallets.length === 0) {
         createWallet();
-      } else {
-        const wallet = wallets[0];
-        setWelcomeMsg(`Welcome ${formatAddress(wallet.address)}`);
       }
     }
   }, [authenticated, user, wallets, createWallet, refetchUser]);
@@ -152,11 +148,10 @@ export default function MainLogo() {
         and prove your trading skills.
       </p>
 
-      {authenticated ?
-        <div className="flex flex-row justify-between gap-2 items-center mb-[20px]">
-          <p className="text-[16px]">
-            {welcomeMsg}
-          </p>
+      {authenticated && wallets.length > 0?
+        <div className="flex flex-row justify-between gap-2 items-center mb-[20px] text-[16px]">
+          <p>Welcome</p>
+          <AddressCopy address={wallets[0].address} />
         </div> : undefined}
 
       <TextButton

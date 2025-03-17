@@ -20,7 +20,7 @@ export default function ProgressBar({
   prefix = "",
   suffix = "%",
   onChange,
-  precision = 0,  // 기본 정밀도 0자리
+  precision = 1,  // 기본 정밀도 1자리
 }: ProgressBarProps) {
   const percentage = ((value - min) / (max - min)) * 100;
   const barRef = useRef<HTMLDivElement>(null);
