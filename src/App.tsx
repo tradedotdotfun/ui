@@ -1,38 +1,29 @@
-import { useMemo } from "react";
-import { ConnectionProvider, WalletProvider } from "@solana/wallet-adapter-react";
-import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
-import { 
-  PhantomWalletAdapter,
-  TorusWalletAdapter,
-  SolflareWalletAdapter,
-} from "@solana/wallet-adapter-wallets";
-import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
-import { clusterApiUrl } from "@solana/web3.js";
-import '@solana/wallet-adapter-react-ui/styles.css';
 import "./App.css";
 import AppRoutes from "./routes";
 import { ToastProvider } from "./providers/ToastProvider";
+import { PrivyProvider } from "@privy-io/react-auth";
 
 function App() {
-  const network = WalletAdapterNetwork.Devnet;
-  const endpoint = useMemo(() => clusterApiUrl(network), [network]);
-
-  const wallets = useMemo(() => [
-    new PhantomWalletAdapter(),
-    new TorusWalletAdapter(),
-    new SolflareWalletAdapter(),
-  ], [network]);
-
   return (
-    <ConnectionProvider endpoint={endpoint}>
-      <WalletProvider wallets={wallets} autoConnect>
-        <WalletModalProvider>
-          <ToastProvider>
-            <AppRoutes />
-          </ToastProvider>
-        </WalletModalProvider>
-      </WalletProvider>
-    </ConnectionProvider>
+    <PrivyProvider
+      appId={import.meta.env.VITE_PRIVY_APP_ID}
+      config={{
+        // Customize Privy's appearance in your app
+        appearance: {
+          theme: 'light',
+          accentColor: '#676FFF',
+          logo: 'https://raw.githubusercontent.com/tradedotdotfun/contents/66cfd60bdf83998ceb42b4e7e2ed1c62c19d3992/logo.png',
+        },
+        // Create embedded wallets for users who don't have a wallet
+        embeddedWallets: {
+          createOnLogin: 'users-without-wallets',
+        },
+      }}
+    >
+      <ToastProvider>
+        <AppRoutes />
+      </ToastProvider>
+    </PrivyProvider>
   );
 }
 

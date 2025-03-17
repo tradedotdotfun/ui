@@ -1,23 +1,22 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useWallet } from "@solana/wallet-adapter-react";
-import { useWalletModal } from "@solana/wallet-adapter-react-ui";
-
+import { usePrivy } from "@privy-io/react-auth";
 import { useIsMobile } from "../hooks/useIsMobile";
 import { useUserInfo } from "../hooks/useUser";
 import { useDepositSol } from "../hooks/useDepositSol";
-
 import TextButton from "./TextButton";
 import InsertCoinModal from "./InsertCoinModal";
 import LoadingModal from "./LoadingModal";
 import Profile from "./Profile";
 
 export default function MainLogo() {
+  const { ready, authenticated, login } = usePrivy();
+  // Disable login when Privy is not ready or the user is already authenticated
+  const disableLogin = !ready || (ready && authenticated);
+
   const isMobile = useIsMobile();
   const navigate = useNavigate();
-  const { connected } = useWallet();
   const { data: userInfo, refetch: refetchUser } = useUserInfo();
-  const { setVisible: setWalletModalVisible } = useWalletModal();
   const { depositSol } = useDepositSol();
 
   const [msg, setMsg] = useState<string>("INSERT COIN");
@@ -29,8 +28,8 @@ export default function MainLogo() {
     if (isLoading) {
       return setIsLoadingModalOpen(true);
     }
-    if (!connected) {
-      return setWalletModalVisible(true);
+    if (!authenticated) {
+      return login();
     }
     if (!userInfo) {
       return setIsInsertCoinModalOpen(true);
@@ -67,10 +66,10 @@ export default function MainLogo() {
   // }
 
   useEffect(() => {
-    if (connected) {
+    if (authenticated) {
       refetchUser();
     }
-  }, [connected, isLoading]);
+  }, [authenticated, isLoading]);
 
   useEffect(() => {
     if (userInfo) {
@@ -104,7 +103,9 @@ export default function MainLogo() {
       </p>
 
       <TextButton
-        onClick={handleClickTextButton}>
+        onClick={handleClickTextButton}
+        disabled={disableLogin}
+      >
         <img src="/triangle_pixel.svg" alt="Insert Coin" className="mr-[16px]" />
         <p className="text-white font-bold sm:text-[22px]">{msg}</p>
       </TextButton>

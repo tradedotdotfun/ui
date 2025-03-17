@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import Divider from "./Divider";
 
 type StoryImageProps = {
@@ -52,7 +53,7 @@ function FwogStoryBoard() {
 
   return (
     <div className="flex flex-col gap-9 items-center justify-center mt-9">
-      <p className="text-[#299F46] text-16px">{"Fwog’s Wild Ride: From Rags to Riches (and Back?)".toUpperCase()}</p>
+      <p className="text-[#299F46] text-16px">{"Fwog's Wild Ride: From Rags to Riches (and Back?)".toUpperCase()}</p>
       <div className="w-fit flex flex-col lg:flex-row gap-6 justify-center">
         {
           story.map((line, index) => (
@@ -72,9 +73,16 @@ export default function Footer() {
     <footer className="w-full flex flex-col justify-center items-center pt-10">
       <Divider char="^" color="text-[#FFFF00]" width="100%" />
       <FwogStoryBoard />
-      <p className="text-white text-xs my-9">
-        © 2025 TradeDotFun
-      </p>
+      <div className="flex flex-col items-center my-9">
+        <p className="text-white text-xs mb-2">
+          © 2025 TradeDotFun
+        </p>
+        <div className="flex gap-4">
+          <Link to="/terms" className="text-white text-xs hover:underline">
+            Terms of Service
+          </Link>
+        </div>
+      </div>
     </footer>
   );
 }

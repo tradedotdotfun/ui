@@ -3,9 +3,10 @@ import { useRef, useState } from 'react';
 type TextButtonProps = {
   onClick?: () => void;
   children: React.ReactNode;
+  disabled?: boolean;
 };
 
-export default function TextButton({ onClick, children }: TextButtonProps) {
+export default function TextButton({ onClick, children, disabled }: TextButtonProps) {
   const audioRef = useRef(new Audio('/start.mp3'));
   const [clicked, setClicked] = useState(false);
 
@@ -33,6 +34,7 @@ export default function TextButton({ onClick, children }: TextButtonProps) {
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       onMouseLeave={() => setClicked(false)}
+      disabled={disabled}
     >
       {children}
     </button>

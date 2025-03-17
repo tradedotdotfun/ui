@@ -5,6 +5,7 @@ import NotFoundPage from '../pages/NotFoundPage';
 import TradePage from '../pages/TradePage';
 import Layout from '../components/Layout';
 import ClosePositionPage from '../pages/ClosePositionPage';
+import TermsOfServicePage from '../pages/TermsOfServicePage';
 
 export default function AppRoutes() {
   return (
@@ -14,6 +15,7 @@ export default function AppRoutes() {
           <Route path="/" element={<HomePage />} />
           <Route path="/trade" element={<TradePage />} />
           <Route path="/close" element={<ClosePositionPage />} />
+          <Route path="/terms" element={<TermsOfServicePage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
