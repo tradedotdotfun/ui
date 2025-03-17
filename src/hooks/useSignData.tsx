@@ -1,4 +1,4 @@
-import { useWallet } from "@solana/wallet-adapter-react";
+import { useSolanaWallets } from "@privy-io/react-auth";
 import { useCallback } from "react";
 
 const uint8ArrayToBase64 = (arr: Uint8Array): string => {
@@ -6,29 +6,25 @@ const uint8ArrayToBase64 = (arr: Uint8Array): string => {
 };
 
 export const useSignData = () => {
-  const { wallet, signIn, publicKey, signMessage } = useWallet();
+  const { wallets } = useSolanaWallets();
 
   const signingMsg = "sign in tradedot.fun:1841263854";
 
   const signData = useCallback(async () => {
-    console.log(wallet, publicKey, signMessage);
-    if (wallet === null) {
+    if (wallets.length === 0) {
       return;
     }
-    if (publicKey === null || !signMessage) {
-      signIn && signIn();
-      return;
-    }
+    const wallet = wallets[0];
 
-    const signature = await signMessage(Buffer.from(signingMsg));
+    const signature = await wallet.signMessage(Buffer.from(signingMsg));
 
     return {
-      pubkey: publicKey.toBase58(),
+      pubkey: wallet.address,
       msg: signingMsg,
       signature: uint8ArrayToBase64(signature),
     };
 
-  }, [wallet, signingMsg]);
+  }, [wallets, signingMsg]);
 
   return { signData };
 }

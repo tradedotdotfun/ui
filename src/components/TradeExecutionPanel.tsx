@@ -97,10 +97,10 @@ export default function TradeExecutionPanel({ market }: { market: MarketType }) 
           setAmount={setAmount} />
       </div>
       <div className="flex-1/2 flex flex-col text-left sm:pr-7">
-        <NESButton variant="green" onClick={() => handleClickBuyOrSell("long")}>Buy</NESButton>
+        <NESButton variant="green" onClick={() => handleClickBuyOrSell("long")}>Long</NESButton>
       </div>
       <div className="flex-1/2 flex flex-col text-left sm:pl-7">
-        <NESButton variant="red" onClick={() => handleClickBuyOrSell("short")}>Sell</NESButton>
+        <NESButton variant="red" onClick={() => handleClickBuyOrSell("short")}>Short</NESButton>
       </div>
     </div>
   )
