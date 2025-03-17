@@ -22,7 +22,7 @@ export default function ProgressBar({
 }: ProgressBarProps) {
   const percentage = ((value - min) / (max - min)) * 100;
   const barRef = useRef<HTMLDivElement>(null);
-  const audioRef = useRef(new Audio("/click.mp3"));
+  const audioRef = useRef(new Audio("/sonic-ring-sound-1.mp3"));
 
   const handleClickSound = () => {
     audioRef.current.currentTime = 0; // 클릭할 때마다 처음부터 재생

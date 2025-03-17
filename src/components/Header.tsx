@@ -4,7 +4,7 @@ import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { useRef } from "react";
 
 export default function Header() {
-  const audioRef = useRef(new Audio("/click.mp3"));
+  const audioRef = useRef(new Audio("/sonic-ring-sound-1.mp3"));
   const isMobile = useIsMobile();
   
   const handleClick = () => {

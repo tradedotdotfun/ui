@@ -10,7 +10,7 @@ import AmountPanel from "./AmountPanel";
 const MAX_LEVERAGE = 100;
 
 function LeveragePanel({ leverage, setLeverage }: { leverage: number, setLeverage: (value: number) => void }) {
-  const audioRef = useRef(new Audio('/click.mp3'));
+  const audioRef = useRef(new Audio('/sonic-ring-sound-1.mp3'));
 
   const increaseLeverage = () => {
     if (leverage < MAX_LEVERAGE) {

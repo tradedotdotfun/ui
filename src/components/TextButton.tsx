@@ -6,7 +6,7 @@ type TextButtonProps = {
 };
 
 export default function TextButton({ onClick, children }: TextButtonProps) {
-  const audioRef = useRef(new Audio('/start.mp3'));
+  const audioRef = useRef(new Audio('/sonic-start.wav'));
   const [clicked, setClicked] = useState(false);
 
   const handleMouseDown = () => setClicked(true);
