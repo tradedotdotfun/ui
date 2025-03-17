@@ -28,7 +28,7 @@ export default function LeaderBoard() {
             <p className="text-[#E9FA0E]  text-[10px] sm:text-[16px]">PNL</p>
           </div>
           <div className="w-full flex flex-col gap-7 mt-7 mb-9">
-            {leaderboard && leaderboard.map(({ rank, address, name, roi }) => {
+            {leaderboard && leaderboard.map(({ rank, address, name, roi }, idx) => {
               const rankStyle =
                 rank === 1
                   ? 'text-[#D2180B]'
@@ -38,7 +38,7 @@ export default function LeaderBoard() {
                       ? 'text-[#3112D8]'
                       : 'text-white';
               return (
-                <div key={rank} className={`flex items-center justify-between w-full ${rank === 1 ? 'bg-[#FFFF00]' : ''}`}>
+                <div key={`rank-${idx}`} className={`flex items-center justify-between w-full ${rank === 1 ? 'bg-[#FFFF00]' : ''}`}>
                   <div className="flex items-center gap-5">
                     <p
                       className={`w-10 sm:w-20 ${rankStyle} text-[10px] sm:text-[16px]`}
