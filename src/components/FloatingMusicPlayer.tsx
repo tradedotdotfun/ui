@@ -39,9 +39,7 @@ export default function FloatingMusicPlayer({ musicMap }: FloatingMusicPlayerPro
     <>
       <audio ref={audioRef} />
       <div className={`
-      fixed bottom-4 right-4 z-50 flex gap-2 p-2
-      bg-gradient-to-r from-blue-500 to-purple-500
-      rounded-full
+      fixed bottom-4 right-4 z-50 flex gap-2
       group
       ${playing ? 'animate-bounce' : ''}
       `}>
@@ -50,10 +48,10 @@ export default function FloatingMusicPlayer({ musicMap }: FloatingMusicPlayerPro
         bottom-[20px] right-[80px] w-[400px]
         ">MAX LEVEL TRADING VIBES!</div>
         <img
-          src="/popcat.gif"
+          src="/sonic-excited.gif"
           alt="music player"
           className={`
-            w-12 transform -scale-x-100
+            w-20 transform -scale-x-100
             rounded-full
             transition-transform duration-150 ease-out
           `}
