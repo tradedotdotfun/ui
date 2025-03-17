@@ -1,4 +1,5 @@
 import { useLogout, useSolanaWallets } from "@privy-io/react-auth";
+import { useNavigate } from "react-router-dom";
 import { UserInfo } from "../types/users";
 import { formatRank } from "../utils/rank";
 import NESButton from "./Button";
@@ -12,6 +13,7 @@ type ProfileProps = {
 export default function Profile({ user }: ProfileProps) {
   const { logout } = useLogout();
   const { wallets } = useSolanaWallets();
+  const navigate = useNavigate();
 
   const INITIAL_BALANCE = 10000;
 
@@ -70,8 +72,19 @@ export default function Profile({ user }: ProfileProps) {
                   : <p>{`${pnlPercentage.toFixed(2)}%`}</p>
             }
           </div>
+
+          <div className="mt-4">
+            <NESButton
+              onClick={() => navigate(`/profile/${address}`)}
+              className="w-full"
+              variant="default"
+              fontSize="small"
+            >
+              VIEW PROFILE
+            </NESButton>
+          </div>
         </div>
       </RetroBox>
-    </div >
+    </div>
   );
 }

@@ -5,6 +5,7 @@ import NESButton from "../components/Button";
 import Header from "../components/Header";
 import RetroBox from "../components/RetroBox";
 import AddressCopy from '../components/AddressCopy';
+import { useEffect } from 'react';
 
 const formatNumber = (n: number): string => {
   const fixed = n.toFixed(2);
@@ -51,6 +52,10 @@ const ProfileBox = ({
   address: string;
 }) => {
   const isProfit = pnl > 0;
+  
+  useEffect(() => {
+    scrollTo(0, 0);
+  }, [])
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-center">
