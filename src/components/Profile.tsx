@@ -1,7 +1,6 @@
-import { usePrivy } from "@privy-io/react-auth";
+import { useLogout, useSolanaWallets } from "@privy-io/react-auth";
 import { UserInfo } from "../types/users";
 import NESButton from "./Button";
-
 import Divider from "./Divider";
 import RetroBox from "./RetroBox";
 
@@ -10,7 +9,11 @@ type ProfileProps = {
 }
 
 export default function Profile({ user }: ProfileProps) {
-  const { logout } = usePrivy();
+  const { logout } = useLogout();
+  const { wallets } = useSolanaWallets();
+  if (wallets.length > 0) {
+    console.log(wallets[0]);
+  }
 
   const INITIAL_BALANCE = 10000;
 
@@ -46,7 +49,12 @@ export default function Profile({ user }: ProfileProps) {
             <p className="text-lg text-left">My Profile</p>
             <NESButton
               onClick={() => {
-                logout();
+                if (wallets.length > 0) {
+                  if (wallets[0].walletClientType !== "privy") {
+                    wallets[0].disconnect();
+                  }
+                  logout();
+                }
               }}
               className="relative w-[38px] h-[38px] px-0 py-0 text-[14px]"
             >
@@ -61,7 +69,7 @@ export default function Profile({ user }: ProfileProps) {
             <img src="/sonic-ring.gif" alt="sonic-ring" className="h-[30px]" />
             <p>{`${formattedBalance} funUSD`}</p>
           </div>
-          
+
           <Divider char="^" color="text-[#FBB042]" />
 
           <img src="/trophy.gif" alt="coin" className="self-center h-[30px]" />

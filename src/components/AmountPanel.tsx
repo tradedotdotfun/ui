@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { formatCurrency } from "../utils/formatCurrency";
 import RetroBox from "./RetroBox";
 import ProgressBar from "./ProgressBar";
 
@@ -12,7 +13,7 @@ export default function AmountPanel({ totalAmount, amount, setAmount }: AmountPa
   const [isPercentageClicked, setIsPercentageClicked] = useState(false);
   const [percentage, setPercentage] = useState(0);
 
-  const formattedBalance = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(totalAmount);
+  const formattedBalance = formatCurrency(totalAmount);
 
   const setPercentageWithAmount = (amount: number) => {
     setIsPercentageClicked(false);

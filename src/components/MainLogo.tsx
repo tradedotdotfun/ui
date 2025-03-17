@@ -16,7 +16,7 @@ export default function MainLogo() {
   const { wallets, createWallet } = useSolanaWallets();
   // Disable login when Privy is not ready or the user is already authenticated
   const disableLogin = !ready;
-  const { confirmTx } = useConfirmTx();
+  const { confirmTx, isLoading, isSuccess, isError, error } = useConfirmTx();
 
   const isMobile = useIsMobile();
   const navigate = useNavigate();
@@ -28,7 +28,29 @@ export default function MainLogo() {
   const [welcomeMsg, setWelcomeMsg] = useState<string>("Welcome");
   const [isInsertCoinModalOpen, setIsInsertCoinModalOpen] = useState<boolean>(false);
   const [isLoadingModalOpen, setIsLoadingModalOpen] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  // 트랜잭션 상태에 따라 로딩 모달 표시
+  useEffect(() => {
+    if (isLoading) {
+      setIsLoadingModalOpen(true);
+    } else {
+      setIsLoadingModalOpen(false);
+    }
+  }, [isLoading]);
+
+  // 트랜잭션 성공시 처리
+  useEffect(() => {
+    if (isSuccess) {
+      refetchUser();
+    }
+  }, [isSuccess, refetchUser]);
+
+  // 트랜잭션 에러시 처리
+  useEffect(() => {
+    if (isError) {
+      console.error("❌ Transaction Error:", error);
+    }
+  }, [isError, error]);
 
   const handleClickTextButton = () => {
     if (isLoading) {
@@ -44,31 +66,20 @@ export default function MainLogo() {
   }
 
   const handleInsertCoin = async () => {
-    setIsLoading(true);
     setIsInsertCoinModalOpen(false);
-    setIsLoadingModalOpen(true);
 
     try {
       const signature = await depositSol();
-      // SetInterval to check if the transaction is confirmed for 10 seconds every 1 second
       if (!signature) {
         throw new Error("Transaction creation failed");
       }
-      const interval = setInterval(async () => {
-        const confirmed = await confirmTx(signature);
-        if (confirmed) {
-          clearInterval(interval);
-          setIsLoading(false);
-          setIsLoadingModalOpen(false);
-        }
-      }, 1000);
+
+      // 새로운 방식으로 트랜잭션 확인 - hook 내부에서 상태 관리와 재시도 처리
+      confirmTx(signature);
     } catch (error) {
-      console.error("❌ Error", error);
-      setIsLoading(false);
-      setIsLoadingModalOpen(false);
+      console.error("❌ Error:", error);
     }
   }
-
 
   // const handleUpdateName = async () => {
   //   const signed = await signData();
@@ -83,7 +94,7 @@ export default function MainLogo() {
   // }
 
   useEffect(() => {
-    if (authenticated && user) {
+    if (authenticated) {
       refetchUser();
       if (wallets.length === 0) {
         createWallet();
@@ -92,21 +103,21 @@ export default function MainLogo() {
         setWelcomeMsg(`Welcome ${formatAddress(wallet.address)}`);
       }
     }
-  }, [authenticated, user, wallets]);
+  }, [authenticated, user, wallets, createWallet, refetchUser]);
 
   useEffect(() => {
-    if (userInfo) {
+    if (userInfo && authenticated) {
       return setMsg("TRADE NOW!");
     }
     return setMsg("INSERT COIN");
-  }, [userInfo]);
+  }, [userInfo, authenticated]);
 
   return (
-    <div className="relative w-full flex flex-col items-center p-4 text-center overflow-x-hidden">
+    <div className="relative w-full flex flex-col items-center p-4 text-center overflow-x-hidden overflow-y-hidden">
       {
         isMobile
           ? (<img src='/pepe-punch.gif' alt="pepe-punch" className="w-[128px]" />)
-          : (<div className="w-[1040px] font-['Press_Start_2P'] font-[400] text-[80px] text-[#0000FE] mt-[120px]">
+          : (<div className="text-[40px] lg:text-[80px] text-[#0000FE] mt-[120px] whitespace-nowrap">
             TRADE DOT FUN
           </div>)
       }
@@ -128,21 +139,23 @@ export default function MainLogo() {
       </p>
 
       {authenticated ?
-        <p className="text-[16px] mb-[20px]">
-          {welcomeMsg}
-        </p> : undefined}
+        <div className="flex flex-row justify-between gap-2 items-center mb-[20px]">
+          <p className="text-[16px]">
+            {welcomeMsg}
+          </p>
+        </div> : undefined}
 
       <TextButton
         onClick={handleClickTextButton}
-        disabled={disableLogin}
+        disabled={disableLogin || isLoading}
       >
         <img src="/triangle_pixel.svg" alt="Insert Coin" className="mr-[16px]" />
-        <p className="text-white font-bold sm:text-[22px]">{msg}</p>
+        <p className="text-white font-bold sm:text-[22px]">{isLoading ? "PROCESSING..." : msg}</p>
       </TextButton>
 
       <small className="text-[#FBB042] text-[10px] mt-2 mb-[60px]">
         {
-          userInfo ?
+          userInfo && authenticated ?
             "Your league awaits - keep trading!" :
             "Entry Fee: 0.1 SOL"
         }
@@ -159,7 +172,7 @@ export default function MainLogo() {
         )
       }
       {
-        userInfo && <Profile user={userInfo} />
+        userInfo && authenticated && <Profile user={userInfo} />
       }
       <InsertCoinModal
         isOpen={isInsertCoinModalOpen}
@@ -167,7 +180,9 @@ export default function MainLogo() {
         onConfirm={handleInsertCoin} />
       <LoadingModal
         isOpen={isLoadingModalOpen}
-        onClose={() => setIsLoadingModalOpen(false)} />
+        onClose={() => {
+          if (!isLoading) setIsLoadingModalOpen(false);
+        }} />
     </div>
   );
 }

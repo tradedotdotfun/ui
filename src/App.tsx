@@ -2,13 +2,12 @@ import "./App.css";
 import AppRoutes from "./routes";
 import { ToastProvider } from "./providers/ToastProvider";
 import { PrivyProvider } from "@privy-io/react-auth";
-import { toSolanaWalletConnectors } from "@privy-io/react-auth/solana";
 
 function App() {
-  const solanaConnectors = toSolanaWalletConnectors({
-    // By default, shouldAutoConnect is enabled
-    shouldAutoConnect: true,
-  })
+  // const solanaConnectors = toSolanaWalletConnectors({
+  //   // By default, shouldAutoConnect is enabled
+  //   shouldAutoConnect: false,
+  // })
 
   return (
     <PrivyProvider
@@ -23,11 +22,11 @@ function App() {
         embeddedWallets: {
           createOnLogin: 'users-without-wallets',
         },
-        externalWallets: {
-          solana: {
-            connectors: solanaConnectors,
-          }
-        },
+        // externalWallets: {
+        //   solana: {
+        //     connectors: solanaConnectors,
+        //   }
+        // },
         solanaClusters: [
           { name: 'mainnet-beta', rpcUrl: 'https://api.mainnet-beta.solana.com' },
           { name: 'devnet', rpcUrl: 'https://api.devnet.solana.com' },

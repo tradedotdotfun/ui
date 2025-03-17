@@ -4,6 +4,7 @@ import { usePrices } from "../hooks/usePrices";
 import { useClosePosition } from "../hooks/useClosePosition";
 import { priceOfMarket } from "../utils/prices";
 import { Position } from "../types/positions";
+import { formatCurrency } from "../utils/formatCurrency";
 
 import RetroBox from "./RetroBox";
 import NESButton from "./Button";
@@ -23,8 +24,8 @@ function ClosePositionBox({ position, price, onClickCancel, onClickConfirm }: Cl
   const [formattedEstimatedPnL, setFormattedEstimatedPnL] = useState<string>("");
   const roiPercentage = position.roi * 100;
 
-  const formattedEntryPrice = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(position.entryPrice);
-  const formattedMarkPrice = price ? new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price) : "-";
+  const formattedEntryPrice = formatCurrency(position.entryPrice);
+  const formattedMarkPrice = price ? formatCurrency(price) : "-";
 
   useEffect(() => {
     if (closingAmount === undefined || price === undefined) {
@@ -34,7 +35,7 @@ function ClosePositionBox({ position, price, onClickCancel, onClickConfirm }: Cl
     const amount = closingAmount || 0;
     const totalAmount = position.size * price;
     const estimatedPnL = amount / totalAmount * position.pnl;
-    setFormattedEstimatedPnL(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(estimatedPnL));
+    setFormattedEstimatedPnL(formatCurrency(estimatedPnL));
   }, [closingAmount]);
 
   return (

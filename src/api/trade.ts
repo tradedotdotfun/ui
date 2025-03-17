@@ -2,6 +2,7 @@ import { CandlestickData, Time } from "lightweight-charts";
 import apiClient from "./index.ts";
 
 export type MarketPrices = {
+  "SONICUSDT": number;
   "SOLUSDT": number;
   "BTCUSDT": number;
   "ETHUSDT": number;

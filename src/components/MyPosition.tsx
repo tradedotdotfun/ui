@@ -1,21 +1,20 @@
 import { useNavigate } from "react-router-dom";
 import { usePositions } from "../hooks/usePositions";
 import { usePrices } from "../hooks/usePrices";
-
 import { Position } from "../types/positions";
-
+import { priceOfMarket } from "../utils/prices";
+import { formatCurrency } from "../utils/formatCurrency";
 import NESButton from "./Button";
 import Divider from "./Divider";
 import RetroBox from "./RetroBox";
 import CoinIcon from "./CoinIcon";
-import { priceOfMarket } from "../utils/prices";
 
 type TotalPnLProps = {
   pnl: number;
 }
 
 function TotalPnLSection({ pnl }: TotalPnLProps) {
-  const formattedPnL = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(pnl);
+  const formattedPnL = formatCurrency(pnl);
 
   return (
     <div className="flex justify-between items-start">
@@ -48,11 +47,11 @@ type PositionBoxProps = {
 };
 
 function PositionBox({ position, price, onClickClosePosition }: PositionBoxProps) {
-  const formattedPnL = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(position.pnl);
-  const formattedSize = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(position.size * price);
-  const formattedEntryPrice = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(position.entryPrice);
-  const formattedMarkPrice = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price);
-  const formattedLiqPrice = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(position.liquidationPrice);
+  const formattedPnL = formatCurrency(position.pnl);
+  const formattedSize = formatCurrency(position.size * price);
+  const formattedEntryPrice = formatCurrency(position.entryPrice);
+  const formattedMarkPrice = formatCurrency(price);
+  const formattedLiqPrice = formatCurrency(position.liquidationPrice);
   const roiPercentage = position.roi * 100;
 
   return (

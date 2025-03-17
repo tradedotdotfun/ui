@@ -9,7 +9,7 @@ import TradeExecutionPanel from "../components/TradeExecutionPanel";
 import { MarketType } from "../types/markets";
 
 export default function TradePage() {
-  const [market, setMarket] = useState<MarketType>('SOL');
+  const [market, setMarket] = useState<MarketType>('SONIC');
   
   useEffect(() => {
     scrollTo(0, 0);

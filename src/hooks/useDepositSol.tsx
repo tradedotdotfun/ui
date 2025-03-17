@@ -1,6 +1,5 @@
 import { useCallback, } from 'react';
 import {
-  clusterApiUrl,
   Connection,
   PublicKey,
   SystemProgram,
@@ -10,7 +9,7 @@ import {
 import { useSolanaWallets } from '@privy-io/react-auth';
 
 
-const PROGRAM_ID = new PublicKey("CoFf4ZpbTJRoPxdJ64JvMn4pVR1wjhvARc8ed91i9i37");
+const PROGRAM_ID = new PublicKey("AFDcYebrecmbqxNNQa3jht8LkSjUDgCT5T3bV2ncagHG");
 
 export const useDepositSol = () => {
   const { ready, wallets } = useSolanaWallets();
@@ -20,7 +19,7 @@ export const useDepositSol = () => {
 
     if (!ready || !wallet) return;
 
-    let connection = new Connection(clusterApiUrl('devnet'));
+    let connection = new Connection("https://api.testnet.sonic.game/");
 
     let transaction = new Transaction();
 

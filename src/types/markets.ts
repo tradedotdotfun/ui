@@ -1,4 +1,4 @@
-export type MarketType = "SOL" | "BTC" | "ETH";
+export type MarketType = "SOL" | "BTC" | "ETH" | "SONIC";
 
 export const marketToCoinId = {
   SOL: "solusdt",
