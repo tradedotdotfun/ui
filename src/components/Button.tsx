@@ -1,9 +1,9 @@
-import { ButtonHTMLAttributes, useRef } from 'react';
+import { ButtonHTMLAttributes, useRef } from "react";
 
 type NESButtonProps = {
-  variant?: 'default' | 'primary' | 'green' | 'red';
-  fontSize?: 'default' | 'small';
-  audio?: 'default' | 'cancel';
+  variant?: "default" | "primary" | "green" | "red" | "blue";
+  fontSize?: "default" | "small";
+  audio?: "default" | "cancel";
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 const baseStyles = `
@@ -52,14 +52,23 @@ const variantStyles = {
     hover:border-[#75212C]
     active:bg-[#E84158]
     active:border-[#75212C]
-  `
+  `,
+  blue: `
+    text-white
+    bg-[#0000FF]
+    border-[#000C79]
+    hover:bg-[#0000E3]
+    hover:border-[#000C79]
+    active:bg-[#0000E3]
+    active:border-[#000C79]
+  `,
 };
 
 export default function NESButton({
-  variant = 'default',
-  fontSize = 'default',
-  audio = 'default',
-  className = '',
+  variant = "default",
+  fontSize = "default",
+  audio = "default",
+  className = "",
   children,
   onClick,
   ...props
@@ -74,11 +83,12 @@ export default function NESButton({
     if (onClick) {
       onClick(e);
     }
-  }; 
+  };
 
-  const fontStyle = fontSize === 'default' ? 
-  "text-[16px] sm:text-[22px]" : 
-  "text-[10px] sm:text-[14px]";
+  const fontStyle =
+    fontSize === "default"
+      ? "text-[16px] sm:text-[22px]"
+      : "text-[10px] sm:text-[14px]";
   return (
     <button
       className={`${baseStyles} ${variantStyles[variant]} ${fontStyle} ${className}`}
