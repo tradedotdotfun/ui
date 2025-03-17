@@ -1,9 +1,11 @@
+import { useNavigate } from "react-router-dom";
 import { useIsMobile } from "../hooks/useIsMobile";
 import { useLeaderBoard } from "../hooks/useLeaderBoard";
 import { formatAddress } from "../utils/address";
 import RetroBox from "./RetroBox";
 
 export default function LeaderBoard() {
+  const navigate = useNavigate();
   const isMobile = useIsMobile();
   const { data: leaderboard } = useLeaderBoard();
 
@@ -38,7 +40,13 @@ export default function LeaderBoard() {
                       ? 'text-[#3112D8]'
                       : 'text-white';
               return (
-                <div key={`rank-${idx}`} className={`flex items-center justify-between w-full ${rank === 1 ? 'bg-[#FBB042]' : ''}`}>
+                <div
+                  key={`rank-${idx}`}
+                  className={`
+                  flex items-center justify-between w-full 
+                  ${rank === 1 ? 'bg-[#FBB042]' : ''} 
+                  hover:bg-white hover:text-black`}
+                  onClick={() => navigate(`/profile/${address}`)}>
                   <div className="flex items-center gap-5">
                     <p
                       className={`w-10 sm:w-20 ${rankStyle} text-[10px] sm:text-[16px]`}
@@ -47,7 +55,7 @@ export default function LeaderBoard() {
                     </p>
                     <p className={`text-[10px] sm:text-[16px] ${rankStyle}`}>{name === "" ? formatAddress(address) : "@" + name}</p>
                   </div>
-                  <p className={`${rankStyle} text-[10px] sm:text-[16px]`}>{`${(roi*100).toFixed(2)}%`}</p>
+                  <p className={`${rankStyle} text-[10px] sm:text-[16px]`}>{`${(roi * 100).toFixed(2)}%`}</p>
                 </div>
               )
             })}

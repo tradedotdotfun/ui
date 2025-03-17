@@ -19,7 +19,7 @@ export default function AppRoutes() {
           <Route path="/close" element={<ClosePositionPage />} />
           <Route path="/terms" element={<TermsOfServicePage />} />
           <Route path="/privacy" element={<PrivacyPolicyPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/profile/:address" element={<ProfilePage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>

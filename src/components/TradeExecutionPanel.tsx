@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useSolanaWallets } from "@privy-io/react-auth";
 import { useUserInfo } from "../hooks/useUser";
 import { useCreatePosition } from "../hooks/useCreatePosition";
 import { marketToCoinId, MarketType } from "../types/markets";
@@ -63,7 +64,8 @@ function LeveragePanel({ leverage, setLeverage }: { leverage: number, setLeverag
 }
 
 export default function TradeExecutionPanel({ market }: { market: MarketType }) {
-  const { data: userInfo } = useUserInfo();
+  const { wallets } = useSolanaWallets();
+  const { data: userInfo } = useUserInfo(wallets.length > 0 ? wallets[0].address : '');
   const { createPosition } = useCreatePosition();
   const [leverage, setLeverage] = useState(1);
   const [amount, setAmount] = useState<number | undefined>(undefined);

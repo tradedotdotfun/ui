@@ -1,6 +1,9 @@
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import NESButton from "../components/Button";
 import Header from "../components/Header";
 import RetroBox from "../components/RetroBox";
+import { useUserInfo } from '../hooks/useUser';
 
 const formatRank = (rank: number): string => {
   if (rank === 1) return "1st";
@@ -29,7 +32,7 @@ const SOCIAL_LOGO_MAP = {
 const ProfileBox = ({
   name,
   rank,
-  pln,
+  pnl,
   sns,
   follower,
   points,
@@ -41,7 +44,7 @@ const ProfileBox = ({
 }: {
   name: string;
   rank: number;
-  pln: number;
+  pnl: number;
   sns: Social[];
   follower: number;
   points: number;
@@ -51,7 +54,7 @@ const ProfileBox = ({
   profileImage: string;
   description: string;
 }) => {
-  const isProfit = pln > 0;
+  const isProfit = pnl > 0;
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-center">
@@ -86,7 +89,7 @@ const ProfileBox = ({
                     className={isProfit ? "text-[#00C950]" : "text-[#F6455D]"}
                   >
                     {isProfit ? "+" : "-"}
-                    {formatNumber(pln)}%
+                    {formatNumber(pnl)}%
                   </span>
                 </p>
               </div>
@@ -179,13 +182,33 @@ const ProfileBox = ({
 };
 
 export default function ProfilePage() {
+  const { address } = useParams<{ address: string }>();
+
+  const { data: user, isLoading } = useUserInfo(address ?? "");
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!user) {
+    return <div>User not found</div>;
+  }
+
+
+  const INITIAL_BALANCE = 10000;
+
+  const rank = user.rank;
+  const pnl = user.totalEstimatedUSD - INITIAL_BALANCE;
+  const pnlPercentage = pnl / INITIAL_BALANCE * 100;
+  console.log(pnlPercentage);
+  
   return (
     <div>
       <Header />
       <ProfileBox
         name="John Doe"
-        rank={3}
-        pln={10.3544}
+        rank={rank}
+        pnl={pnlPercentage}
         sns={[
           { type: "x", name: "John Doe223" },
           { type: "tickTock", name: "John Doe333" },

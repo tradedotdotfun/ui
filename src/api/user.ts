@@ -52,7 +52,7 @@ export const fetchPositions: (request: UserRequest) => Promise<Position[]> = asy
   // const response = await apiClient.get(`/position?round=${round}&address=${"7ENEt33c362bZVcxdgR4A1wNnffwSWHawan935Qw9Vya"}`);
   const response = await apiClient.get(`/position?round=${round}&address=${address}`);
 
-  if (response.data.length === 0) {
+  if (!response.data || response.data.length === 0) {
     return [];
   }
 

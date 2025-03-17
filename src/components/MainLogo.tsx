@@ -20,7 +20,7 @@ export default function MainLogo() {
 
   const isMobile = useIsMobile();
   const navigate = useNavigate();
-  const { data: userInfo, refetch: refetchUser } = useUserInfo();
+  const { data: userInfo, refetch: refetchUser } = useUserInfo(wallets.length > 0 ? wallets[0].address : '');
 
   const { depositSol } = useDepositSol();
 

@@ -9,6 +9,7 @@ import CoinIcon from "./CoinIcon";
 import { usePrices } from "../hooks/usePrices";
 import { priceOfMarket } from "../utils/prices";
 import { useChartData } from "../hooks/useChartData";
+import { formatCurrency } from "../utils/formatCurrency";
 
 type ChartProps = {
   market: MarketType;
@@ -77,7 +78,7 @@ export default function Chart({ market, setMarket }: ChartProps) {
           <div className="w-full flex">
             <div className="flex-1 flex flex-col text-left">
               <p className="text-[12px] sm:text-[24px] text-white">CURRENT PRICE</p>
-              <p className="text-[12px] sm:text-[24px] text-white">{prices ? `$${priceOfMarket(market, prices).toLocaleString()}` : "-"}</p>
+              <p className="text-[12px] sm:text-[24px] text-white">{prices ? `${formatCurrency(priceOfMarket(market, prices))}` : "-"}</p>
             </div>
             <div
               className="flex gap-2 sm:gap-5 items-center cursor-pointer arrow-container"
