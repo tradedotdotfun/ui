@@ -20,15 +20,17 @@ export default function TradePage() {
     <div className="min-h-screen bg-black text-white font-retro flex flex-col items-center">
       <Header />
       <Ticker />
-      <div
-        className="w-full max-w-[1280px] p-5 sm:px-10 sm:py-20 
+      <main>
+        <div
+          className="w-full max-w-[1280px] p-5 sm:px-10 sm:py-20 
       flex flex-col justify-center items-center gap-5"
-      >
-        <RoundInfo />
-        <Chart market={market} setMarket={setMarket} />
-        <TradeExecutionPanel market={market} />
-        <MyPosition />
-      </div>
+        >
+          <RoundInfo />
+          <Chart market={market} setMarket={setMarket} />
+          <TradeExecutionPanel market={market} />
+          <MyPosition />
+        </div>
+      </main>
       <Footer />
     </div>
   );

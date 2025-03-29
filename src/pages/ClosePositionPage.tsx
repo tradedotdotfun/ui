@@ -14,7 +14,9 @@ export default function ClosePositionPage() {
     <div className="min-h-screen bg-black text-white font-retro flex flex-col items-center">
       <Header />
       <Ticker />
-      <ClosePosition />
+      <main>
+        <ClosePosition />
+      </main>
       <Footer />
     </div>
   );

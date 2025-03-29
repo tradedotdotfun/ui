@@ -10,10 +10,12 @@ function HomePage() {
     <div className="min-h-screen bg-black text-white font-retro flex flex-col items-center">
       <Header />
       <Ticker />
-      <Hero />
-      <CurrentStats />
-      <LeaderBoard />
-      <Footer />
+      <main>
+        <Hero />
+        <CurrentStats />
+        <LeaderBoard />
+        <Footer />
+      </main>
     </div>
   );
 }

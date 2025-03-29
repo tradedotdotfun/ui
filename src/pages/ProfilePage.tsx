@@ -120,10 +120,10 @@ const ProfileBox = ({
                 </div>
               ))}
             </div>
-            <div className="hidden md:block mt-[36px] text-[24px] w-full text-[#FBB042]">
+            <div className="hidden md:block mt-[36px] text-[24px] w-full text-[#FFF828]">
               ^^^^^^^^^^^^^^^^^
             </div>
-            <div className="block md:hidden mt-[36px] text-center text-[20px] w-full text-[#FBB042]">
+            <div className="block md:hidden mt-[36px] text-center text-[20px] w-full text-[#FFF828]">
               ^^^^^^^^^^^
             </div>
             <div className="flex md:gap-x-[48px] gap-x-[24px] mt-[36px] w-full justify-center items-center md:text-[12px] text-[8px]">
@@ -180,10 +180,10 @@ const ProfileBox = ({
               </NESButton>
             </div>
 
-            <div className="hidden md:block mt-[36px] text-[24px] w-full text-[#FBB042]">
+            <div className="hidden md:block mt-[36px] text-[24px] w-full text-[#FFF828]">
               ^^^^^^^^^^^^^^^^^
             </div>
-            <div className="block md:hidden mt-[36px] text-center text-[20px] w-full text-[#FBB042]">
+            <div className="block md:hidden mt-[36px] text-center text-[20px] w-full text-[#FFF828]">
               ^^^^^^^^^^^
             </div>
           </div>
