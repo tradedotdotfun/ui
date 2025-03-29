@@ -1,8 +1,10 @@
 import { useNavigate } from "react-router-dom";
+
 import { useIsMobile } from "../hooks/useIsMobile";
 import { useLeaderBoard } from "../hooks/useLeaderBoard";
 import { formatAddress } from "../utils/address";
 import { formatRank } from "../utils/rank";
+
 import RetroBox from "./RetroBox";
 
 export default function LeaderBoard() {

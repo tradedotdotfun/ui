@@ -1,32 +1,43 @@
+import { usePrivy, useSolanaWallets } from "@privy-io/react-auth";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { usePrivy, useSolanaWallets } from "@privy-io/react-auth";
+
+import { useConfirmTx } from "../hooks/useConfirmTx";
+import { useDepositSol } from "../hooks/useDepositSol";
 import { useIsMobile } from "../hooks/useIsMobile";
 import { useUserInfo } from "../hooks/useUser";
-import { useDepositSol } from "../hooks/useDepositSol";
-import TextButton from "./TextButton";
+
+import AddressCopy from "./AddressCopy";
 import InsertCoinModal from "./InsertCoinModal";
 import LoadingModal from "./LoadingModal";
 import Profile from "./Profile";
-import { useConfirmTx } from "../hooks/useConfirmTx";
-import AddressCopy from "./AddressCopy";
+import TextButton from "./TextButton";
 
-export default function MainLogo() {
+export default function Hero() {
   const { ready, authenticated, login, user } = usePrivy();
   const { wallets, createWallet } = useSolanaWallets();
   // Disable login when Privy is not ready or the user is already authenticated
   const disableLogin = !ready;
-  const { confirmTx, isLoading: isTxLoading, isSuccess, isError, error } = useConfirmTx();
+  const {
+    confirmTx,
+    isLoading: isTxLoading,
+    isSuccess,
+    isError,
+    error,
+  } = useConfirmTx();
 
   const isMobile = useIsMobile();
   const navigate = useNavigate();
-  const { data: userInfo, refetch: refetchUser } = useUserInfo(wallets.length > 0 ? wallets[0].address : '');
+  const { data: userInfo, refetch: refetchUser } = useUserInfo(
+    wallets.length > 0 ? wallets[0].address : ""
+  );
 
   const { depositSol } = useDepositSol();
 
   const [isLoadingEnterGame, setIsLoadingEnterGame] = useState(false);
   const [msg, setMsg] = useState<string>("INSERT COIN");
-  const [isInsertCoinModalOpen, setIsInsertCoinModalOpen] = useState<boolean>(false);
+  const [isInsertCoinModalOpen, setIsInsertCoinModalOpen] =
+    useState<boolean>(false);
   const [isLoadingModalOpen, setIsLoadingModalOpen] = useState<boolean>(false);
 
   // 트랜잭션 상태에 따라 로딩 모달 표시
@@ -63,7 +74,7 @@ export default function MainLogo() {
       return setIsInsertCoinModalOpen(true);
     }
     navigate("/trade");
-  }
+  };
 
   const handleInsertCoin = async () => {
     setIsInsertCoinModalOpen(false);
@@ -91,7 +102,7 @@ export default function MainLogo() {
       setIsLoadingEnterGame(false);
       console.error("❌ Error:", error);
     }
-  }
+  };
 
   // const handleUpdateName = async () => {
   //   const signed = await signData();
@@ -124,19 +135,17 @@ export default function MainLogo() {
 
   return (
     <div className="relative w-full flex flex-col items-center p-4 text-center overflow-x-hidden overflow-y-hidden">
-      {
-        isMobile
-          ? (<img src='/pepe-punch.gif' alt="pepe-punch" className="w-[128px]" />)
-          : (<div className="text-[40px] lg:text-[80px] text-[#0000FE] mt-[120px] whitespace-nowrap">
-            TRADE DOT FUN
-          </div>)
-      }
+      {isMobile ? (
+        <img src="/pepe-punch.gif" alt="pepe-punch" className="w-[128px]" />
+      ) : (
+        <div className="text-[40px] lg:text-[80px] text-[#0000FE] mt-[120px] whitespace-nowrap">
+          TRADE DOT FUN
+        </div>
+      )}
 
       <div className="mt-[44px] text-[28px] text-[#FBB042]">
         Are You the Next{" "}
-        <span className="font-bold animate-pulse text-[#FBB042]">
-          100x
-        </span>{" "}
+        <span className="font-bold animate-pulse text-[#FBB042]">100x</span>{" "}
         Trader?
       </div>
 
@@ -148,50 +157,69 @@ export default function MainLogo() {
         and prove your trading skills.
       </p>
 
-      {authenticated && wallets.length > 0?
+      {authenticated && wallets.length > 0 ? (
         <div className="flex flex-row justify-between gap-2 items-center mb-[20px] text-[16px]">
           <p>Welcome</p>
           <AddressCopy address={wallets[0].address} />
-        </div> : undefined}
+        </div>
+      ) : undefined}
 
       <TextButton
         onClick={handleClickTextButton}
         disabled={disableLogin || isTxLoading}
       >
-        <img src="/triangle_pixel.svg" alt="Insert Coin" className="mr-[16px]" />
-        <p className="text-white font-bold sm:text-[22px]">{isTxLoading ? "PROCESSING..." : msg}</p>
+        <img
+          src="/triangle_pixel.svg"
+          alt="Insert Coin"
+          className="mr-[16px]"
+        />
+        <p className="text-white font-bold sm:text-[22px]">
+          {isTxLoading ? "PROCESSING..." : msg}
+        </p>
       </TextButton>
 
       <small className="text-[#FBB042] text-[10px] mt-2 mb-[60px]">
-        {
-          userInfo && authenticated ?
-            "Your league awaits - keep trading!" :
-            "Entry Fee: 0.1 SOL"
-        }
+        {userInfo && authenticated
+          ? "Your league awaits - keep trading!"
+          : "Entry Fee: 0.1 SOL"}
       </small>
 
-      {
-        !isMobile && (
-          <>
-            <img src="/pepe-box.gif" alt="pepe-box" className="w-[180px] absolute top-[196px] left-[calc(50%-606px)]" />
-            <img src="/pepe-punch.gif" alt="pepe-punch" className="w-[180px] absolute top-[240px] right-[calc(50%-606px)] transform -scale-x-100" />
-            <img src="/pepe-dance.gif" alt="pepe-dance" className="w-[215px] absolute top-[410px] left-[calc(50%-380px)]" />
-            <img src="/sonic-dancing.gif" alt="sonic-dancing" className="w-[113px] absolute top-[480px] right-[calc(50%-280px)]" />
-          </>
-        )
-      }
-      {
-        userInfo && authenticated && <Profile user={userInfo} />
-      }
+      {!isMobile && (
+        <>
+          <img
+            src="/pepe-box.gif"
+            alt="pepe-box"
+            className="w-[180px] absolute top-[196px] left-[calc(50%-606px)]"
+          />
+          <img
+            src="/pepe-punch.gif"
+            alt="pepe-punch"
+            className="w-[180px] absolute top-[240px] right-[calc(50%-606px)] transform -scale-x-100"
+          />
+          <img
+            src="/pepe-dance.gif"
+            alt="pepe-dance"
+            className="w-[215px] absolute top-[410px] left-[calc(50%-380px)]"
+          />
+          <img
+            src="/sonic-dancing.gif"
+            alt="sonic-dancing"
+            className="w-[113px] absolute top-[480px] right-[calc(50%-280px)]"
+          />
+        </>
+      )}
+      {userInfo && authenticated && <Profile user={userInfo} />}
       <InsertCoinModal
         isOpen={isInsertCoinModalOpen}
         onClose={() => setIsInsertCoinModalOpen(false)}
-        onConfirm={handleInsertCoin} />
+        onConfirm={handleInsertCoin}
+      />
       <LoadingModal
         isOpen={isLoadingModalOpen}
         onClose={() => {
           if (!isTxLoading) setIsLoadingModalOpen(false);
-        }} />
+        }}
+      />
     </div>
   );
 }

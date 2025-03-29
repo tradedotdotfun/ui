@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import Chart from "../components/Chart";
 import Footer from "../components/Footer";
 import Header from "../components/Header";

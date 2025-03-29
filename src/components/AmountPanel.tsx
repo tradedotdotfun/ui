@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+
 import { formatCurrency } from "../utils/formatCurrency";
-import RetroBox from "./RetroBox";
+
 import ProgressBar from "./ProgressBar";
+import RetroBox from "./RetroBox";
 
 type AmountPanelProps = {
   totalAmount: number;

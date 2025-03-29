@@ -1,12 +1,14 @@
-import { useEffect, useRef, useState } from "react";
 import { useSolanaWallets } from "@privy-io/react-auth";
-import { useUserInfo } from "../hooks/useUser";
+import { useEffect, useRef, useState } from "react";
+
 import { useCreatePosition } from "../hooks/useCreatePosition";
+import { useUserInfo } from "../hooks/useUser";
 import { marketToCoinId, MarketType } from "../types/markets";
-import NESButton from "./Button";
-import ArrowButtonIcon from "./ArrowButton";
-import ProgressBar from "./ProgressBar";
+
 import AmountPanel from "./AmountPanel";
+import ArrowButtonIcon from "./ArrowButton";
+import NESButton from "./Button";
+import ProgressBar from "./ProgressBar";
 
 const MAX_LEVERAGE = 100;
 

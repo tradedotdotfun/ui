@@ -1,7 +1,8 @@
 import "./App.css";
-import AppRoutes from "./routes";
-import { ToastProvider } from "./providers/ToastProvider";
 import { PrivyProvider } from "@privy-io/react-auth";
+
+import { ToastProvider } from "./providers/ToastProvider";
+import AppRoutes from "./routes";
 
 function App() {
   // const solanaConnectors = toSolanaWalletConnectors({

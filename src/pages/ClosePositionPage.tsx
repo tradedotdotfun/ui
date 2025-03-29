@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+
 import ClosePosition from "../components/ClosePosition";
 import Footer from "../components/Footer";
 import Header from "../components/Header";

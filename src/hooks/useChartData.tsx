@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+
 import { fetchChartData } from "../api/trade";
 import { marketToCoinId, MarketType } from "../types/markets";
 

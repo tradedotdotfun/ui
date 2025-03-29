@@ -1,7 +1,9 @@
 import { useCallback } from "react";
+
 import { createPosition as createPositionApi } from "../api/trade";
-import { useSignData } from "./useSignData";
 import { useToast } from "../providers/ToastProvider";
+
+import { useSignData } from "./useSignData";
 
 export const useCreatePosition = () => {
   const { signData } = useSignData();

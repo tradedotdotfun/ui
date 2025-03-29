@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+
 import { fetchLeaderBoard } from "../api/leaderboard";
 
 export const useLeaderBoard = () => {

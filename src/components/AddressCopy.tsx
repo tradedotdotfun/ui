@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
-import RetroBox from './RetroBox';
+
 import { formatAddress } from '../utils/address';
+
+import RetroBox from './RetroBox';
 
 type AddressCopyProps = {
   address: string;

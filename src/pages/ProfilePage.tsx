@@ -1,11 +1,12 @@
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useUserInfo } from '../hooks/useUser';
-import { formatRank } from '../utils/rank';
+
+import AddressCopy from '../components/AddressCopy';
 import NESButton from "../components/Button";
 import Header from "../components/Header";
 import RetroBox from "../components/RetroBox";
-import AddressCopy from '../components/AddressCopy';
-import { useEffect } from 'react';
+import { useUserInfo } from '../hooks/useUser';
+import { formatRank } from '../utils/rank';
 
 const formatNumber = (n: number): string => {
   const fixed = n.toFixed(2);

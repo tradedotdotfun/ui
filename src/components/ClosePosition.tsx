@@ -1,16 +1,17 @@
 import { useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { usePrices } from "../hooks/usePrices";
+
 import { useClosePosition } from "../hooks/useClosePosition";
-import { priceOfMarket } from "../utils/prices";
+import { usePrices } from "../hooks/usePrices";
 import { Position } from "../types/positions";
 import { formatCurrency } from "../utils/formatCurrency";
+import { priceOfMarket } from "../utils/prices";
 
-import RetroBox from "./RetroBox";
-import NESButton from "./Button";
-import Divider from "./Divider";
 import AmountPanel from "./AmountPanel";
+import NESButton from "./Button";
 import CoinIcon from "./CoinIcon";
+import Divider from "./Divider";
+import RetroBox from "./RetroBox";
 
 type ClosePositionBoxProps = {
   position: Position;

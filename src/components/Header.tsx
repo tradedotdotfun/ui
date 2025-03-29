@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
 import { useRef } from "react";
+import { Link } from "react-router-dom";
 
 export default function Header() {
   const audioRef = useRef(new Audio("/sonic-ring-sound-1.mp3"));

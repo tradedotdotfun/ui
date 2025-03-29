@@ -1,7 +1,8 @@
-import apiClient from "./index.ts";
-import { UserInfo, UserRequest } from "../types/users.ts";
 import { Position } from "../types/positions.ts";
+import { UserInfo, UserRequest } from "../types/users.ts";
 import { coinIdToMarket } from "../utils/prices.ts";
+
+import apiClient from "./index.ts";
 
 
 export const updateName = async (name: string, pubkey: string, msg: string, signature: string) => {
@@ -56,6 +57,7 @@ export const fetchPositions: (request: UserRequest) => Promise<Position[]> = asy
     return [];
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return response.data.map((position: any) => ({
     id: position["id"],
     market: coinIdToMarket(position["token"]),

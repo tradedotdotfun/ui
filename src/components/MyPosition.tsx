@@ -1,13 +1,15 @@
 import { useNavigate } from "react-router-dom";
+
 import { usePositions } from "../hooks/usePositions";
 import { usePrices } from "../hooks/usePrices";
 import { Position } from "../types/positions";
-import { priceOfMarket } from "../utils/prices";
 import { formatCurrency } from "../utils/formatCurrency";
+import { priceOfMarket } from "../utils/prices";
+
 import NESButton from "./Button";
+import CoinIcon from "./CoinIcon";
 import Divider from "./Divider";
 import RetroBox from "./RetroBox";
-import CoinIcon from "./CoinIcon";
 
 type TotalPnLProps = {
   pnl: number;

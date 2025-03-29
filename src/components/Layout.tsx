@@ -1,4 +1,5 @@
 import { Outlet } from 'react-router-dom';
+
 import FloatingMusicPlayer from '../components/FloatingMusicPlayer';
 
 export default function Layout() {

@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+
 import { fetchPrices } from "../api/trade";
 
 export const usePrices = () => {

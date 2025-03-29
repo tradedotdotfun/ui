@@ -1,5 +1,5 @@
-import { useState, useCallback, useEffect } from 'react';
 import { Connection } from '@solana/web3.js';
+import { useState, useCallback, useEffect } from 'react';
 
 type ConfirmationStatus = 'idle' | 'loading' | 'success' | 'error';
 

@@ -1,4 +1,5 @@
 import { CandlestickData, Time } from "lightweight-charts";
+
 import apiClient from "./index.ts";
 
 export type MarketPrices = {
@@ -28,6 +29,7 @@ export const fetchPrices: () => Promise<MarketPrices | undefined> = async () => 
 // ]
 export const fetchChartData: (market: string) => Promise<CandlestickData[]> = async (market) => {
   const response = await apiClient.get(`/chart?coin_id=${market}`);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const chartData = response.data.reverse().map((d: any) => {
     return {
       time: new Date(d["close_time"]).getTime() / 1000 as Time,

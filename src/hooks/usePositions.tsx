@@ -1,6 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
-import { fetchPositions } from "../api/user";
 import { useSolanaWallets } from "@privy-io/react-auth";
+import { useQuery } from "@tanstack/react-query";
+
+import { fetchPositions } from "../api/user";
 
 export const usePositions = () => {
   const { wallets } = useSolanaWallets();

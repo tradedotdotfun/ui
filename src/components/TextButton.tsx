@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState } from "react";
 
 type TextButtonProps = {
   onClick?: () => void;
@@ -6,8 +6,12 @@ type TextButtonProps = {
   disabled?: boolean;
 };
 
-export default function TextButton({ onClick, children, disabled }: TextButtonProps) {
-  const audioRef = useRef(new Audio('/sonic-start.wav'));
+export default function TextButton({
+  onClick,
+  children,
+  disabled,
+}: TextButtonProps) {
+  const audioRef = useRef(new Audio("/sonic-start.wav"));
   const [clicked, setClicked] = useState(false);
 
   const handleMouseDown = () => setClicked(true);
@@ -16,8 +20,8 @@ export default function TextButton({ onClick, children, disabled }: TextButtonPr
   const handleClick = () => {
     audioRef.current.currentTime = 0; // 클릭할 때마다 처음부터 재생
     audioRef.current.play();
-    onClick && onClick();
-  }
+    if (onClick) onClick();
+  };
 
   return (
     <button
@@ -25,7 +29,7 @@ export default function TextButton({ onClick, children, disabled }: TextButtonPr
         font-retro text-xl text-white py-2 px-4 h-[46px]
         flex items-center gap-2
         transition-all duration-100 ease-in-out
-        ${clicked ? 'scale-95' : 'scale-100'}
+        ${clicked ? "scale-95" : "scale-100"}
         retro-blink-half
         hover:border-4 hover:border-white hover:animate-none
         hover:h-[46px]

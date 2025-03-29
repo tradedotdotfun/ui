@@ -1,4 +1,4 @@
-import { useCallback, } from 'react';
+import { useSolanaWallets } from '@privy-io/react-auth';
 import {
   Connection,
   PublicKey,
@@ -6,7 +6,7 @@ import {
   Transaction,
   TransactionInstruction,
 } from '@solana/web3.js';
-import { useSolanaWallets } from '@privy-io/react-auth';
+import { useCallback, } from 'react';
 
 
 const PROGRAM_ID = new PublicKey("AFDcYebrecmbqxNNQa3jht8LkSjUDgCT5T3bV2ncagHG");
@@ -19,9 +19,9 @@ export const useDepositSol = () => {
 
     if (!ready || !wallet) return;
 
-    let connection = new Connection("https://api.testnet.sonic.game/");
+    const connection = new Connection("https://api.testnet.sonic.game/");
 
-    let transaction = new Transaction();
+    const transaction = new Transaction();
 
     // PDA 주소 계산
     const [vaultPDA] = await PublicKey.findProgramAddressSync(
