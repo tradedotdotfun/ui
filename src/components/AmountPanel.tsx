@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { formatCurrency } from "../utils/formatCurrency";
 
@@ -11,50 +11,69 @@ type AmountPanelProps = {
   setAmount: (amount: number | undefined) => void;
 };
 
-export default function AmountPanel({ totalAmount, amount, setAmount }: AmountPanelProps) {
+export default function AmountPanel({
+  totalAmount,
+  amount,
+  setAmount,
+}: AmountPanelProps) {
   const [isPercentageClicked, setIsPercentageClicked] = useState(false);
   const [percentage, setPercentage] = useState(0);
 
   const formattedBalance = formatCurrency(totalAmount);
 
-  const setPercentageWithAmount = (amount: number) => {
-    setIsPercentageClicked(false);
+  const setPercentageWithAmount = useCallback(
+    (amount: number) => {
+      setIsPercentageClicked(false);
 
-    if (amount === 0) {
-      setPercentage(0);
-      setAmount(undefined);
-      return;
-    }
-    const amountIsValid = amount > 0 && amount <= totalAmount;
-    if (amountIsValid) {
-      const percentage = (amount / totalAmount) * 100
+      if (amount === 0) {
+        setPercentage(0);
+        setAmount(undefined);
+        return;
+      }
+      const amountIsValid = amount > 0 && amount <= totalAmount;
+      if (amountIsValid) {
+        const percentage = (amount / totalAmount) * 100;
+        setPercentage(percentage);
+        setAmount(amount);
+      } else {
+        setPercentage(100);
+        setAmount(totalAmount);
+      }
+    },
+    [setAmount, totalAmount]
+  );
+
+  const setAmountWithPercentage = useCallback(
+    (percentage: number) => {
+      const amount = Number(((percentage / 100) * totalAmount).toFixed(2));
       setPercentage(percentage);
+      setIsPercentageClicked(true);
       setAmount(amount);
-    } else {
-      setPercentage(100);
-      setAmount(totalAmount);
-    }
-  }
-
-  const setAmountWithPercentage = (percentage: number) => {
-    const amount = Number(((percentage / 100) * totalAmount).toFixed(2));
-    setPercentage(percentage);
-    setIsPercentageClicked(true);
-    setAmount(amount);
-  }
+    },
+    [setAmount, totalAmount]
+  );
 
   useEffect(() => {
     if (isPercentageClicked) {
       return setAmountWithPercentage(percentage);
     }
     return setPercentageWithAmount(amount || 0);
-  }, [totalAmount])
+  }, [
+    amount,
+    isPercentageClicked,
+    percentage,
+    setAmountWithPercentage,
+    setPercentageWithAmount,
+    totalAmount,
+  ]);
 
   return (
     <>
       <div className="flex items-center justify-between gap-3">
         <p className="text-[12px] sm:text-[24px] text-white">Amount</p>
-        <p className="text-[10px] sm:text-[16px] text-white">{formattedBalance}</p>
+        <p className="text-[10px] sm:text-[16px] text-white">
+          {formattedBalance}
+        </p>
       </div>
       <RetroBox className="w-full">
         <div className="flex h-16 px-5 py-3 items-center justify-between gap-3 border-4 border-white">
@@ -63,7 +82,9 @@ export default function AmountPanel({ totalAmount, amount, setAmount }: AmountPa
             value={amount}
             className="w-full h-full bg-transparent text-white text-[12px] sm:text-[20px]"
             placeholder="0.0"
-            onChange={(e) => { setPercentageWithAmount(Number(e.target.value)) }}
+            onChange={(e) => {
+              setPercentageWithAmount(Number(e.target.value));
+            }}
           />
           <p className="text-[12px] sm:text-[20px] text-white">funUSD</p>
         </div>

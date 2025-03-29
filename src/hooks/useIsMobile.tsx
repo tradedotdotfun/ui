@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 export const useIsMobile = (breakpoint = 640) => {
   const [isMobile, setIsMobile] = useState<boolean>(false);
@@ -8,9 +8,9 @@ export const useIsMobile = (breakpoint = 640) => {
     setIsMobile(media.matches);
 
     const listener = (e: MediaQueryListEvent) => setIsMobile(e.matches);
-    media.addEventListener('change', listener);
+    media.addEventListener("change", listener);
 
-    return () => media.removeEventListener('change', listener);
+    return () => media.removeEventListener("change", listener);
   }, [breakpoint]);
 
   return isMobile;

@@ -1,12 +1,12 @@
-import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 
-import AddressCopy from '../components/AddressCopy';
+import AddressCopy from "../components/AddressCopy";
 import NESButton from "../components/Button";
 import Header from "../components/Header";
 import RetroBox from "../components/RetroBox";
-import { useUserInfo } from '../hooks/useUser';
-import { formatRank } from '../utils/rank';
+import { useUserInfo } from "../hooks/useUser";
+import { formatRank } from "../utils/rank";
 
 const formatNumber = (n: number): string => {
   const fixed = n.toFixed(2);
@@ -53,10 +53,10 @@ const ProfileBox = ({
   address: string;
 }) => {
   const isProfit = pnl > 0;
-  
+
   useEffect(() => {
     scrollTo(0, 0);
-  }, [])
+  }, []);
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-center">
@@ -99,16 +99,16 @@ const ProfileBox = ({
             <p className="text-white text-[16px] md:text-[20px] mt-[20px] md:mt-[28px] font-bold">
               @{name}
             </p>
-            
+
             <div className="mt-2 mb-4">
-              <AddressCopy 
+              <AddressCopy
                 address={address}
                 label=""
                 shortenAddress={true}
                 className="text-sm"
               />
             </div>
-            
+
             <div className="flex md:gap-y-[12px] md:gap-x-[20px] md:flex-row flex-col justify-start mt-[12px]">
               {sns.map((s) => (
                 <div
@@ -206,12 +206,11 @@ export default function ProfilePage() {
     return <div>User not found</div>;
   }
 
-
   const INITIAL_BALANCE = 10000;
 
   const rank = user.rank;
   const pnl = user.totalEstimatedUSD - INITIAL_BALANCE;
-  const pnlPercentage = pnl / INITIAL_BALANCE * 100;
+  const pnlPercentage = (pnl / INITIAL_BALANCE) * 100;
 
   return (
     <div>

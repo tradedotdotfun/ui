@@ -1,10 +1,9 @@
-import CurrentStats from '../components/CurrentStats';
-import Footer from '../components/Footer';
-import Header from '../components/Header';
-import Hero from '../components/Hero';
-import LeaderBoard from '../components/LeaderBoard';
-import Ticker from '../components/Ticker';
-
+import CurrentStats from "../components/CurrentStats";
+import Footer from "../components/Footer";
+import Header from "../components/Header";
+import Hero from "../components/Hero";
+import LeaderBoard from "../components/LeaderBoard";
+import Ticker from "../components/Ticker";
 
 function HomePage() {
   return (
@@ -13,10 +12,10 @@ function HomePage() {
       <Ticker />
       <Hero />
       <CurrentStats />
-      <LeaderBoard /> 
+      <LeaderBoard />
       <Footer />
     </div>
   );
-};
+}
 
 export default HomePage;

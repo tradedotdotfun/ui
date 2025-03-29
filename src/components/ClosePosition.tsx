@@ -20,9 +20,17 @@ type ClosePositionBoxProps = {
   onClickConfirm?: (percentage: number) => void;
 };
 
-function ClosePositionBox({ position, price, onClickCancel, onClickConfirm }: ClosePositionBoxProps) {
-  const [closingAmount, setClosingAmount] = useState<number | undefined>(undefined);
-  const [formattedEstimatedPnL, setFormattedEstimatedPnL] = useState<string>("");
+function ClosePositionBox({
+  position,
+  price,
+  onClickCancel,
+  onClickConfirm,
+}: ClosePositionBoxProps) {
+  const [closingAmount, setClosingAmount] = useState<number | undefined>(
+    undefined
+  );
+  const [formattedEstimatedPnL, setFormattedEstimatedPnL] =
+    useState<string>("");
   const roiPercentage = position.roi * 100;
 
   const formattedEntryPrice = formatCurrency(position.entryPrice);
@@ -35,68 +43,85 @@ function ClosePositionBox({ position, price, onClickCancel, onClickConfirm }: Cl
 
     const amount = closingAmount || 0;
     const totalAmount = position.size * price;
-    const estimatedPnL = amount / totalAmount * position.pnl;
+    const estimatedPnL = (amount / totalAmount) * position.pnl;
     setFormattedEstimatedPnL(formatCurrency(estimatedPnL));
-  }, [closingAmount]);
+  }, [closingAmount, position.pnl, position.size, price]);
 
   return (
     <div className="w-full flex flex-col gap-3 sm:gap-9">
       <div className="flex items-center">
-        <CoinIcon symbol={position.market} className="w-5 h-5 sm:w-10 sm:h-10" />
-        <p className="text-white text-[12px] sm:text-[32px] ml-2 sm:ml-5">{position.market}</p>
-        {
-          position.side === "long" ?
-            <p className="text-[#2DBD85] text-[10px] sm:text-[24px] ml-3 sm:ml-10 capitalize-first">{`${position.side} ${position.leverage}x`}</p> :
-            <p className="text-[#F6455D] text-[10px] sm:text-[24px] ml-3 sm:ml-10 capitalize-first">{`${position.side} ${position.leverage}x`}</p>
-        }
+        <CoinIcon
+          symbol={position.market}
+          className="w-5 h-5 sm:w-10 sm:h-10"
+        />
+        <p className="text-white text-[12px] sm:text-[32px] ml-2 sm:ml-5">
+          {position.market}
+        </p>
+        {position.side === "long" ? (
+          <p className="text-[#2DBD85] text-[10px] sm:text-[24px] ml-3 sm:ml-10 capitalize-first">{`${position.side} ${position.leverage}x`}</p>
+        ) : (
+          <p className="text-[#F6455D] text-[10px] sm:text-[24px] ml-3 sm:ml-10 capitalize-first">{`${position.side} ${position.leverage}x`}</p>
+        )}
       </div>
 
-      <div className="flex justify-between items-start 
-      text-white text-[10px] sm:text-[16px] lg:text-[24px]">
+      <div
+        className="flex justify-between items-start 
+      text-white text-[10px] sm:text-[16px] lg:text-[24px]"
+      >
         <p>Entry Price</p>
         <p>{formattedEntryPrice}</p>
       </div>
-      <div className="flex justify-between items-start 
-      text-white text-[10px] sm:text-[16px] lg:text-[24px]">
+      <div
+        className="flex justify-between items-start 
+      text-white text-[10px] sm:text-[16px] lg:text-[24px]"
+      >
         <p>Mark Price</p>
         <p>{formattedMarkPrice}</p>
       </div>
 
       <Divider char="-" />
 
-      {
-        price ?
-          <AmountPanel
-            totalAmount={position.size * price}
-            amount={closingAmount}
-            setAmount={setClosingAmount}
-          /> :
-          // TODO: Amount panel only with percentage
-          null
-      }
+      {price ? (
+        <AmountPanel
+          totalAmount={position.size * price}
+          amount={closingAmount}
+          setAmount={setClosingAmount}
+        />
+      ) : // TODO: Amount panel only with percentage
+      null}
 
       <Divider char="-" />
 
       <div className="flex flex-row justify-between items-start">
-        <p className="text-[#FBB042] text-[10px] sm:text-[24px]">{"Estimated PNL"}</p>
+        <p className="text-[#FBB042] text-[10px] sm:text-[24px]">
+          {"Estimated PNL"}
+        </p>
 
         <div className="self-end flex flex-col text-right gap-1 sm:gap-5">
-          {
-            position.pnl > 0 ?
-              <>
-                <p className="text-[#2DBD85] text-[10px] sm:text-[24px]">{`${formattedEstimatedPnL === "" ? "-" : "+"}${formattedEstimatedPnL}`}</p>
-                <p className="text-[#2DBD85] text-[8px] sm:text-[16px]">{`+${roiPercentage.toFixed(2)}%`}</p>
-              </> :
-              position.pnl < 0 ?
-                <>
-                  <p className="text-[#F6455D] text-[10px] sm:text-[24px]">{`${formattedEstimatedPnL === "" ? "-" : ""}${formattedEstimatedPnL}`}</p>
-                  <p className="text-[#F6455D] text-[8px] sm:text-[16px]">{`${roiPercentage.toFixed(2)}%`}</p>
-                </> :
-                <>
-                  <p className="text-white text-[10px] sm:text-[24px]">{`+$0.00`}</p>
-                  <p className="text-white text-[8px] sm:text-[16px]">{`+0.00%`}</p>
-                </>
-          }
+          {position.pnl > 0 ? (
+            <>
+              <p className="text-[#2DBD85] text-[10px] sm:text-[24px]">{`${
+                formattedEstimatedPnL === "" ? "-" : "+"
+              }${formattedEstimatedPnL}`}</p>
+              <p className="text-[#2DBD85] text-[8px] sm:text-[16px]">{`+${roiPercentage.toFixed(
+                2
+              )}%`}</p>
+            </>
+          ) : position.pnl < 0 ? (
+            <>
+              <p className="text-[#F6455D] text-[10px] sm:text-[24px]">{`${
+                formattedEstimatedPnL === "" ? "-" : ""
+              }${formattedEstimatedPnL}`}</p>
+              <p className="text-[#F6455D] text-[8px] sm:text-[16px]">{`${roiPercentage.toFixed(
+                2
+              )}%`}</p>
+            </>
+          ) : (
+            <>
+              <p className="text-white text-[10px] sm:text-[24px]">{`+$0.00`}</p>
+              <p className="text-white text-[8px] sm:text-[16px]">{`+0.00%`}</p>
+            </>
+          )}
         </div>
       </div>
 
@@ -104,7 +129,10 @@ function ClosePositionBox({ position, price, onClickCancel, onClickConfirm }: Cl
         <NESButton
           className="self-start w-full sm:flex-1/3"
           audio="cancel"
-          onClick={onClickCancel}>Cancel</NESButton>
+          onClick={onClickCancel}
+        >
+          Cancel
+        </NESButton>
         <NESButton
           variant="green"
           className="self-end w-full sm:flex-2/3"
@@ -112,11 +140,17 @@ function ClosePositionBox({ position, price, onClickCancel, onClickConfirm }: Cl
             if (closingAmount === undefined || price === undefined) {
               return;
             }
-            onClickConfirm?.(Math.round(closingAmount / (position.size * price) * 10000) / 100);
-          }}>Confirm</NESButton>
+            onClickConfirm?.(
+              Math.round((closingAmount / (position.size * price)) * 10000) /
+                100
+            );
+          }}
+        >
+          Confirm
+        </NESButton>
       </div>
     </div>
-  )
+  );
 }
 
 export default function ClosePosition() {
@@ -128,29 +162,30 @@ export default function ClosePosition() {
 
   const handleClickCancel = () => {
     navigate(-1);
-  }
+  };
 
-  const handleClickConfirm = useCallback(async (percentage: number) => {
-    console.log("percentage", percentage);
-    if (position === undefined) return;
-    await closePosition(position.id, Math.max(Math.min(percentage, 100), 0));
-    navigate(-1);
-  }, [position, closePosition]);
+  const handleClickConfirm = useCallback(
+    async (percentage: number) => {
+      if (position === undefined) return;
+      await closePosition(position.id, Math.max(Math.min(percentage, 100), 0));
+      navigate(-1);
+    },
+    [position, closePosition, navigate]
+  );
 
   if (!position) {
-    window.location.href = '/';
+    window.location.href = "/";
     return null;
   }
 
   return (
-    <div
-      className="w-full max-w-[1280px] p-5 sm:px-10 sm:py-20">
+    <div className="w-full max-w-[1280px] p-5 sm:px-10 sm:py-20">
       <div className="w-full border-[4px] border-white p-1 sm:p-[6px]">
-        <RetroBox
-          className="w-full">
+        <RetroBox className="w-full">
           <div
             className="border-[4px] border-white p-5 sm:px-13 sm:py-11
-              flex flex-col gap-6">
+              flex flex-col gap-6"
+          >
             <div className="flex flex-col text-left sm:pl-7 overflow-x-hidden">
               <div className="flex items-center justify-center">
                 <p className="text-[10px] sm:text-[18px] lg:text-[24px] text-white">
@@ -160,7 +195,11 @@ export default function ClosePosition() {
             </div>
             <ClosePositionBox
               position={position}
-              price={marketPrices ? priceOfMarket(position.market, marketPrices) : undefined}
+              price={
+                marketPrices
+                  ? priceOfMarket(position.market, marketPrices)
+                  : undefined
+              }
               onClickCancel={handleClickCancel}
               onClickConfirm={handleClickConfirm}
             />

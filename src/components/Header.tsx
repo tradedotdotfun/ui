@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export default function Header() {
   const audioRef = useRef(new Audio("/sonic-ring-sound-1.mp3"));
-  
+
   const handleClick = () => {
     audioRef.current.currentTime = 0; // 클릭할 때마다 처음부터 재생
     audioRef.current.play();

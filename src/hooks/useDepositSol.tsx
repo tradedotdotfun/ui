@@ -1,15 +1,16 @@
-import { useSolanaWallets } from '@privy-io/react-auth';
+import { useSolanaWallets } from "@privy-io/react-auth";
 import {
   Connection,
   PublicKey,
   SystemProgram,
   Transaction,
   TransactionInstruction,
-} from '@solana/web3.js';
-import { useCallback, } from 'react';
+} from "@solana/web3.js";
+import { useCallback } from "react";
 
-
-const PROGRAM_ID = new PublicKey("AFDcYebrecmbqxNNQa3jht8LkSjUDgCT5T3bV2ncagHG");
+const PROGRAM_ID = new PublicKey(
+  "AFDcYebrecmbqxNNQa3jht8LkSjUDgCT5T3bV2ncagHG"
+);
 
 export const useDepositSol = () => {
   const { ready, wallets } = useSolanaWallets();
@@ -33,21 +34,16 @@ export const useDepositSol = () => {
       PROGRAM_ID
     );
 
-    const instructionData = Buffer.from([
-      108,
-      81,
-      78,
-      117,
-      125,
-      155,
-      56,
-      200
-    ]);
+    const instructionData = Buffer.from([108, 81, 78, 117, 125, 155, 56, 200]);
 
     const instruction = new TransactionInstruction({
       programId: PROGRAM_ID,
       keys: [
-        { pubkey: new PublicKey(wallet.address), isSigner: true, isWritable: true },
+        {
+          pubkey: new PublicKey(wallet.address),
+          isSigner: true,
+          isWritable: true,
+        },
         { pubkey: vaultPDA, isSigner: false, isWritable: true },
         { pubkey: vaultDataPDA, isSigner: false, isWritable: true },
         { pubkey: SystemProgram.programId, isSigner: false, isWritable: false },
@@ -56,14 +52,15 @@ export const useDepositSol = () => {
     });
 
     transaction.add(instruction);
-    transaction.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
+    transaction.recentBlockhash = (
+      await connection.getLatestBlockhash()
+    ).blockhash;
     transaction.feePayer = new PublicKey(wallet.address);
 
     const signature = await wallet.sendTransaction(transaction, connection);
 
     return signature;
-
   }, [ready, wallets]);
 
   return { depositSol };
-}
+};

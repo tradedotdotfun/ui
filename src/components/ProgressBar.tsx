@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 
 import RetroBox from "./RetroBox";
 
@@ -33,23 +33,26 @@ export default function ProgressBar({
     audioRef.current.play();
   };
 
-  const updateValueFromPosition = (clientX: number) => {
-    if (!barRef.current || !onChange) return;
+  const updateValueFromPosition = useCallback(
+    (clientX: number) => {
+      if (!barRef.current || !onChange) return;
 
-    const rect = barRef.current.getBoundingClientRect();
-    const clickX = Math.max(0, Math.min(clientX - rect.left, rect.width)); // 범위 제한
-    const newPercentage = clickX / rect.width; // 클릭한 위치를 백분율로 변환
-    const newValue = min + newPercentage * (max - min);
+      const rect = barRef.current.getBoundingClientRect();
+      const clickX = Math.max(0, Math.min(clientX - rect.left, rect.width)); // 범위 제한
+      const newPercentage = clickX / rect.width; // 클릭한 위치를 백분율로 변환
+      const newValue = min + newPercentage * (max - min);
 
-    // 연속적인 값 사용, 정밀도에 따라 반올림
-    const factor = Math.pow(10, precision);
-    const roundedValue = Math.round(newValue * factor) / factor;
+      // 연속적인 값 사용, 정밀도에 따라 반올림
+      const factor = Math.pow(10, precision);
+      const roundedValue = Math.round(newValue * factor) / factor;
 
-    // 최소/최대 범위 내로 제한
-    const clampedValue = Math.max(min, Math.min(max, roundedValue));
+      // 최소/최대 범위 내로 제한
+      const clampedValue = Math.max(min, Math.min(max, roundedValue));
 
-    onChange(clampedValue);
-  };
+      onChange(clampedValue);
+    },
+    [max, min, onChange, precision]
+  );
 
   const handleClickBar = (e: React.MouseEvent<HTMLDivElement>) => {
     handleClickSound();
@@ -86,7 +89,7 @@ export default function ProgressBar({
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [isDragging]);
+  }, [isDragging, updateValueFromPosition]);
 
   return (
     <>

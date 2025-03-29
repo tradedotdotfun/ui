@@ -7,7 +7,7 @@ export const useChartData = (market: MarketType) => {
   const coinId = marketToCoinId[market];
 
   return useQuery({
-    queryKey: ['chartData', coinId],
+    queryKey: ["chartData", coinId],
     queryFn: () => fetchChartData(coinId),
     staleTime: 60000, // 60초간 캐싱 유지
     refetchInterval: 30000, // 30초마다 자동 갱신

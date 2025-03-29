@@ -23,8 +23,7 @@ export const useSignData = () => {
       msg: signingMsg,
       signature: uint8ArrayToBase64(signature),
     };
-
   }, [wallets, signingMsg]);
 
   return { signData };
-}
+};

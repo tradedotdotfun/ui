@@ -6,21 +6,21 @@ import Divider from "./Divider";
 type StoryImageProps = {
   index: number;
   line: string;
-}
+};
 
 function StoryImage({ index, line }: StoryImageProps) {
   const imgRef = useRef<HTMLImageElement>(null);
-  const [imgWidth, setImgWidth] = useState('auto');
+  const [imgWidth, setImgWidth] = useState("auto");
 
   useEffect(() => {
     if (imgRef.current) {
-      setImgWidth(imgRef.current.width.toString() + 'px');
+      setImgWidth(imgRef.current.width.toString() + "px");
     }
   }, []);
 
   const handleLoad = () => {
     if (imgRef.current) {
-      setImgWidth(imgRef.current.width.toString() + 'px');
+      setImgWidth(imgRef.current.width.toString() + "px");
     }
   };
 
@@ -50,23 +50,24 @@ function FwogStoryBoard() {
     `"Let it burn! The passion is unstoppable!"`,
     `"Wait… It's going up!?"`,
     `"From Fwog to Financial Mogul."`,
-  ]
+  ];
 
   return (
     <div className="flex flex-col gap-9 items-center justify-center mt-9">
-      <p className="text-[#299F46] text-16px">{"Fwog's Wild Ride: From Rags to Riches (and Back?)".toUpperCase()}</p>
+      <p className="text-[#299F46] text-16px">
+        {"Fwog's Wild Ride: From Rags to Riches (and Back?)".toUpperCase()}
+      </p>
       <div className="w-fit flex flex-col lg:flex-row gap-6 justify-center">
-        {
-          story.map((line, index) => (
-            <StoryImage
-              key={`fwog-story-${index + 1}`}
-              index={index}
-              line={line} />
-          ))
-        }
+        {story.map((line, index) => (
+          <StoryImage
+            key={`fwog-story-${index + 1}`}
+            index={index}
+            line={line}
+          />
+        ))}
       </div>
     </div>
-  )
+  );
 }
 
 export default function Footer() {
@@ -75,9 +76,7 @@ export default function Footer() {
       <Divider char="^" color="text-[#FBB042]" width="100%" />
       <FwogStoryBoard />
       <div className="flex flex-col items-center my-9">
-        <p className="text-white text-xs mb-2">
-          © 2025 TradeDotFun
-        </p>
+        <p className="text-white text-xs mb-2">© 2025 TradeDotFun</p>
         <div className="flex gap-4">
           <Link to="/terms" className="text-white text-xs hover:underline">
             Terms of Service

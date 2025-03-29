@@ -12,8 +12,14 @@ import ProgressBar from "./ProgressBar";
 
 const MAX_LEVERAGE = 100;
 
-function LeveragePanel({ leverage, setLeverage }: { leverage: number, setLeverage: (value: number) => void }) {
-  const audioRef = useRef(new Audio('/sonic-ring-sound-1.mp3'));
+function LeveragePanel({
+  leverage,
+  setLeverage,
+}: {
+  leverage: number;
+  setLeverage: (value: number) => void;
+}) {
+  const audioRef = useRef(new Audio("/sonic-ring-sound-1.mp3"));
 
   const increaseLeverage = () => {
     if (leverage < MAX_LEVERAGE) {
@@ -21,7 +27,7 @@ function LeveragePanel({ leverage, setLeverage }: { leverage: number, setLeverag
       audioRef.current.play();
       setLeverage(leverage + 1);
     }
-  }
+  };
 
   const decreaseLeverage = () => {
     if (leverage > 1) {
@@ -29,7 +35,7 @@ function LeveragePanel({ leverage, setLeverage }: { leverage: number, setLeverag
       audioRef.current.play();
       setLeverage(leverage - 1);
     }
-  }
+  };
 
   return (
     <div className="flex-1/2 flex flex-col text-left sm:pr-7 gap-7">
@@ -37,7 +43,8 @@ function LeveragePanel({ leverage, setLeverage }: { leverage: number, setLeverag
       <div className="h-16 flex items-center justify-between gap-3">
         <div
           className="flex items-center arrow-container cursor-pointer"
-          onClick={decreaseLeverage}>
+          onClick={decreaseLeverage}
+        >
           <div className="left-arrow-button">
             <ArrowButtonIcon />
           </div>
@@ -45,7 +52,8 @@ function LeveragePanel({ leverage, setLeverage }: { leverage: number, setLeverag
         <p className="text-[24px] text-white no-drag">{leverage}x</p>
         <div
           className="flex items-center arrow-container cursor-pointer"
-          onClick={increaseLeverage}>
+          onClick={increaseLeverage}
+        >
           <div className="right-arrow-button">
             <ArrowButtonIcon />
           </div>
@@ -63,12 +71,18 @@ function LeveragePanel({ leverage, setLeverage }: { leverage: number, setLeverag
         />
       </div>
     </div>
-  )
+  );
 }
 
-export default function TradeExecutionPanel({ market }: { market: MarketType }) {
+export default function TradeExecutionPanel({
+  market,
+}: {
+  market: MarketType;
+}) {
   const { wallets } = useSolanaWallets();
-  const { data: userInfo } = useUserInfo(wallets.length > 0 ? wallets[0].address : '');
+  const { data: userInfo } = useUserInfo(
+    wallets.length > 0 ? wallets[0].address : ""
+  );
   const { createPosition } = useCreatePosition();
   const [leverage, setLeverage] = useState(1);
   const [amount, setAmount] = useState<number | undefined>(undefined);
@@ -83,30 +97,42 @@ export default function TradeExecutionPanel({ market }: { market: MarketType }) 
     if (!amount) return;
 
     try {
-      await createPosition(type, leverage, amount / leverage, marketToCoinId[market]);
+      await createPosition(
+        type,
+        leverage,
+        amount / leverage,
+        marketToCoinId[market]
+      );
     } catch (e) {
       console.error(e);
     }
-  }
+  };
 
   if (!userInfo) return null;
 
   return (
-    <div className="w-full border-[4px] border-white p-5 sm:p-8
-    flex flex-col sm:flex-row flex-wrap">
+    <div
+      className="w-full border-[4px] border-white p-5 sm:p-8
+    flex flex-col sm:flex-row flex-wrap"
+    >
       <LeveragePanel leverage={leverage} setLeverage={setLeverage} />
       <div className="flex-1/2 flex flex-col text-left sm:pl-7 gap-7 overflow-x-hidden">
         <AmountPanel
           totalAmount={maxBalance || 0}
           amount={amount}
-          setAmount={setAmount} />
+          setAmount={setAmount}
+        />
       </div>
       <div className="flex-1/2 flex flex-col text-left sm:pr-7">
-        <NESButton variant="green" onClick={() => handleClickBuyOrSell("long")}>Long</NESButton>
+        <NESButton variant="green" onClick={() => handleClickBuyOrSell("long")}>
+          Long
+        </NESButton>
       </div>
       <div className="flex-1/2 flex flex-col text-left sm:pl-7">
-        <NESButton variant="red" onClick={() => handleClickBuyOrSell("short")}>Short</NESButton>
+        <NESButton variant="red" onClick={() => handleClickBuyOrSell("short")}>
+          Short
+        </NESButton>
       </div>
     </div>
-  )
+  );
 }

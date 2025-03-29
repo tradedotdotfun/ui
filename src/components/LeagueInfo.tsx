@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { Round } from "../types/rounds";
 
@@ -12,16 +12,17 @@ export default function RoundInfo() {
     totalPrize: 1000,
   };
 
-  const calculateRemainingTime = () => {
+  const calculateRemainingTime = useCallback(() => {
     const now = new Date();
     const endAt = new Date(league.endsAt);
     const diff = endAt.getTime() - now.getTime();
 
-    if (diff <= 0) return {
-      hours: 0,
-      minutes: 0,
-      seconds: 0,
-    };
+    if (diff <= 0)
+      return {
+        hours: 0,
+        minutes: 0,
+        seconds: 0,
+      };
 
     const hours = Math.floor(diff / (1000 * 60 * 60));
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
@@ -31,8 +32,8 @@ export default function RoundInfo() {
       hours,
       minutes,
       seconds,
-    }
-  };
+    };
+  }, [league.endsAt]);
 
   const [remainingTime, setRemainingTime] = useState(calculateRemainingTime());
 
@@ -42,7 +43,7 @@ export default function RoundInfo() {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [calculateRemainingTime]);
 
   return (
     <RetroBox className="w-fit self-start">

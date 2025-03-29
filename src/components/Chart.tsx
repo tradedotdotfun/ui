@@ -29,7 +29,7 @@ export default function Chart({ market, setMarket }: ChartProps) {
 
   useEffect(() => {
     refetchChartData();
-  }, [market]);
+  }, [market, refetchChartData]);
 
   useEffect(() => {
     if (!chartContainerRef.current) return;

@@ -1,11 +1,13 @@
-import { useEffect, useRef, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useEffect, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 type FloatingMusicPlayerProps = {
   musicMap: Record<string, string>; // path별 음악 경로 매핑
 };
 
-export default function FloatingMusicPlayer({ musicMap }: FloatingMusicPlayerProps) {
+export default function FloatingMusicPlayer({
+  musicMap,
+}: FloatingMusicPlayerProps) {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [playing, setPlaying] = useState(false);
   const location = useLocation();
@@ -25,7 +27,7 @@ export default function FloatingMusicPlayer({ musicMap }: FloatingMusicPlayerPro
         });
       }
     }
-  }, [musicMap, playing, location]);
+  }, [musicMap, playing, location, musicSrc]);
 
   const togglePlay = () => {
     if (!audioRef.current) return;
@@ -38,15 +40,21 @@ export default function FloatingMusicPlayer({ musicMap }: FloatingMusicPlayerPro
   return (
     <>
       <audio ref={audioRef} />
-      <div className={`
+      <div
+        className={`
       fixed bottom-4 right-4 z-50 flex gap-2
       group
-      ${playing ? 'animate-bounce' : ''}
-      `}>
-        <div className="absolute 
+      ${playing ? "animate-bounce" : ""}
+      `}
+      >
+        <div
+          className="absolute 
         text-white text-[16px] opacity-0 group-hover:opacity-100
         bottom-[20px] right-[80px] w-[400px]
-        ">MAX LEVEL TRADING VIBES!</div>
+        "
+        >
+          MAX LEVEL TRADING VIBES!
+        </div>
         <img
           src="/sonic-excited.gif"
           alt="music player"
@@ -57,7 +65,7 @@ export default function FloatingMusicPlayer({ musicMap }: FloatingMusicPlayerPro
           `}
           onClick={togglePlay}
         />
-      </div >
+      </div>
     </>
   );
 }

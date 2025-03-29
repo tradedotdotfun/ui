@@ -16,12 +16,12 @@ function App() {
       config={{
         // Customize Privy's appearance in your app
         appearance: {
-          logo: 'https://raw.githubusercontent.com/tradedotdotfun/contents/66cfd60bdf83998ceb42b4e7e2ed1c62c19d3992/logo.png',
-          walletChainType: 'solana-only',
+          logo: "https://raw.githubusercontent.com/tradedotdotfun/contents/66cfd60bdf83998ceb42b4e7e2ed1c62c19d3992/logo.png",
+          walletChainType: "solana-only",
         },
         // Create embedded wallets for users who don't have a wallet
         embeddedWallets: {
-          createOnLogin: 'users-without-wallets',
+          createOnLogin: "users-without-wallets",
         },
         // externalWallets: {
         //   solana: {
@@ -29,8 +29,11 @@ function App() {
         //   }
         // },
         solanaClusters: [
-          { name: 'mainnet-beta', rpcUrl: 'https://api.mainnet-beta.solana.com' },
-          { name: 'devnet', rpcUrl: 'https://api.devnet.solana.com' },
+          {
+            name: "mainnet-beta",
+            rpcUrl: "https://api.mainnet-beta.solana.com",
+          },
+          { name: "devnet", rpcUrl: "https://api.devnet.solana.com" },
         ],
       }}
     >
@@ -41,4 +44,4 @@ function App() {
   );
 }
 
-export default App
+export default App;
