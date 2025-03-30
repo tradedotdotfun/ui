@@ -9,7 +9,7 @@ import NESButton from "./Button";
 
 export default function Header() {
   const audioRef = useRef(new Audio("/sonic-ring-sound-1.mp3"));
-  const { login, logout } = usePrivy();
+  const { login, logout, authenticated } = usePrivy();
   const { address } = useUser();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -24,10 +24,10 @@ export default function Header() {
         <img src="/fire.gif" alt="fire" className="w-6" />
         <p className="text-white text-[16px]">TRADE DOT. FUN</p>
       </Link>
-      {address !== "" ? (
+      {authenticated ? (
         <div className="flex items-center gap-5">
           <div className="flex items-center gap-2">
-            <img src="/small-chip.gif" alt="chip" className="w-6" />
+            <img src="/small-chip.gif" alt="small-chip" className="w-6" />
             {/* TODO: CHIP Balance */}
             <p className="text-white text-[16px]">{`2 CHIPS`}</p>
           </div>

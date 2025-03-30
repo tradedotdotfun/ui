@@ -1,77 +1,79 @@
-import { useCallback, useEffect, useState } from "react";
+import BigNumber from "bignumber.js";
+import { useCallback, useState } from "react";
 
 import { formatCurrency } from "../utils/formatCurrency";
+import { formatBalance } from "../utils/numbers";
 
 import ProgressBar from "./ProgressBar";
 import RetroBox from "./RetroBox";
 
 type AmountPanelProps = {
+  title?: string;
+  currency?: string;
   totalAmount: number;
   amount: number | undefined;
   setAmount: (amount: number | undefined) => void;
 };
 
 export default function AmountPanel({
+  title,
+  currency,
   totalAmount,
   amount,
   setAmount,
 }: AmountPanelProps) {
-  const [isPercentageClicked, setIsPercentageClicked] = useState(false);
   const [percentage, setPercentage] = useState(0);
 
-  const formattedBalance = formatCurrency(totalAmount);
+  let formattedBalance = "";
+  if (currency === undefined) {
+    formattedBalance = formatCurrency(totalAmount);
+  } else {
+    formattedBalance = `${formatBalance(totalAmount, 4)} ${currency}`;
+  }
 
-  const setPercentageWithAmount = useCallback(
-    (amount: number) => {
-      setIsPercentageClicked(false);
-
-      if (amount === 0) {
+  const handleAmountInput = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (e.target.value === "") {
         setPercentage(0);
         setAmount(undefined);
         return;
       }
-      const amountIsValid = amount > 0 && amount <= totalAmount;
-      if (amountIsValid) {
-        const percentage = (amount / totalAmount) * 100;
-        setPercentage(percentage);
-        setAmount(amount);
-      } else {
-        setPercentage(100);
-        setAmount(totalAmount);
-      }
-    },
-    [setAmount, totalAmount]
-  );
-
-  const setAmountWithPercentage = useCallback(
-    (percentage: number) => {
-      const amount = Number(((percentage / 100) * totalAmount).toFixed(2));
-      setPercentage(percentage);
-      setIsPercentageClicked(true);
+      const amount = Number(e.target.value);
+      const percentage = BigNumber(amount)
+        .div(totalAmount)
+        .multipliedBy(100)
+        .toNumber();
+      setPercentage(Math.min(percentage, 100));
       setAmount(amount);
     },
     [setAmount, totalAmount]
   );
 
-  useEffect(() => {
-    if (isPercentageClicked) {
-      return setAmountWithPercentage(percentage);
-    }
-    return setPercentageWithAmount(amount || 0);
-  }, [
-    amount,
-    isPercentageClicked,
-    percentage,
-    setAmountWithPercentage,
-    setPercentageWithAmount,
-    totalAmount,
-  ]);
+  const handleProgressInteraction = useCallback(
+    (value: number) => {
+      const amount = BigNumber(totalAmount)
+        .multipliedBy(value)
+        .div(100)
+        .toNumber();
+      setAmount(amount);
+      setPercentage(value);
+    },
+    [setAmount, totalAmount]
+  );
 
   return (
-    <>
+    <div className="flex flex-col gap-7">
       <div className="flex items-center justify-between gap-3">
-        <p className="text-[12px] sm:text-[24px] text-white">Amount</p>
-        <p className="text-[10px] sm:text-[16px] text-white">
+        <p className="text-[12px] sm:text-[24px] text-white">
+          {title ? title : "Amount"}
+        </p>
+        <p
+          className="text-[10px] sm:text-[16px] text-white cursor-pointer"
+          onClick={() => {
+            setAmount(totalAmount);
+            setPercentage(100);
+          }}
+        >
           {formattedBalance}
         </p>
       </div>
@@ -82,11 +84,11 @@ export default function AmountPanel({
             value={amount}
             className="w-full h-full bg-transparent text-white text-[12px] sm:text-[20px]"
             placeholder="0.0"
-            onChange={(e) => {
-              setPercentageWithAmount(Number(e.target.value));
-            }}
+            onChange={handleAmountInput}
           />
-          <p className="text-[12px] sm:text-[20px] text-white">funUSD</p>
+          <p className="text-[12px] sm:text-[20px] text-white">
+            {currency ? currency : "funUSD"}
+          </p>
         </div>
       </RetroBox>
       <div className="w-full mb-7">
@@ -96,9 +98,9 @@ export default function AmountPanel({
           value={percentage}
           steps={[0, 25, 50, 75, 100]}
           suffix="%"
-          onChange={setAmountWithPercentage}
+          onChange={handleProgressInteraction}
         />
       </div>
-    </>
+    </div>
   );
 }

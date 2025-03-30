@@ -1,9 +1,12 @@
-import { Connection } from "@solana/web3.js";
 import { useState, useCallback, useEffect } from "react";
+
+import { useConnection } from "./useConnection";
 
 type ConfirmationStatus = "idle" | "loading" | "success" | "error";
 
 export const useConfirmTx = () => {
+  const { connection } = useConnection();
+
   const [status, setStatus] = useState<ConfirmationStatus>("idle");
   const [error, setError] = useState<string | null>(null);
   const [attempts, setAttempts] = useState(0);
@@ -31,9 +34,8 @@ export const useConfirmTx = () => {
   );
 
   useEffect(() => {
-    if (status !== "loading" || !currentSignature) return;
+    if (status !== "loading" || !currentSignature || !connection) return;
 
-    const connection = new Connection("https://api.testnet.sonic.game/");
     let timeoutId: NodeJS.Timeout;
 
     const checkTransaction = async () => {
@@ -77,7 +79,7 @@ export const useConfirmTx = () => {
     return () => {
       if (timeoutId) clearTimeout(timeoutId);
     };
-  }, [status, currentSignature, attempts]);
+  }, [status, currentSignature, attempts, connection]);
 
   return {
     confirmTx,

@@ -1,6 +1,5 @@
 import { useSolanaWallets } from "@privy-io/react-auth";
 import {
-  Connection,
   PublicKey,
   SystemProgram,
   Transaction,
@@ -8,19 +7,20 @@ import {
 } from "@solana/web3.js";
 import { useCallback } from "react";
 
+import { useConnection } from "./useConnection";
+
 const PROGRAM_ID = new PublicKey(
   "AFDcYebrecmbqxNNQa3jht8LkSjUDgCT5T3bV2ncagHG"
 );
 
 export const useDepositSol = () => {
   const { ready, wallets } = useSolanaWallets();
+  const { connection } = useConnection();
 
   const depositSol = useCallback(async () => {
     const wallet = wallets[0];
 
-    if (!ready || !wallet) return;
-
-    const connection = new Connection("https://api.testnet.sonic.game/");
+    if (!ready || !wallet || !connection) return;
 
     const transaction = new Transaction();
 
@@ -60,7 +60,7 @@ export const useDepositSol = () => {
     const signature = await wallet.sendTransaction(transaction, connection);
 
     return signature;
-  }, [ready, wallets]);
+  }, [ready, wallets, connection]);
 
   return { depositSol };
 };

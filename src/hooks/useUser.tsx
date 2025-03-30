@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 
 import { fetchUser } from "../api/user";
 import { UserStatus } from "../types/users";
+import { lamportsToSol } from "../utils/numbers";
+
+import { useAccountBalance } from "./useAccountBalance";
 
 export const useUserInfo = (address: string) => {
   return useQuery({
@@ -17,18 +20,27 @@ export const useUserInfo = (address: string) => {
 };
 
 export const useUser = () => {
+  const [address, setAddress] = useState<string>("");
+  const [status, setStatus] = useState<UserStatus>("loading");
+  const [solBalance, setSolBalance] = useState<number>(0);
+
   const { ready, authenticated, login } = usePrivy();
   const { wallets, createWallet } = useSolanaWallets();
-  const [address, setAddress] = useState<string>("");
   const { data: userInfo, refetch: refetchUserInfo } = useUserInfo(address);
-
-  const [status, setStatus] = useState<UserStatus>("loading");
+  // TODO: Add CHIP balance and staked SOL balance
+  const { data: solBalanceInLamports, refetch: refetchSolBalance } =
+    useAccountBalance(address);
+  // const [stakedBalance, setStakedBalance] = useState<number>(0);
+  // const [chipBalance, setChipBalance] = useState<number>(0);
 
   // Set account status to ready when Privy is ready
   useEffect(() => {
     if (ready) {
       if (!authenticated) {
-        return setStatus("not_connected");
+        setStatus("not_connected");
+        setAddress("");
+        setSolBalance(0);
+        return;
       }
       // Use authenticated when Privy is only ready
       if (authenticated) {
@@ -51,5 +63,19 @@ export const useUser = () => {
     }
   }, [ready, authenticated, wallets, createWallet, userInfo]);
 
-  return { status, address, userInfo, login, refetchUserInfo };
+  useEffect(() => {
+    if (solBalanceInLamports) {
+      setSolBalance(lamportsToSol(solBalanceInLamports));
+    }
+  }, [solBalanceInLamports]);
+
+  return {
+    status,
+    address,
+    userInfo,
+    solBalance,
+    login,
+    refetchUserInfo,
+    refetchSolBalance,
+  };
 };
