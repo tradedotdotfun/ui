@@ -10,12 +10,12 @@ import { useAccountBalance } from "./useAccountBalance";
 
 export const useUserInfo = (address: string) => {
   return useQuery({
-    queryKey: ["user", { round: 0, address }],
+    queryKey: ["user", address],
     queryFn: () => fetchUser({ round: 0, address }),
-    staleTime: 0, // Never stale
-    refetchInterval: 30000, // Refetch every 30 seconds
-    retry: 3,
-    enabled: !!address, // Only fetch when address is present
+    enabled: !!address, // address가 있을 때만 실행
+    staleTime: 1000 * 60, // 1분 동안 캐싱 유지
+    refetchOnMount: false,
+    refetchInterval: false,
   });
 };
 

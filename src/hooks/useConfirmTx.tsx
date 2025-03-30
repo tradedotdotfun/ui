@@ -83,6 +83,7 @@ export const useConfirmTx = () => {
 
   return {
     confirmTx,
+    status,
     isLoading: status === "loading",
     isSuccess: status === "success",
     isError: status === "error",

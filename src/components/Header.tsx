@@ -2,8 +2,8 @@ import { usePrivy } from "@privy-io/react-auth";
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
+import { useAddress } from "../hooks/useAddress";
 import { useIsMobile } from "../hooks/useIsMobile";
-import { useUser } from "../hooks/useUser";
 import { formatAddress } from "../utils/address";
 
 import NESButton from "./Button";
@@ -11,7 +11,7 @@ import NESButton from "./Button";
 export default function Header() {
   const audioRef = useRef(new Audio("/sonic-ring-sound-1.mp3"));
   const { login, logout, authenticated } = usePrivy();
-  const { address } = useUser();
+  const { address } = useAddress();
   const [isOpen, setIsOpen] = useState(false);
   const isMobile = useIsMobile();
 
@@ -41,7 +41,7 @@ export default function Header() {
               variant="blue"
               fontSize="small"
             >
-              {formatAddress(address)}
+              {formatAddress(address ?? "")}
             </NESButton>
 
             {isOpen && (

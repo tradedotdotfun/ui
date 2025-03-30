@@ -5,22 +5,32 @@ type InsertCoinModalProps = {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
+  again?: boolean;
 };
 
 export default function InsertCoinModal({
   isOpen,
   onClose,
   onConfirm,
+  again,
 }: InsertCoinModalProps) {
   if (!isOpen) return null;
 
   return (
     <ModalBase isOpen={isOpen} onClose={onClose}>
-      <div className="text-white text-[16px] text-left flex flex-col gap-2">
-        <div>DROP A CHIP,</div>
-        <div>GET 10,000 funUSD,</div>
-        <div>LET'S TRADE!</div>
-      </div>
+      {again ? (
+        <div className="text-white text-[16px] text-left flex flex-col gap-2">
+          <div>FORGER THE FAIL,</div>
+          <div>DROP A CHIP,</div>
+          <div>START FRESH!</div>
+        </div>
+      ) : (
+        <div className="text-white text-[16px] text-left flex flex-col gap-2">
+          <div>DROP A CHIP,</div>
+          <div>GET 10,000 funUSD,</div>
+          <div>LET'S TRADE!</div>
+        </div>
+      )}
 
       <img src="/chip.gif" alt="chip" className="w-auto h-24 mx-auto" />
 

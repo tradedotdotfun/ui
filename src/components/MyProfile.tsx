@@ -1,11 +1,15 @@
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+import { useDepositSol } from "../hooks/useDepositSol";
 import { UserInfo } from "../types/users";
 import { formatRank } from "../utils/rank";
 
 import AddressCopy from "./AddressCopy";
 import NESButton from "./Button";
 import Divider from "./Divider";
+import InsertCoinModal from "./InsertCoinModal";
+import LoadingModal from "./LoadingModal";
 import RetroBox from "./RetroBox";
 
 type ProfileProps = {
@@ -15,6 +19,35 @@ type ProfileProps = {
 
 export default function MyProfile({ address, user }: ProfileProps) {
   const navigate = useNavigate();
+  const { depositSol, isLoading, isFinished } = useDepositSol();
+
+  // Modal
+  const [isChipModalOpen, setIsChipModalOpen] = useState(false);
+  const [isLoadingModalOpen, setIsLoadingModalOpen] = useState(false);
+
+  const handleClickReEnter = () => {
+    setIsChipModalOpen(false);
+    if (balance === 10000) {
+      return;
+    }
+    try {
+      depositSol();
+    } catch (error) {
+      console.error("❌ Error:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (isLoading) {
+      setIsLoadingModalOpen(true);
+    }
+  }, [isLoading]);
+
+  useEffect(() => {
+    if (isFinished) {
+      setIsLoadingModalOpen(false);
+    }
+  }, [isFinished]);
 
   const INITIAL_BALANCE = 10000;
 
@@ -110,7 +143,7 @@ export default function MyProfile({ address, user }: ProfileProps) {
             </div>
           </div>
 
-          <div className="mt-4">
+          <div className="flex flex-col gap-4">
             <NESButton
               onClick={() => navigate(`/profile/${address}`)}
               className="w-full"
@@ -119,9 +152,33 @@ export default function MyProfile({ address, user }: ProfileProps) {
             >
               VIEW PROFILE
             </NESButton>
+            <NESButton
+              className="w-full"
+              variant="red"
+              fontSize="small"
+              onClick={() => {
+                if (isLoading) {
+                  setIsLoadingModalOpen(true);
+                } else {
+                  setIsChipModalOpen(true);
+                }
+              }}
+            >
+              RE-ENTER
+            </NESButton>
           </div>
         </div>
       </RetroBox>
+      <InsertCoinModal
+        isOpen={isChipModalOpen}
+        onClose={() => setIsChipModalOpen(false)}
+        onConfirm={handleClickReEnter}
+        again
+      />
+      <LoadingModal
+        isOpen={isLoadingModalOpen}
+        onClose={() => setIsLoadingModalOpen(false)}
+      />
     </div>
   );
 }
