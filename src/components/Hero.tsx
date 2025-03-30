@@ -97,7 +97,7 @@ export default function Hero() {
   useEffect(() => {
     if (ready) {
       if (!authenticated) {
-        setAccountStatus("not_connected");
+        return setAccountStatus("not_connected");
       }
       // Use authenticated when Privy is only ready
       if (authenticated) {

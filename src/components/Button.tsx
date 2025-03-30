@@ -55,12 +55,12 @@ const variantStyles = {
   `,
   blue: `
     text-white
-    bg-[#0000FF]
-    border-[#000C79]
-    hover:bg-[#0000E3]
-    hover:border-[#000C79]
-    active:bg-[#0000E3]
-    active:border-[#000C79]
+    bg-[#0077FF]
+    border-[#003C80]
+    hover:bg-[#005FCC]
+    hover:border-[#003066]
+    active:bg-[#005FCC]
+    active:border-[#003066]
   `,
 };
 
@@ -73,7 +73,8 @@ export default function NESButton({
   onClick,
   ...props
 }: NESButtonProps) {
-  const audioFileName = audio === "default" ? "/sonic-ring-sound-1.mp3" : "/sonic-ring-sound-2.mp3";
+  const audioFileName =
+    audio === "default" ? "/sonic-ring-sound-1.mp3" : "/sonic-ring-sound-2.mp3";
   const audioRef = useRef(new Audio(audioFileName));
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
