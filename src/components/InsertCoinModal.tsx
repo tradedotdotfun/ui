@@ -15,14 +15,16 @@ export default function InsertCoinModal({
   if (!isOpen) return null;
 
   return (
-    <ModalBase isOpen={isOpen} onClose={onClose} title="INSERT COIN TO JOIN!">
-      <img
-        src="/sonic-ring.gif"
-        alt="sonic-ring"
-        className="w-auto h-24 mx-auto"
-      />
-      <p className="text-white text-[16px] text-center">0.1 SOL TO JOIN</p>
-      <p className="text-[#FF0000] text-[16px] text-center">USE DEV NET ONLY</p>
+    <ModalBase isOpen={isOpen} onClose={onClose}>
+      <div className="text-white text-[16px] text-left flex flex-col gap-2">
+        <div>DROP A CHIP,</div>
+        <div>GET 10,000 funUSD,</div>
+        <div>LET'S TRADE!</div>
+      </div>
+
+      <img src="/chip.gif" alt="chip" className="w-auto h-24 mx-auto" />
+
+      <p className="text-white text-[16px] text-center">1 CHIP TO PLAY</p>
 
       <div className="flex justify-center gap-3 sm:gap-6">
         <NESButton fontSize="small" audio="cancel" onClick={onClose}>
@@ -33,7 +35,7 @@ export default function InsertCoinModal({
           fontSize="small"
           onClick={() => onConfirm()}
         >
-          Confirm
+          LET'S PLAY!
         </NESButton>
       </div>
     </ModalBase>

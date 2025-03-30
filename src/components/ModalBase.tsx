@@ -29,7 +29,7 @@ export default function ModalBase({
       bg-[#212529] border-4 border-white p-5 sm:px-10 sm:py-8 w-80 sm:w-120
       flex flex-col gap-9"
       >
-        <p className="text-white text-[16px] text-left">{title}</p>
+        {title && <p className="text-white text-[16px] text-left">{title}</p>}
         {children}
       </div>
     </div>
