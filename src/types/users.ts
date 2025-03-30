@@ -1,3 +1,5 @@
+export type AccountStatus = "loading" | "not_connected" | "connected" | "staked" | "participated" | "error";
+
 export type UserRequest = {
   round?: number;
   address: string;

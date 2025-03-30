@@ -32,10 +32,10 @@ export default function CurrentStats() {
         </RetroBox>
       </div>
       <RetroBox className="w-full sm:w-fit">
-        <div className="border-[4px] border-[#FBB042] flex flex-col items-center justify-center text-center p-7">
+        <div className="border-[4px] border-[#FFF828] flex flex-col items-center justify-center text-center p-7">
           <img src="/fire.gif" alt="fire" className="w-10 h-10 mb-4" />
           <p className="text-white font-retro text-[11px]">Win up to</p>
-          <p className="text-[#FBB042] text-[28px] font-retro my-4">
+          <p className="text-[#FFF828] text-[28px] font-retro my-4">
             {"100 SOL!(+100,000%)"}
           </p>
           <p className="text-white font-retro text-[11px]">

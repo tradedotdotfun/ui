@@ -22,10 +22,10 @@ export default function LeaderBoard() {
           </p>
           <div className="mt-9 flex justify-between w-full">
             <div className="flex items-center gap-5">
-              <p className="text-[#FBB042] text-[10px] sm:text-[16px]">RANK</p>
-              <p className="text-[#FBB042] text-[10px] sm:text-[16px]">NAME</p>
+              <p className="text-[#FFF828] text-[10px] sm:text-[16px]">RANK</p>
+              <p className="text-[#FFF828] text-[10px] sm:text-[16px]">NAME</p>
             </div>
-            <p className="text-[#FBB042]  text-[10px] sm:text-[16px]">PNL</p>
+            <p className="text-[#FFF828]  text-[10px] sm:text-[16px]">PNL</p>
           </div>
           <div className="w-full flex flex-col gap-7 mt-7 mb-9">
             {leaderboard &&
@@ -43,7 +43,7 @@ export default function LeaderBoard() {
                     key={`rank-${idx}`}
                     className={`
                   flex items-center justify-between w-full 
-                  ${rank === 1 ? "bg-[#FBB042]" : ""} 
+                  ${rank === 1 ? "bg-[#FFF828]" : ""} 
                   group hover:bg-white `}
                     onClick={() => navigate(`/profile/${address}`)}
                   >

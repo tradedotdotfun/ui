@@ -6,18 +6,22 @@ import { useConfirmTx } from "../hooks/useConfirmTx";
 import { useDepositSol } from "../hooks/useDepositSol";
 import { useIsMobile } from "../hooks/useIsMobile";
 import { useUserInfo } from "../hooks/useUser";
+import { AccountStatus } from "../types/users";
 
-import AddressCopy from "./AddressCopy";
+import BackgroundGIFs from "./BackgroundGIFs";
+import CTA from "./CTA";
 import InsertCoinModal from "./InsertCoinModal";
 import LoadingModal from "./LoadingModal";
-import Profile from "./Profile";
-import TextButton from "./TextButton";
+import LogoSection from "./LogoSection";
+import MyProfile from "./MyProfile";
 
 export default function Hero() {
-  const { ready, authenticated, login, user } = usePrivy();
+  const { ready, authenticated, login } = usePrivy();
   const { wallets, createWallet } = useSolanaWallets();
-  // Disable login when Privy is not ready or the user is already authenticated
-  const disableLogin = !ready;
+  const [address, setAddress] = useState<string>("");
+  const { data: userInfo, refetch: refetchUser } = useUserInfo(address);
+
+  const { depositSol } = useDepositSol();
   const {
     confirmTx,
     isLoading: isTxLoading,
@@ -26,54 +30,39 @@ export default function Hero() {
     error,
   } = useConfirmTx();
 
+  const [, setIsLoadingEnterGame] = useState(false);
+  const [accountStatus, setAccountStatus] = useState<AccountStatus>("loading");
+
   const isMobile = useIsMobile();
   const navigate = useNavigate();
-  const { data: userInfo, refetch: refetchUser } = useUserInfo(
-    wallets.length > 0 ? wallets[0].address : ""
-  );
 
-  const { depositSol } = useDepositSol();
-
-  const [isLoadingEnterGame, setIsLoadingEnterGame] = useState(false);
-  const [msg, setMsg] = useState<string>("INSERT COIN");
+  // Modals
   const [isInsertCoinModalOpen, setIsInsertCoinModalOpen] =
     useState<boolean>(false);
   const [isLoadingModalOpen, setIsLoadingModalOpen] = useState<boolean>(false);
 
-  // 트랜잭션 상태에 따라 로딩 모달 표시
-  useEffect(() => {
-    if (isTxLoading) {
+  const handleClickTextButton = (status: AccountStatus) => {
+    if (status === "loading") {
       setIsLoadingModalOpen(true);
-    } else {
-      setIsLoadingModalOpen(false);
+      return;
     }
-  }, [isTxLoading]);
-
-  // 트랜잭션 성공시 처리
-  useEffect(() => {
-    if (isSuccess) {
-      refetchUser();
+    if (status === "not_connected") {
+      login();
+      return;
     }
-  }, [isSuccess, refetchUser]);
-
-  // 트랜잭션 에러시 처리
-  useEffect(() => {
-    if (isError) {
-      console.error("❌ Transaction Error:", error);
+    if (status === "connected") {
+      navigate("/exchange");
+      return;
     }
-  }, [isError, error]);
-
-  const handleClickTextButton = () => {
-    if (isTxLoading || isLoadingEnterGame) {
-      return setIsLoadingModalOpen(true);
+    if (status === "staked") {
+      setIsInsertCoinModalOpen(true);
+      return;
     }
-    if (!authenticated) {
-      return login();
+    if (status === "participated") {
+      navigate("/trade");
+      return;
     }
-    if (!userInfo) {
-      return setIsInsertCoinModalOpen(true);
-    }
-    navigate("/trade");
+    return;
   };
 
   const handleInsertCoin = async () => {
@@ -104,111 +93,64 @@ export default function Hero() {
     }
   };
 
-  // const handleUpdateName = async () => {
-  //   const signed = await signData();
-  //   if (!signed) {
-  //     return;
-  //   }
-  //   const { pubkey, msg, signature } = signed;
-  //   if (!pubkey || !msg || !signature) {
-  //     return;
-  //   }
-  //   await updateName("trader", pubkey, msg, signature);
-  // }
-
+  // Set account status to ready when Privy is ready
   useEffect(() => {
-    if (authenticated) {
-      refetchUser();
-      if (wallets.length === 0) {
-        createWallet();
+    if (ready) {
+      if (!authenticated) {
+        setAccountStatus("not_connected");
+      }
+      // Use authenticated when Privy is only ready
+      if (authenticated) {
+        setAccountStatus("connected");
+        if (wallets.length > 0) {
+          setAddress(wallets[0].address);
+        } else {
+          createWallet();
+        }
+      }
+      // If user info is fetched, set account status to participated
+      // TODO: add logic to change state with information related to staked SOL and CHIP balance
+      if (userInfo) {
+        if (userInfo.totalEstimatedUSD > 0) {
+          setAccountStatus("participated");
+        } else {
+          setAccountStatus("staked");
+        }
       }
     }
-  }, [authenticated, user, wallets, createWallet, refetchUser]);
+  }, [ready, authenticated, wallets, createWallet, userInfo]);
 
+  // Deals with transaction & backend response
   useEffect(() => {
-    if (userInfo && authenticated) {
-      setIsLoadingEnterGame(false);
-      return setMsg("TRADE NOW!");
+    if (isTxLoading) {
+      setIsLoadingModalOpen(true);
+    } else {
+      setIsLoadingModalOpen(false);
     }
-    return setMsg("INSERT COIN");
-  }, [userInfo, authenticated]);
+  }, [isTxLoading, isSuccess, refetchUser]);
+
+  // 트랜잭션 성공시 처리
+  useEffect(() => {
+    if (isSuccess) {
+      refetchUser();
+    }
+  }, [isSuccess, refetchUser]);
+
+  // 트랜잭션 에러시 처리
+  useEffect(() => {
+    if (isError) {
+      console.error("❌ Transaction Error:", error);
+    }
+  }, [isError, error]);
 
   return (
     <div className="relative w-full flex flex-col items-center p-4 text-center overflow-x-hidden overflow-y-hidden">
-      {isMobile ? (
-        <img src="/pepe-punch.gif" alt="pepe-punch" className="w-[128px]" />
-      ) : (
-        <div className="text-[40px] lg:text-[80px] text-[#0000FE] mt-[120px] whitespace-nowrap">
-          TRADE DOT FUN
-        </div>
-      )}
+      <LogoSection className="sm:mt-[120px] sm:mb-[80px]" isMobile={isMobile} />
+      <CTA status={accountStatus} onClickTextButton={handleClickTextButton} />
+      {authenticated && <MyProfile address={address} user={userInfo} />}
 
-      <div className="mt-[44px] text-[28px] text-[#FBB042]">
-        Are You the Next{" "}
-        <span className="font-bold animate-pulse text-[#FBB042]">100x</span>{" "}
-        Trader?
-      </div>
+      {!isMobile && <BackgroundGIFs />}
 
-      <p className="text-[12px] mt-[20px] mb-[60px]">
-        Enter with just{" "}
-        <span className="font-bold animate-pulse bg-gradient-to-r from-purple-500 via-blue-500 to-purple-500 bg-clip-text text-transparent">
-          0.1 SOL
-        </span>{" "}
-        and prove your trading skills.
-      </p>
-
-      {authenticated && wallets.length > 0 ? (
-        <div className="flex flex-row justify-between gap-2 items-center mb-[20px] text-[16px]">
-          <p>Welcome</p>
-          <AddressCopy address={wallets[0].address} />
-        </div>
-      ) : undefined}
-
-      <TextButton
-        onClick={handleClickTextButton}
-        disabled={disableLogin || isTxLoading}
-      >
-        <img
-          src="/triangle_pixel.svg"
-          alt="Insert Coin"
-          className="mr-[16px]"
-        />
-        <p className="text-white font-bold sm:text-[22px]">
-          {isTxLoading ? "PROCESSING..." : msg}
-        </p>
-      </TextButton>
-
-      <small className="text-[#FBB042] text-[10px] mt-2 mb-[60px]">
-        {userInfo && authenticated
-          ? "Your league awaits - keep trading!"
-          : "Entry Fee: 0.1 SOL"}
-      </small>
-
-      {!isMobile && (
-        <>
-          <img
-            src="/pepe-box.gif"
-            alt="pepe-box"
-            className="w-[180px] absolute top-[196px] left-[calc(50%-606px)]"
-          />
-          <img
-            src="/pepe-punch.gif"
-            alt="pepe-punch"
-            className="w-[180px] absolute top-[240px] right-[calc(50%-606px)] transform -scale-x-100"
-          />
-          <img
-            src="/pepe-dance.gif"
-            alt="pepe-dance"
-            className="w-[215px] absolute top-[410px] left-[calc(50%-380px)]"
-          />
-          <img
-            src="/sonic-dancing.gif"
-            alt="sonic-dancing"
-            className="w-[113px] absolute top-[480px] right-[calc(50%-280px)]"
-          />
-        </>
-      )}
-      {userInfo && authenticated && <Profile user={userInfo} />}
       <InsertCoinModal
         isOpen={isInsertCoinModalOpen}
         onClose={() => setIsInsertCoinModalOpen(false)}

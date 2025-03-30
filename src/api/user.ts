@@ -16,7 +16,7 @@ export const updateName = async (name: string, pubkey: string, msg: string, sign
   await apiClient.post("/account/name", { name });
 }
 
-export const fetchUser: (request: UserRequest) => Promise<UserInfo | null> = async ({
+export const fetchUser: (request: UserRequest) => Promise<UserInfo | undefined> = async ({
   round = 0,
   address,
 }) => {
@@ -24,7 +24,7 @@ export const fetchUser: (request: UserRequest) => Promise<UserInfo | null> = asy
   const response = await apiClient.get(`/account?round=${round}&address=${address}`);
 
   if (response.data.length === 0) {
-    return null;
+    return undefined;
   }
 
   return {

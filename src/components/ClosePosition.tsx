@@ -93,7 +93,7 @@ function ClosePositionBox({
       <Divider char="-" />
 
       <div className="flex flex-row justify-between items-start">
-        <p className="text-[#FBB042] text-[10px] sm:text-[24px]">
+        <p className="text-[#FFF828] text-[10px] sm:text-[24px]">
           {"Estimated PNL"}
         </p>
 

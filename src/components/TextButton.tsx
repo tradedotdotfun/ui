@@ -1,12 +1,14 @@
 import { useRef, useState } from "react";
 
 type TextButtonProps = {
+  className?: string;
   onClick?: () => void;
   children: React.ReactNode;
   disabled?: boolean;
 };
 
 export default function TextButton({
+  className,
   onClick,
   children,
   disabled,
@@ -33,6 +35,7 @@ export default function TextButton({
         retro-blink-half
         hover:border-4 hover:border-white hover:animate-none
         hover:h-[46px]
+        ${className}
       `}
       onClick={handleClick}
       onMouseDown={handleMouseDown}
