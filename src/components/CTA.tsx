@@ -1,11 +1,11 @@
-import { AccountStatus } from "../types/users";
+import { UserStatus } from "../types/users";
 
 import TextButton from "./TextButton";
 
 interface CTAProps {
   className?: string;
-  status: AccountStatus;
-  onClickTextButton?: (status: AccountStatus) => void;
+  status: UserStatus;
+  onClickTextButton?: (status: UserStatus) => void;
 }
 
 export default function CTA({

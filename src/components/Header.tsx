@@ -2,7 +2,7 @@ import { usePrivy } from "@privy-io/react-auth";
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
-import { useAddress } from "../hooks/useAddress";
+import { useUser } from "../hooks/useUser";
 import { formatAddress } from "../utils/address";
 
 import NESButton from "./Button";
@@ -10,7 +10,7 @@ import NESButton from "./Button";
 export default function Header() {
   const audioRef = useRef(new Audio("/sonic-ring-sound-1.mp3"));
   const { login, logout } = usePrivy();
-  const { address } = useAddress();
+  const { address } = useUser();
   const [isOpen, setIsOpen] = useState(false);
 
   const handleClick = () => {

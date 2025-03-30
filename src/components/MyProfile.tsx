@@ -1,5 +1,4 @@
-import { useLogout, useSolanaWallets } from "@privy-io/react-auth";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { UserInfo } from "../types/users";
 import { formatRank } from "../utils/rank";
@@ -15,8 +14,6 @@ type ProfileProps = {
 };
 
 export default function MyProfile({ address, user }: ProfileProps) {
-  const { logout } = useLogout();
-  const { wallets } = useSolanaWallets();
   const navigate = useNavigate();
 
   const INITIAL_BALANCE = 10000;
@@ -40,22 +37,12 @@ export default function MyProfile({ address, user }: ProfileProps) {
         >
           {/* Profile Header */}
           <div className="flex flex-row justify-between items-center">
-            <p className="text-lg text-left">My Profile</p>
-            <NESButton
-              onClick={() => {
-                if (wallets.length > 0) {
-                  if (wallets[0].walletClientType !== "privy") {
-                    wallets[0].disconnect();
-                  }
-                  logout();
-                }
-              }}
-              className="relative w-[38px] h-[38px] px-0 py-0 text-[14px]"
-            >
-              <p className="absolute top-[8px] left-[10px] text-[14px]">
-                {"X"}
-              </p>
-            </NESButton>
+            <p className="text-[16px] text-left">My Profile</p>
+            <Link to="/exchange">
+              <NESButton variant="default" className="!text-[12px]">
+                {"GET MORE CHIPS"}
+              </NESButton>
+            </Link>
           </div>
 
           {/* Profile Body */}
@@ -89,7 +76,7 @@ export default function MyProfile({ address, user }: ProfileProps) {
           <Divider char="^" color="text-[#FFF828]" />
 
           <div className="flex w-full gap-5 items-center justify-start">
-            <p className="text-lg">My League Stats</p>
+            <p className="text-[16px]">My League Stats</p>
             <img src="/trophy.gif" alt="coin" className="h-[30px]" />
           </div>
 

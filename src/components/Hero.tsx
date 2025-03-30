@@ -1,12 +1,11 @@
-import { usePrivy, useSolanaWallets } from "@privy-io/react-auth";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useConfirmTx } from "../hooks/useConfirmTx";
 import { useDepositSol } from "../hooks/useDepositSol";
 import { useIsMobile } from "../hooks/useIsMobile";
-import { useUserInfo } from "../hooks/useUser";
-import { AccountStatus } from "../types/users";
+import { useUser } from "../hooks/useUser";
+import { UserStatus } from "../types/users";
 
 import BackgroundGIFs from "./BackgroundGIFs";
 import CTA from "./CTA";
@@ -16,10 +15,7 @@ import LogoSection from "./LogoSection";
 import MyProfile from "./MyProfile";
 
 export default function Hero() {
-  const { ready, authenticated, login } = usePrivy();
-  const { wallets, createWallet } = useSolanaWallets();
-  const [address, setAddress] = useState<string>("");
-  const { data: userInfo, refetch: refetchUser } = useUserInfo(address);
+  const { status, address, userInfo, login, refetchUserInfo } = useUser();
 
   const { depositSol } = useDepositSol();
   const {
@@ -31,7 +27,6 @@ export default function Hero() {
   } = useConfirmTx();
 
   const [, setIsLoadingEnterGame] = useState(false);
-  const [accountStatus, setAccountStatus] = useState<AccountStatus>("loading");
 
   const isMobile = useIsMobile();
   const navigate = useNavigate();
@@ -41,7 +36,7 @@ export default function Hero() {
     useState<boolean>(false);
   const [isLoadingModalOpen, setIsLoadingModalOpen] = useState<boolean>(false);
 
-  const handleClickTextButton = (status: AccountStatus) => {
+  const handleClickTextButton = (status: UserStatus) => {
     if (status === "loading") {
       setIsLoadingModalOpen(true);
       return;
@@ -80,7 +75,7 @@ export default function Hero() {
       // Check backend if user info is created, max 5 times
       let count = 0;
       const interval = setInterval(() => {
-        refetchUser();
+        refetchUserInfo();
         count++;
         if (count >= 20) {
           clearInterval(interval);
@@ -93,33 +88,6 @@ export default function Hero() {
     }
   };
 
-  // Set account status to ready when Privy is ready
-  useEffect(() => {
-    if (ready) {
-      if (!authenticated) {
-        return setAccountStatus("not_connected");
-      }
-      // Use authenticated when Privy is only ready
-      if (authenticated) {
-        setAccountStatus("connected");
-        if (wallets.length > 0) {
-          setAddress(wallets[0].address);
-        } else {
-          createWallet();
-        }
-      }
-      // If user info is fetched, set account status to participated
-      // TODO: add logic to change state with information related to staked SOL and CHIP balance
-      if (userInfo) {
-        if (userInfo.totalEstimatedUSD > 0) {
-          setAccountStatus("participated");
-        } else {
-          setAccountStatus("staked");
-        }
-      }
-    }
-  }, [ready, authenticated, wallets, createWallet, userInfo]);
-
   // Deals with transaction & backend response
   useEffect(() => {
     if (isTxLoading) {
@@ -127,14 +95,14 @@ export default function Hero() {
     } else {
       setIsLoadingModalOpen(false);
     }
-  }, [isTxLoading, isSuccess, refetchUser]);
+  }, [isTxLoading]);
 
   // 트랜잭션 성공시 처리
   useEffect(() => {
     if (isSuccess) {
-      refetchUser();
+      refetchUserInfo();
     }
-  }, [isSuccess, refetchUser]);
+  }, [isSuccess, refetchUserInfo]);
 
   // 트랜잭션 에러시 처리
   useEffect(() => {
@@ -146,8 +114,8 @@ export default function Hero() {
   return (
     <div className="relative w-full flex flex-col items-center p-4 text-center overflow-x-hidden overflow-y-hidden">
       <LogoSection className="sm:mt-[120px] sm:mb-[80px]" isMobile={isMobile} />
-      <CTA status={accountStatus} onClickTextButton={handleClickTextButton} />
-      {authenticated && <MyProfile address={address} user={userInfo} />}
+      <CTA status={status} onClickTextButton={handleClickTextButton} />
+      {address != "" && <MyProfile address={address} user={userInfo} />}
 
       {!isMobile && <BackgroundGIFs />}
 
