@@ -10,10 +10,11 @@ const baseStyles = `
   font-retro
   py-2 px-4
   border-r-4 border-b-4
-  active:border-r-0
-  active:border-b-0
-  active:border-l-4
-  active:border-t-4
+  active:enabled:border-r-0
+  active:enabled:border-b-0
+  active:enabled:border-l-4
+  active:enabled:border-t-4
+  disabled:!cursor-not-allowed
 `;
 
 const variantStyles = {
@@ -21,46 +22,46 @@ const variantStyles = {
     text-black
     bg-white
     border-[#ADAFBC]
-    hover:bg-[#DCDCDC]
-    hover:border-[#ADAFBC]
-    active:bg-[#DCDCDC]
-    active:border-[#ADAFBC]
+    hover:enabled:bg-[#DCDCDC]
+    hover:enabled:border-[#ADAFBC]
+    active:enabled:bg-[#DCDCDC]
+    active:enabled:border-[#ADAFBC]
   `,
   primary: `
     text-white
     bg-[#1F9CEC]
     border-[#006CB2]
-    hover:bg-[#0F8DE0]
-    hover:border-[#006CB2]
-    active:bg-[#0F8DE0]
-    active:border-[#006CB2]
+    hover:enabled:bg-[#0F8DE0]
+    hover:enabled:border-[#006CB2]
+    active:enabled:bg-[#0F8DE0]
+    active:enabled:border-[#006CB2]
   `,
   green: `
     text-white
     bg-[#2DBD85]
     border-[#1B704F]
-    hover:bg-[#29AB78]
-    hover:border-[#15573D]
-    active:bg-[#29AB78]
-    active:border-[#15573D]
+    hover:enabled:bg-[#29AB78]
+    hover:enabled:border-[#15573D]
+    active:enabled:bg-[#29AB78]
+    active:enabled:border-[#15573D]
   `,
   red: `
     text-white
     bg-[#F6455D]
     border-[#8F2836]
-    hover:bg-[#E84158]
-    hover:border-[#75212C]
-    active:bg-[#E84158]
-    active:border-[#75212C]
+    hover:enabled:bg-[#E84158]
+    hover:enabled:border-[#75212C]
+    active:enabled:bg-[#E84158]
+    active:enabled:border-[#75212C]
   `,
   blue: `
     text-white
     bg-[#0077FF]
     border-[#003C80]
-    hover:bg-[#005FCC]
-    hover:border-[#003066]
-    active:bg-[#005FCC]
-    active:border-[#003066]
+    hover:enabled:bg-[#005FCC]
+    hover:enabled:border-[#003066]
+    active:enabled:bg-[#005FCC]
+    active:enabled:border-[#003066]
   `,
 };
 

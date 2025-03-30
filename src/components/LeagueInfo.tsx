@@ -7,7 +7,7 @@ import RetroBox from "./RetroBox";
 export default function RoundInfo() {
   const league: Round = {
     startsAt: "2025-03-07T00:00:00Z",
-    endsAt: "2025-03-19T23:59:59Z",
+    endsAt: "2025-04-05T23:59:59Z",
     numOfParticipants: 100,
     totalPrize: 1000,
   };

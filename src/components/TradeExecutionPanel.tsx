@@ -87,14 +87,25 @@ export default function TradeExecutionPanel({
   const [leverage, setLeverage] = useState(1);
   const [amount, setAmount] = useState<number | undefined>(undefined);
   const [maxBalance, setMaxBalance] = useState<number | undefined>(undefined);
+  const [isValidAmount, setIsValidAmount] = useState(false);
 
   const balance = userInfo?.availableUSD || 0;
   useEffect(() => {
     setMaxBalance(balance * leverage);
   }, [balance, leverage]);
 
+  useEffect(() => {
+    if (!amount || !maxBalance) {
+      return setIsValidAmount(false);
+    }
+    if (amount > maxBalance) {
+      return setIsValidAmount(false);
+    }
+    setIsValidAmount(true);
+  }, [amount, maxBalance]);
+
   const handleClickBuyOrSell = async (type: "long" | "short") => {
-    if (!amount) return;
+    if (!amount || !maxBalance || amount > maxBalance) return;
 
     try {
       await createPosition(
@@ -124,13 +135,25 @@ export default function TradeExecutionPanel({
         />
       </div>
       <div className="flex-1/2 flex flex-col text-left sm:pr-7">
-        <NESButton variant="green" onClick={() => handleClickBuyOrSell("long")}>
-          Long
+        <NESButton
+          variant="green"
+          disabled={!isValidAmount}
+          onClick={() => handleClickBuyOrSell("long")}
+        >
+          {amount && maxBalance && amount > maxBalance
+            ? "Insufficient Balance"
+            : "Buy/Long"}
         </NESButton>
       </div>
       <div className="flex-1/2 flex flex-col text-left sm:pl-7">
-        <NESButton variant="red" onClick={() => handleClickBuyOrSell("short")}>
-          Short
+        <NESButton
+          variant="red"
+          disabled={!isValidAmount}
+          onClick={() => handleClickBuyOrSell("short")}
+        >
+          {amount && maxBalance && amount > maxBalance
+            ? "Insufficient Balance"
+            : "Sell/Short"}
         </NESButton>
       </div>
     </div>

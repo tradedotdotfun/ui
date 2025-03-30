@@ -32,19 +32,25 @@ function ClosePositionBox({
   const [formattedEstimatedPnL, setFormattedEstimatedPnL] =
     useState<string>("");
   const roiPercentage = position.roi * 100;
-
   const formattedEntryPrice = formatCurrency(position.entryPrice);
   const formattedMarkPrice = price ? formatCurrency(price) : "-";
+  const [isBtnEnabled, setBtnEnabled] = useState(false);
 
   useEffect(() => {
     if (closingAmount === undefined || price === undefined) {
+      setBtnEnabled(false);
       return;
     }
 
-    const amount = closingAmount || 0;
     const totalAmount = position.size * price;
-    const estimatedPnL = (amount / totalAmount) * position.pnl;
+    const amount = closingAmount || 0;
+    const estimatedPnL = Math.min(amount / totalAmount, 1) * position.pnl;
     setFormattedEstimatedPnL(formatCurrency(estimatedPnL));
+    if (amount === 0 || amount > totalAmount) {
+      setBtnEnabled(false);
+    } else {
+      setBtnEnabled(true);
+    }
   }, [closingAmount, position.pnl, position.size, price]);
 
   return (
@@ -136,6 +142,7 @@ function ClosePositionBox({
         <NESButton
           variant="green"
           className="self-end w-full sm:flex-2/3"
+          disabled={!isBtnEnabled}
           onClick={() => {
             if (closingAmount === undefined || price === undefined) {
               return;

@@ -1,5 +1,5 @@
 import BigNumber from "bignumber.js";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { formatCurrency } from "../utils/formatCurrency";
 import { formatBalance } from "../utils/numbers";
@@ -60,6 +60,17 @@ export default function AmountPanel({
     },
     [setAmount, totalAmount]
   );
+
+  useEffect(() => {
+    if (amount) {
+      const newPercentage = BigNumber(amount)
+        .div(totalAmount)
+        .multipliedBy(100)
+        .toNumber();
+
+      setPercentage(newPercentage);
+    }
+  }, [totalAmount]);
 
   return (
     <div className="flex flex-col gap-7">
