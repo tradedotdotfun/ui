@@ -49,7 +49,9 @@ export default function CTA({
           alt="Insert Coin"
           className="mr-[16px]"
         />
-        <p className="text-white font-bold sm:text-[22px]">{statusToMsg}</p>
+        <p className="text-white font-bold text-sm sm:text-[22px]">
+          {statusToMsg}
+        </p>
       </TextButton>
       {statusToSubMsg !== "" && (
         <small className="text-[#C3F92B] text-[10px] mt-2">

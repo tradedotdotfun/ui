@@ -112,7 +112,7 @@ export default function Hero() {
   }, [isError, error]);
 
   return (
-    <div className="relative w-full flex flex-col items-center p-4 text-center overflow-x-hidden overflow-y-hidden">
+    <div className="relative w-full flex flex-col items-center justify-center sm:p-4 text-center overflow-x-hidden overflow-y-hidden">
       <LogoSection className="sm:mt-[120px] sm:mb-[80px]" isMobile={isMobile} />
       <CTA status={status} onClickTextButton={handleClickTextButton} />
       {address != "" && <MyProfile address={address} user={userInfo} />}

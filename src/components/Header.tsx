@@ -2,6 +2,7 @@ import { usePrivy } from "@privy-io/react-auth";
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
+import { useIsMobile } from "../hooks/useIsMobile";
 import { useUser } from "../hooks/useUser";
 import { formatAddress } from "../utils/address";
 
@@ -12,6 +13,7 @@ export default function Header() {
   const { login, logout, authenticated } = usePrivy();
   const { address } = useUser();
   const [isOpen, setIsOpen] = useState(false);
+  const isMobile = useIsMobile();
 
   const handleClick = () => {
     audioRef.current.currentTime = 0; // 클릭할 때마다 처음부터 재생
@@ -22,15 +24,17 @@ export default function Header() {
     <header className="w-full h-[60px] flex justify-between items-center px-7">
       <Link to="/" onClick={handleClick} className="flex items-center gap-1">
         <img src="/fire.gif" alt="fire" className="w-6" />
-        <p className="text-white text-[16px]">TRADE DOT. FUN</p>
+        {!isMobile && <p className="text-white text-[16px]">TRADE DOT. FUN</p>}
       </Link>
       {authenticated ? (
         <div className="flex items-center gap-5">
-          <div className="flex items-center gap-2">
-            <img src="/small-chip.gif" alt="small-chip" className="w-6" />
-            {/* TODO: CHIP Balance */}
-            <p className="text-white text-[16px]">{`2 CHIPS`}</p>
-          </div>
+          {!isMobile && (
+            <div className="flex items-center gap-2">
+              <img src="/small-chip.gif" alt="small-chip" className="w-6" />
+              {/* TODO: CHIP Balance */}
+              <p className="text-white text-[16px]">{`2,380`}</p>
+            </div>
+          )}
           <div className="relative">
             <NESButton
               onClick={() => setIsOpen(!isOpen)}
@@ -43,6 +47,18 @@ export default function Header() {
             {isOpen && (
               <div className="absolute right-0 z-50 mt-2 w-48 bg-[#1a1a1a] border-2 border-[#003C80] rounded shadow-lg">
                 <div className="py-1">
+                  {isMobile && (
+                    <div className="flex items-center gap-2 px-4 py-2">
+                      <img
+                        src="/small-chip.gif"
+                        alt="small-chip"
+                        className="w-6"
+                      />
+                      {/* TODO: CHIP Balance */}
+                      <p className="text-white text-sm sm:text-[16px]">{`2,380`}</p>
+                    </div>
+                  )}
+
                   <button
                     className="w-full px-4 py-2 text-sm text-white hover:bg-[#003C80] text-left"
                     onClick={() => {

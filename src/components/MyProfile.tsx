@@ -37,9 +37,12 @@ export default function MyProfile({ address, user }: ProfileProps) {
         >
           {/* Profile Header */}
           <div className="flex flex-row justify-between items-center">
-            <p className="text-[16px] text-left">My Profile</p>
+            <p className="text-xs sm:text-[16px] text-left">My Profile</p>
             <Link to="/exchange">
-              <NESButton variant="default" className="!text-[12px]">
+              <NESButton
+                variant="default"
+                className="!text-xs !sm:text-[12px] whitespace-nowrap"
+              >
                 {"GET MORE CHIPS"}
               </NESButton>
             </Link>
