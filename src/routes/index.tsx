@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Layout from "../components/Layout";
 import ClosePositionPage from "../pages/ClosePositionPage";
+import ExchangePage from "../pages/ExchangePage";
 import HomePage from "../pages/HomePage";
 import NotFoundPage from "../pages/NotFoundPage";
 import PrivacyPolicyPage from "../pages/PrivacyPolicyPage";
@@ -21,6 +22,7 @@ export default function AppRoutes() {
           <Route path="/terms" element={<TermsOfServicePage />} />
           <Route path="/privacy" element={<PrivacyPolicyPage />} />
           <Route path="/profile/:address" element={<ProfilePage />} />
+          <Route path="/exchange" element={<ExchangePage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
