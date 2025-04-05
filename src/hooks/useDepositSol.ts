@@ -197,7 +197,7 @@ const getAssociatedTokenAddressWithInstruction = async (
  *
  * @returns {DepositSolResult} Object containing the deposit function and state variables
  */
-export const useDepositSol2 = (): DepositSolResult => {
+export const useDepositSol = (): DepositSolResult => {
   const [signature, setSignature] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState(false);
   const [txConfirmed, setTxConfirmed] = useState(false);
@@ -212,6 +212,7 @@ export const useDepositSol2 = (): DepositSolResult => {
 
   // Initialize Anchor Program
   useEffect(() => {
+    console.log("useEffect", connection, ready, wallets.length);
     if (!connection || !ready || !wallets.length) return;
 
     try {
@@ -245,7 +246,7 @@ export const useDepositSol2 = (): DepositSolResult => {
       console.error("Error initializing Anchor program:", err);
       setError("Failed to initialize Anchor program");
     }
-  }, [connection]);
+  }, [connection, ready]);
 
   const resetStates = () => {
     setIsLoading(true);
@@ -257,20 +258,28 @@ export const useDepositSol2 = (): DepositSolResult => {
   // Main function to deposit SOL and swap to INF token
   const depositSol = useCallback(
     async (amountSOL: number = 0.001, roundNumber: number = 1) => {
+      console.log("depositSol", amountSOL, roundNumber);
       resetStates();
       const wallet = wallets[0];
+
+      console.log("wallet", wallet);
+      console.log("ready", ready);
+      console.log("connection", connection);
+      console.log("program", program);
 
       if (!ready || !wallet || !connection || !program) {
         setError("Wallet, connection, or program not ready");
         setIsLoading(false);
         return;
       }
+      console.log("ready", ready);
 
       try {
         // Convert SOL to lamports
         const amountLamports = amountSOL * LAMPORTS_PER_SOL;
         const roundNumberBN = new BN(roundNumber);
 
+        console.log("amountLamports", amountLamports);
         // Step 1: Derive all Program Derived Addresses (PDAs)
         const [vaultDataPDA] = PublicKey.findProgramAddressSync(
           [Buffer.from("vault_data")],
@@ -448,7 +457,7 @@ export const useDepositSol2 = (): DepositSolResult => {
 
         // Step 8: Create deposit instruction using Anchor
         const depositIx = await program.methods
-          .deposit(roundNumberBN, Buffer.from(swapIx.data))
+          .depositSol(roundNumberBN, swapIx.data)
           .accounts({
             user: new PublicKey(wallet.address),
             inputMint: SOL_MINT,

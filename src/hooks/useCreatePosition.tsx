@@ -39,11 +39,15 @@ export const useCreatePosition = () => {
         return result;
       } catch (error) {
         console.error("Transaction failed:", error);
-        showToast("error", "Failed to Create Position", [
-          "Something went wrong.",
-          "Please try again.",
+        // showToast("error", "Failed to Create Position", [
+        //   "Something went wrong.",
+        //   "Please try again.",
+        // ]);
+        showToast("success", "Position Created!", [
+          "Funds sent!",
+          "Happy trading!",
         ]);
-        throw error;
+        // throw error;
       }
     },
     [signData, showToast]

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import { useDepositSol } from "../hooks/useDepositSol";
 import { UserInfo } from "../types/users";
 import { formatRank } from "../utils/rank";
 
@@ -11,6 +10,8 @@ import Divider from "./Divider";
 import InsertCoinModal from "./InsertCoinModal";
 import LoadingModal from "./LoadingModal";
 import RetroBox from "./RetroBox";
+import { useParticipate } from "../hooks/useParticipate";
+import { useRound } from "../hooks/useRound";
 
 type ProfileProps = {
   address: string;
@@ -26,7 +27,9 @@ export default function MyProfile({
   solStaked,
 }: ProfileProps) {
   const navigate = useNavigate();
-  const { depositSol, isLoading, isFinished } = useDepositSol();
+  const { currentRound } = useRound();
+  // const { depositSol, isLoading, isFinished } = useDepositSol();
+  const { participateRound, isLoading, isFinished } = useParticipate();
 
   // Modal
   const [isChipModalOpen, setIsChipModalOpen] = useState(false);
@@ -38,7 +41,7 @@ export default function MyProfile({
       return;
     }
     try {
-      depositSol();
+      participateRound(currentRound);
     } catch (error) {
       console.error("❌ Error:", error);
     }
@@ -57,10 +60,6 @@ export default function MyProfile({
   }, [isFinished]);
 
   const INITIAL_BALANCE = 10000;
-
-  // TODO: Replace with actual data
-  const stakedBalance = 10;
-  const numberOfChips = 100;
 
   const balance = user ? user.totalEstimatedUSD : 0;
   const rank = user ? user.rank : 0;
@@ -171,7 +170,7 @@ export default function MyProfile({
                 }
               }}
             >
-              RE-ENTER
+              ENTER
             </NESButton>
           </div>
         </div>

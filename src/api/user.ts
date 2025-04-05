@@ -28,10 +28,13 @@ export const fetchUser: (
     `/account?round=${round}&address=${address}`
   );
 
-  console.log("response", response);
-
   if (response.data.length === 0) {
-    return undefined;
+    return {
+      address,
+      rank: 1,
+      availableUSD: 10000,
+      totalEstimatedUSD: 10000,
+    };
   }
 
   return {

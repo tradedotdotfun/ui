@@ -24,7 +24,7 @@ export default function CTA({
       break;
     case "connected":
       statusToMsg = "STAKE & GET CHIPS";
-      statusToSubMsg = "Stake 0.01 SOL → 1 CHIP";
+      statusToSubMsg = "Stake 0.001 SOL → 1 CHIP";
       break;
     case "staked":
       statusToMsg = "BUY IN YOUR CHIP!";

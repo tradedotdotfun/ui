@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-import { usePositions } from "../hooks/usePositions";
+// import { usePositions } from "../hooks/usePositions";
 import { usePrices } from "../hooks/usePrices";
 import { Position } from "../types/positions";
 import { formatCurrency } from "../utils/formatCurrency";
@@ -147,12 +147,15 @@ function PositionBox({
   );
 }
 
-export default function MyPosition() {
+export default function MyPosition({
+  positionList,
+}: {
+  positionList: Position[];
+}) {
   const navigate = useNavigate();
-  const { data: myPositionList } = usePositions();
   const { data: prices } = usePrices();
 
-  if (!myPositionList || !prices) {
+  if (!positionList || !prices) {
     return null;
   }
 
@@ -170,18 +173,18 @@ export default function MyPosition() {
           <div className="flex-1/2 flex flex-col text-left sm:pl-7 overflow-x-hidden">
             <div className="flex items-center justify-center">
               <p className="text-[10px] sm:text-[18px] lg:text-[24px] text-white">
-                {`==== MY POSITION${myPositionList.length > 1 ? "S" : ""} (${
-                  myPositionList.length
+                {`==== MY POSITION${positionList.length > 1 ? "S" : ""} (${
+                  positionList.length
                 }) ====`}
               </p>
             </div>
             <div className="w-full">
               <div className="w-full mt-6 sm:mt-11">
                 <TotalPnLSection
-                  pnl={myPositionList.reduce((acc, cur) => acc + cur.pnl, 0)}
+                  pnl={positionList.reduce((acc, cur) => acc + cur.pnl, 0)}
                 />
               </div>
-              {myPositionList.map((position) => (
+              {positionList.map((position) => (
                 <div key={position.id} className="w-full mt-6 sm:mt-11">
                   <div className="mb-6 sm:mb-11">
                     <Divider char="^" color="text-white" width="100%" />

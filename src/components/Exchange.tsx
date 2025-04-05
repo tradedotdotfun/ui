@@ -6,7 +6,7 @@ import { useUser } from "../hooks/useUser";
 import AmountPanel from "./AmountPanel";
 import NESButton from "./Button";
 import ExchangeChipModal from "./ExchangeChipModal";
-import { useDepositSol2 } from "../hooks/useDepositSol2";
+import { useDepositSol } from "../hooks/useDepositSol";
 import { useRound } from "../hooks/useRound";
 
 export default function Exchange() {
@@ -44,12 +44,20 @@ export default function Exchange() {
     }
   }, [amount, solBalance]);
 
-  const { depositSol } = useDepositSol2();
+  const { depositSol, isFinished } = useDepositSol();
+  const { currentRound } = useRound();
 
   const onConfirm = () => {
-    // depositSol(amount ?? 0, currentRound);
-    depositSol();
+    depositSol(amount ?? 0, currentRound);
   };
+  // const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isFinished) {
+      setIsModalOpen(false);
+      // navigate("/");
+    }
+  }, [isFinished]);
 
   return (
     <div className="max-w-[700px] relative flex flex-col gap-8 mt-[40px] mb-[80px]">

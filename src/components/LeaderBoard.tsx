@@ -10,7 +10,38 @@ import RetroBox from "./RetroBox";
 export default function LeaderBoard() {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
-  const { data: leaderboard } = useLeaderBoard();
+  const mockLeaderboard = [
+    {
+      rank: 1,
+      address: "7ENEt33c362bZVcxdgR4A1wNnffwSWHawan935Qw9Vya",
+      name: "SonicMaster",
+      roi: 2.45,
+    },
+    {
+      rank: 2,
+      address: "3Gf8NB6zxqQbNqKHHTgV4B7vXhZNcpWqF4WmG9nDpqjH",
+      name: "TailsTrader",
+      roi: 1.87,
+    },
+    {
+      rank: 3,
+      address: "5KjwwDr8UB3KxQfvqJ8rLmM8TnBXEHp9xiRGhqGYKHfR",
+      name: "KnucklesKing",
+      roi: 1.52,
+    },
+    {
+      rank: 4,
+      address: "9qZVc4XhyJEcAqhDVr9Dz7qmqXZVEGpYzV3N9QxGXxWh",
+      name: "AmyRose",
+      roi: 1.23,
+    },
+    {
+      rank: 5,
+      address: "2N6YEtKvYFMVLvpXJYvkqWzZPvgn8PCBQqsnsfEZLgqs",
+      name: "",
+      roi: 0.98,
+    },
+  ];
 
   return (
     <div className="w-full relative flex flex-col items-center pt-[40px] pb-[80px] px-4 overflow-x-hidden">
@@ -28,41 +59,40 @@ export default function LeaderBoard() {
             <p className="text-[#FFF828]  text-[10px] sm:text-[16px]">PNL</p>
           </div>
           <div className="w-full flex flex-col gap-7 mt-7 mb-9">
-            {leaderboard &&
-              leaderboard.map(({ rank, address, name, roi }, idx) => {
-                const rankStyle =
-                  rank === 1
-                    ? "text-[#D2180B] group-hover:text-black"
-                    : rank === 2
-                    ? "text-[#F76B3E] group-hover:text-black"
-                    : rank === 3
-                    ? "text-[#3112D8] group-hover:text-black"
-                    : "text-white group-hover:text-black";
-                return (
-                  <div
-                    key={`rank-${idx}`}
-                    className={`
+            {mockLeaderboard.map(({ rank, address, name, roi }, idx) => {
+              const rankStyle =
+                rank === 1
+                  ? "text-[#D2180B] group-hover:text-black"
+                  : rank === 2
+                  ? "text-[#F76B3E] group-hover:text-black"
+                  : rank === 3
+                  ? "text-[#3112D8] group-hover:text-black"
+                  : "text-white group-hover:text-black";
+              return (
+                <div
+                  key={`rank-${idx}`}
+                  className={`
                   flex items-center justify-between w-full 
                   ${rank === 1 ? "bg-[#FFF828]" : ""} 
                   group hover:bg-white `}
-                    onClick={() => navigate(`/profile/${address}`)}
-                  >
-                    <div className="flex items-center gap-5">
-                      <p
-                        className={`w-10 sm:w-20 ${rankStyle} text-[10px] sm:text-[16px]`}
-                      >
-                        {formatRank(rank)}
-                      </p>
-                      <p className={`text-[10px] sm:text-[16px] ${rankStyle}`}>
-                        {name === "" ? formatAddress(address) : "@" + name}
-                      </p>
-                    </div>
+                  onClick={() => navigate(`/profile/${address}`)}
+                >
+                  <div className="flex items-center gap-5">
                     <p
-                      className={`${rankStyle} text-[10px] sm:text-[16px]`}
-                    >{`${(roi * 100).toFixed(2)}%`}</p>
+                      className={`w-10 sm:w-20 ${rankStyle} text-[10px] sm:text-[16px]`}
+                    >
+                      {formatRank(rank)}
+                    </p>
+                    <p className={`text-[10px] sm:text-[16px] ${rankStyle}`}>
+                      {name === "" ? formatAddress(address) : "@" + name}
+                    </p>
                   </div>
-                );
-              })}
+                  <p className={`${rankStyle} text-[10px] sm:text-[16px]`}>{`${(
+                    roi * 100
+                  ).toFixed(2)}%`}</p>
+                </div>
+              );
+            })}
           </div>
           <div className="w-full text-white text-[10px] sm:text-[16px] text-left">
             <span>Only the strongest survive.</span>

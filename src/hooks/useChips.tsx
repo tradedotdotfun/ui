@@ -47,6 +47,7 @@ export const useChips = (address: string) => {
             tokenAccountAddress
           );
           return BigNumber(tokenAccount.amount.toString()).toNumber();
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
           // If the token account doesn't exist, the user has 0 tokens
           if (
@@ -58,7 +59,7 @@ export const useChips = (address: string) => {
           console.error("Error fetching token account:", err);
           return 0;
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error("Error fetching CHIP balance:", err);
         return 0;
       }

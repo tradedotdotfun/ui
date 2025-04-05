@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { useDepositSol } from "../hooks/useDepositSol";
 import { useIsMobile } from "../hooks/useIsMobile";
 import { useUser } from "../hooks/useUser";
 import { UserStatus } from "../types/users";
@@ -12,12 +11,16 @@ import InsertCoinModal from "./InsertCoinModal";
 import LoadingModal from "./LoadingModal";
 import LogoSection from "./LogoSection";
 import MyProfile from "./MyProfile";
+import { useParticipate } from "../hooks/useParticipate";
+import { useRound } from "../hooks/useRound";
 
 export default function Hero() {
   const { status, address, userInfo, login, chipBalance, solStaked } =
     useUser();
 
-  const { depositSol, isLoading, isFinished } = useDepositSol();
+  const { currentRound } = useRound();
+
+  const { participateRound, isLoading, isFinished } = useParticipate();
 
   const isMobile = useIsMobile();
   const navigate = useNavigate();
@@ -54,7 +57,8 @@ export default function Hero() {
   const handleInsertCoin = () => {
     setIsInsertCoinModalOpen(false);
     try {
-      depositSol();
+      participateRound(currentRound);
+      // participate tx 를 보낸다.
     } catch (error) {
       console.error("❌ Error:", error);
     }
