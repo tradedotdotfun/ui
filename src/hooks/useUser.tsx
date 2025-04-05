@@ -7,11 +7,14 @@ import { UserStatus } from "../types/users";
 import { lamportsToSol } from "../utils/numbers";
 
 import { useAccountBalance } from "./useAccountBalance";
+import { useChips } from "./useChips";
+import { useRound } from "./useRound";
+import { useSolStaked } from "./useSolStaked";
 
-export const useUserInfo = (address: string) => {
+export const useUserInfo = (address: string, round: number) => {
   return useQuery({
     queryKey: ["user", address],
-    queryFn: () => fetchUser({ round: 0, address }),
+    queryFn: () => fetchUser({ round, address }),
     enabled: !!address, // address가 있을 때만 실행
     staleTime: 1000 * 60, // 1분 동안 캐싱 유지
     refetchOnMount: false,
@@ -23,15 +26,18 @@ export const useUser = () => {
   const [address, setAddress] = useState<string>("");
   const [status, setStatus] = useState<UserStatus>("loading");
   const [solBalance, setSolBalance] = useState<number>(0);
-
+  const { chipBalance, refetchChipBalance } = useChips(address);
+  const { solStaked } = useSolStaked(address);
+  const { currentRound } = useRound();
   const { ready, authenticated, login } = usePrivy();
   const { wallets, createWallet } = useSolanaWallets();
-  const { data: userInfo, refetch: refetchUserInfo } = useUserInfo(address);
+  const { data: userInfo, refetch: refetchUserInfo } = useUserInfo(
+    address,
+    currentRound
+  );
   // TODO: Add CHIP balance and staked SOL balance
   const { data: solBalanceInLamports, refetch: refetchSolBalance } =
     useAccountBalance(address);
-  // const [stakedBalance, setStakedBalance] = useState<number>(0);
-  // const [chipBalance, setChipBalance] = useState<number>(0);
 
   // Set account status to ready when Privy is ready
   useEffect(() => {
@@ -77,5 +83,8 @@ export const useUser = () => {
     login,
     refetchUserInfo,
     refetchSolBalance,
+    chipBalance,
+    refetchChipBalance,
+    solStaked,
   };
 };

@@ -10,6 +10,7 @@ import AddressCopy from "./AddressCopy";
 import NESButton from "./Button";
 import Divider from "./Divider";
 import RetroBox from "./RetroBox";
+import { useRound } from "../hooks/useRound";
 
 type SocialTick = "x" | "tickTock";
 
@@ -28,7 +29,8 @@ interface UserProfileProps {
 }
 
 export default function UserProfile({ address }: UserProfileProps) {
-  const { data: userInfo } = useUserInfo(address);
+  const { currentRound } = useRound();
+  const { data: userInfo } = useUserInfo(address, currentRound);
 
   if (!userInfo) return null;
   const INITIAL_BALANCE = 10000;

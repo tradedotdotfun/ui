@@ -15,9 +15,16 @@ import RetroBox from "./RetroBox";
 type ProfileProps = {
   address: string;
   user?: UserInfo;
+  chipBalance: number;
+  solStaked: number;
 };
 
-export default function MyProfile({ address, user }: ProfileProps) {
+export default function MyProfile({
+  address,
+  user,
+  chipBalance,
+  solStaked,
+}: ProfileProps) {
   const navigate = useNavigate();
   const { depositSol, isLoading, isFinished } = useDepositSol();
 
@@ -93,7 +100,7 @@ export default function MyProfile({ address, user }: ProfileProps) {
             </div>
             <div className="flex flex-col gap-2 items-center justify-center">
               <div className="flex gap-5 items-center justify-center w-full">
-                <p>{`${stakedBalance} SOL STAKED`}</p>
+                <p>{`${solStaked} SOL STAKED`}</p>
               </div>
 
               <div className="flex gap-5 items-center justify-center w-full">
@@ -104,7 +111,7 @@ export default function MyProfile({ address, user }: ProfileProps) {
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <p>{`${numberOfChips} CHIPS`}</p>
+                <p>{`${chipBalance} CHIPS`}</p>
               </div>
             </div>
           </div>

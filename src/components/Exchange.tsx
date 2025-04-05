@@ -6,11 +6,14 @@ import { useUser } from "../hooks/useUser";
 import AmountPanel from "./AmountPanel";
 import NESButton from "./Button";
 import ExchangeChipModal from "./ExchangeChipModal";
+import { useDepositSol2 } from "../hooks/useDepositSol2";
+import { useRound } from "../hooks/useRound";
 
 export default function Exchange() {
   const [amount, setAmount] = useState<number | undefined>(undefined);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [btnMsg, setBtnMsg] = useState("ENTER AMOUNT!");
+  // const { currentRound } = useRound();
   const { solBalance } = useUser();
 
   const handleSetStakingAmount = (amount?: number) => {
@@ -20,15 +23,15 @@ export default function Exchange() {
     }
     // Discrete amount round downed to 2 decimal places
     const descreteAmount = BigNumber(amount)
-      .multipliedBy(100)
+      .multipliedBy(1000)
       .integerValue(BigNumber.ROUND_DOWN)
-      .dividedBy(100)
+      .dividedBy(1000)
       .toNumber();
     setAmount(descreteAmount);
   };
 
   const amountInChips = amount
-    ? BigNumber(amount).multipliedBy(100).toNumber()
+    ? BigNumber(amount).multipliedBy(1000).toNumber()
     : 0;
 
   useEffect(() => {
@@ -40,6 +43,13 @@ export default function Exchange() {
       setBtnMsg("EXCHANGE NOW!");
     }
   }, [amount, solBalance]);
+
+  const { depositSol } = useDepositSol2();
+
+  const onConfirm = () => {
+    // depositSol(amount ?? 0, currentRound);
+    depositSol();
+  };
 
   return (
     <div className="max-w-[700px] relative flex flex-col gap-8 mt-[40px] mb-[80px]">
@@ -90,7 +100,7 @@ export default function Exchange() {
       <ExchangeChipModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onConfirm={() => setIsModalOpen(false)} // TODO: Implement exchange(staking) logic
+        onConfirm={onConfirm}
         stakingAmount={amount ?? 0}
         chipAmount={amountInChips}
       />

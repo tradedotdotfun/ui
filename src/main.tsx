@@ -9,6 +9,7 @@ import App from "./App.tsx";
 
 const queryClient = new QueryClient();
 
+// Make Buffer available globally
 window.Buffer = Buffer;
 
 createRoot(document.getElementById("root")!).render(

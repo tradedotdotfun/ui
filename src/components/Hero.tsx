@@ -14,7 +14,9 @@ import LogoSection from "./LogoSection";
 import MyProfile from "./MyProfile";
 
 export default function Hero() {
-  const { status, address, userInfo, login } = useUser();
+  const { status, address, userInfo, login, chipBalance, solStaked } =
+    useUser();
+
   const { depositSol, isLoading, isFinished } = useDepositSol();
 
   const isMobile = useIsMobile();
@@ -78,7 +80,14 @@ export default function Hero() {
         status={isLoading ? "loading" : status}
         onClickTextButton={handleClickTextButton}
       />
-      {address != "" && <MyProfile address={address} user={userInfo} />}
+      {address != "" && (
+        <MyProfile
+          address={address}
+          user={userInfo}
+          chipBalance={chipBalance}
+          solStaked={solStaked}
+        />
+      )}
 
       {!isMobile && <BackgroundGIFs />}
 

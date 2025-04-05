@@ -7,6 +7,7 @@ import { useIsMobile } from "../hooks/useIsMobile";
 import { formatAddress } from "../utils/address";
 
 import NESButton from "./Button";
+import { useUser } from "../hooks/useUser";
 
 export default function Header() {
   const audioRef = useRef(new Audio("/sonic-ring-sound-1.mp3"));
@@ -14,6 +15,7 @@ export default function Header() {
   const { address } = useAddress();
   const [isOpen, setIsOpen] = useState(false);
   const isMobile = useIsMobile();
+  const { chipBalance } = useUser();
 
   const handleClick = () => {
     audioRef.current.currentTime = 0; // 클릭할 때마다 처음부터 재생
@@ -32,7 +34,7 @@ export default function Header() {
             <div className="flex items-center gap-2">
               <img src="/small-chip.gif" alt="small-chip" className="w-6" />
               {/* TODO: CHIP Balance */}
-              <p className="text-white text-[16px]">{`2,380`}</p>
+              <p className="text-white text-[16px]">{`${chipBalance}`}</p>
             </div>
           )}
           <div className="relative">

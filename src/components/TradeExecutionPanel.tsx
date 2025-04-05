@@ -9,6 +9,7 @@ import AmountPanel from "./AmountPanel";
 import ArrowButtonIcon from "./ArrowButton";
 import NESButton from "./Button";
 import ProgressBar from "./ProgressBar";
+import { useRound } from "../hooks/useRound";
 
 const MAX_LEVERAGE = 100;
 
@@ -80,8 +81,10 @@ export default function TradeExecutionPanel({
   market: MarketType;
 }) {
   const { wallets } = useSolanaWallets();
+  const { currentRound } = useRound();
   const { data: userInfo } = useUserInfo(
-    wallets.length > 0 ? wallets[0].address : ""
+    wallets.length > 0 ? wallets[0].address : "",
+    currentRound
   );
   const { createPosition } = useCreatePosition();
   const [leverage, setLeverage] = useState(1);

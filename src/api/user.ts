@@ -4,8 +4,12 @@ import { coinIdToMarket } from "../utils/prices.ts";
 
 import apiClient from "./index.ts";
 
-
-export const updateName = async (name: string, pubkey: string, msg: string, signature: string) => {
+export const updateName = async (
+  name: string,
+  pubkey: string,
+  msg: string,
+  signature: string
+) => {
   // X-Auth-Pubkey: {pubkey}
   // X-Auth-Message: {msg}
   // X-Auth-Signature: {signature}
@@ -14,14 +18,17 @@ export const updateName = async (name: string, pubkey: string, msg: string, sign
   apiClient.defaults.headers.common["X-Auth-Signature"] = signature;
 
   await apiClient.post("/account/name", { name });
-}
+};
 
-export const fetchUser: (request: UserRequest) => Promise<UserInfo | undefined> = async ({
-  round = 0,
-  address,
-}) => {
+export const fetchUser: (
+  request: UserRequest
+) => Promise<UserInfo | undefined> = async ({ round = 0, address }) => {
   // const response = await apiClient.get(`/account?round=${round}&address=${"7ENEt33c362bZVcxdgR4A1wNnffwSWHawan935Qw9Vya"}`);
-  const response = await apiClient.get(`/account?round=${round}&address=${address}`);
+  const response = await apiClient.get(
+    `/account?round=${round}&address=${address}`
+  );
+
+  console.log("response", response);
 
   if (response.data.length === 0) {
     return undefined;
@@ -46,12 +53,13 @@ export const fetchUser: (request: UserRequest) => Promise<UserInfo | undefined> 
 // "pnl": -59.18544034483375,
 // "percent": -2.9592720172416875,
 // "created_dt": "2025-03-07 06:42:40"
-export const fetchPositions: (request: UserRequest) => Promise<Position[]> = async ({
-  round = 0,
-  address,
-}) => {
+export const fetchPositions: (
+  request: UserRequest
+) => Promise<Position[]> = async ({ round = 0, address }) => {
   // const response = await apiClient.get(`/position?round=${round}&address=${"7ENEt33c362bZVcxdgR4A1wNnffwSWHawan935Qw9Vya"}`);
-  const response = await apiClient.get(`/position?round=${round}&address=${address}`);
+  const response = await apiClient.get(
+    `/position?round=${round}&address=${address}`
+  );
 
   if (!response.data || response.data.length === 0) {
     return [];
@@ -72,4 +80,4 @@ export const fetchPositions: (request: UserRequest) => Promise<Position[]> = asy
     openAt: position["created_dt"],
     status: "open",
   }));
-}
+};

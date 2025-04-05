@@ -1,0 +1,2 @@
+export const CHIP_TOKEN_ADDRESS = "chip6YRCCXMy1uLbGRNErT66aYGdaVsVCQ25VA1LWNN";
+export const TRADE_DOT_FUN_ID = "B1ph2kyNtkhscRQ3R1CAwMNM4PbGGvphHTzxR83kRsRc";
