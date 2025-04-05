@@ -17,9 +17,9 @@ export default function BackgroundGIFs() {
         className="w-[215px] absolute top-[410px] left-[calc(50%-380px)]"
       />
       <img
-        src="/sonic-dancing.gif"
-        alt="sonic-dancing"
-        className="w-[113px] absolute top-[480px] right-[calc(50%-280px)]"
+        src="/sanctum.png"
+        alt="sanctum"
+        className="w-[113px] absolute top-[520px] right-[calc(50%-320px)] animate-bounce"
       />
     </>
   );
